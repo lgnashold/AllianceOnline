@@ -72,13 +72,18 @@ function draw_board() {
   ctx.fillRect(0,0,WIDTH,HEIGHT);
   for(var i = 0; i < boardPos.length; i++) {
     for(var j = 0; j < boardPos[i].length; j++) {
-      ctx.fillText(boardPos[i][j].name,j,i);
-      console.log(boardPos[i][j].color);
+
       ctx.fillStyle = boardPos[i][j].color;
       ctx.strokeStyle = "black";
       ctx.lineWidth = 5;
       ctx.fillRect(j*GRID_SIZE + centerX,i*GRID_SIZE+centerY,GRID_SIZE,GRID_SIZE);
       ctx.strokeRect(j*GRID_SIZE + centerX,i*GRID_SIZE+centerY,GRID_SIZE,GRID_SIZE);
+      if(boardPos[i][j].name != null) {
+        console.log(boardPos[i][j].name);
+        ctx.fillStyle = "black";
+        ctx.fillText(boardPos[i][j].name,j*GRID_SIZE+centerX + GRID_SIZE/5,i*GRID_SIZE+centerY + GRID_SIZE/4);
+      }
+
     }
   }
 }
