@@ -5,7 +5,7 @@ from flask import Flask
 def create_app():
     # Creates an app
     # Instance relative config means paths in config files are relative to instance folder
-    app = flask(__name__, instance_relative_config=True)
+    app = Flask(__name__, instance_relative_config=True)
     
     # Edits configurations
     app.config["SECRET_KEY"] = "123kxjq0kx2rehxj"
@@ -22,3 +22,5 @@ def create_app():
     @app.route('/hello')
     def hello():
         return "Hello World"
+    
+    return app
