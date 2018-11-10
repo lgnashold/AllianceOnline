@@ -15,7 +15,7 @@ def create_app():
     app.config["SECRET_KEY"] = "123kxjq0kx2rehxj"
     # instance_path is the instance folder
     app.config["DATABASE"] = os.path.join(app.instance_path, "boardgame.sqlite")
-
+    app.config["COLORS"] = {"team1" : "#FF00FF", "team2":"#0000FF", "team3": "#FF00FF", "team4": "#FF0000"}
     # Insure instance folder exists
     try:
         os.makedirs(app.instance_path)

@@ -1,9 +1,5 @@
-COLOR1 = "#FF00FF"
-COLOR2 = "#0000FF"
-COLOR3 = "#FF00FF"
-COLOR4 = "#FF0000"
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, url_for
+    Blueprint, flash, g, redirect, render_template, request, session, url_for, current_app
 )
 from . import board as boardmodule
 from . import socketio
@@ -11,13 +7,16 @@ from boardgame.db import get_db
 
 from flask_socketio import emit
 
+colors = current_app.config['COLORS']
+
 from boardgame.db import get_db
 bp = Blueprint('game', __name__)
+
 
 @bp.route("/game")
 def run_game():
     """"Serves game page"""
-    return render_template("game.html", join_code = session["join_code"], nickname = session["nickname"]);
+    return render_template("game.html", join_code = session["join_code"], nickname = session["nickname"], team_colors = colors);
 
 @socketio.on('connect')
 def connect():
@@ -34,7 +33,7 @@ def start_game():
     board = boardmodule.get_board(join_code)
 
     # Inserts starting position
-    if(game["name1"] != None):
+    if(game["player"] != None):
         board[8][8]["color"] = COLOR1
     if(game["name2"] != None):
         board[12][12]["color"] = COLOR2
