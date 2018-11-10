@@ -13,7 +13,7 @@ ctx.canvas.height = window.innerHeight - $("#info").outerHeight( true ) - 30;
 
 var WIDTH = ctx.canvas.width;
 var HEIGHT = ctx.canvas.height;
-var GRID_SIZE = 300;
+var GRID_SIZE = 50;
 
 draw_board();
 
