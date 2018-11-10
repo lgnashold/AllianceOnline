@@ -27,6 +27,10 @@ $(document).mousedown(function(e) {
 
 $(document).mouseup(function(e) {
   isDragging = false;
+  gridSquare = get_col(getMousePos(c,e));
+  if(gridSquare.i != -1) {
+    console.log(gridSquare.i)
+  }
 });
 
 $(document).mousemove(function(e) {
@@ -48,6 +52,18 @@ function getMousePos(canvas, evt) {
       x: evt.clientX - rect.left,
       y: evt.clientY - rect.top
     };
+}
+
+function get_col(mousePos) {
+  for(var i = 0; i < boardPos.length; i++) {
+    for(var j = 0; j < boardPos[i].length; j++) {
+      if(mousePos.x > (j*GRID_SIZE + centerX) && mousePos.x < (j*GRID_SIZE + centerX) + GRID_SIZE
+        && mousePos.y > i*GRID_SIZE+centerY && mousePos.y < i*GRID_SIZE+centerY + GRID_SIZE) {
+          return {i:i,j:j};
+        }
+    }
+  }
+  return {i:-1,j:-1};
 }
 
 function draw_board() {
