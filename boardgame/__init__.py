@@ -10,12 +10,12 @@ def create_app():
     # Creates an app
     # Instance relative config means paths in config files are relative to instance folder
     app = Flask(__name__, instance_relative_config=True)
-    
+
     # Edits configurations
     app.config["SECRET_KEY"] = "123kxjq0kx2rehxj"
     # instance_path is the instance folder
     app.config["DATABASE"] = os.path.join(app.instance_path, "boardgame.sqlite")
-    
+
     # Insure instance folder exists
     try:
         os.makedirs(app.instance_path)
@@ -26,17 +26,14 @@ def create_app():
     @app.route('/hello')
     def hello():
         return "Hello World"
-    
+
     # Initialises database, including registering init-db command
     from . import db
     db.init_app(app)
-    
-    from . import board
-    
-    @app.route('/board')
-    def getboard():
-        board.create_board("0")
-        return "word"
+
+    from . import game
+    app.register_blueprint(game.bp)
+
     socketio.init_app(app)
 
     # returns created app

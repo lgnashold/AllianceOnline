@@ -21,7 +21,7 @@ var initMosPos;
 $(document).mousedown(function(e) {
   isDragging = true;
   initMosPos = getMousePos(c,e);
-  console.log(initMosPos)
+  //console.log(initMosPos)
 });
 
 $(document).mouseup(function(e) {
@@ -29,10 +29,10 @@ $(document).mouseup(function(e) {
 });
 
 $(document).mousemove(function(e) {
-  console.log(isDragging);
+  //console.log(isDragging);
   if(isDragging) {
     finalMosPos = getMousePos(c,e);
-    console.log(finalMosPos.x - initMosPos.x);
+    //console.log(finalMosPos.x - initMosPos.x);
     centerX += (finalMosPos.x - initMosPos.x);
     centerY += (finalMosPos.y - initMosPos.y);
     initMosPos = finalMosPos;
@@ -54,7 +54,7 @@ function draw_board() {
   ctx.fillRect(0,0,WIDTH,HEIGHT);
   for(var i = 0; i < boardPos.length; i++) {
     for(var j = 0; j < boardPos[i].length; j++) {
-      console.log(boardPos[i][j].color);
+      //console.log(boardPos[i][j].color);
       ctx.fillStyle = boardPos[i][j].color;
       ctx.fillRect(j*GRID_SIZE + centerX,i*GRID_SIZE+centerY,GRID_SIZE,GRID_SIZE);
     }
