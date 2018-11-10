@@ -6,7 +6,7 @@ var socket = io.connect();
 
 socket.on("update_board",function(msd) {
   console.log("recieved: " + msd);
-  boardPos = JSON.parse(msd.board);
+  boardPos = JSON.parse(msd);
   console.log(boardPos);
   draw_board();
 });

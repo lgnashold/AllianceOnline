@@ -27,6 +27,12 @@ def create_app():
     def hello():
         return "Hello World"
 
+    from . import board
+    @app.route('/board')
+    def boardinit():
+         board.create_board("0")
+         return "made board"
+
     # Initialises database, including registering init-db command
     from . import db
     db.init_app(app)

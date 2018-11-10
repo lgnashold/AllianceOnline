@@ -1,14 +1,15 @@
 var centerX = 0;
 var centerY = 0;
-var boardPos = [[{color:"#ff0000"},{color:"#00ff00"}, {color:"#ff0000"}],[{color:"#00ff00"},{color:"#00ff00"},{color:"#ff0000"}],[{color:"#ff0000"},{color:"#ff0000"},{color:"#ff0000"}]];
+var boardPos =[];
 
 var ctx;
 
 var c = document.getElementById("gameCanvas");
 var ctx = c.getContext("2d");
 
+console.log($("#info").outerHeight( true ));
 ctx.canvas.width  = window.innerWidth - 16;
-ctx.canvas.height = window.innerHeight - document.getElementById("info").offsetHeight - 22;
+ctx.canvas.height = window.innerHeight - $("#info").outerHeight( true ) - 30;
 
 var WIDTH = ctx.canvas.width;
 var HEIGHT = ctx.canvas.height;
@@ -54,7 +55,7 @@ function draw_board() {
   ctx.fillRect(0,0,WIDTH,HEIGHT);
   for(var i = 0; i < boardPos.length; i++) {
     for(var j = 0; j < boardPos[i].length; j++) {
-      //console.log(boardPos[i][j].color);
+      console.log(boardPos[i][j].color);
       ctx.fillStyle = boardPos[i][j].color;
       ctx.fillRect(j*GRID_SIZE + centerX,i*GRID_SIZE+centerY,GRID_SIZE,GRID_SIZE);
     }
