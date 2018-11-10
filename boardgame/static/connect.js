@@ -1,3 +1,6 @@
+console.log("connected");
+
+/*
 var socket = io.connect();
 
 //when you recieve a message append it to the log
@@ -12,3 +15,4 @@ function move(type) {
     socket.emit('made_move', {data: type});
     return false;
 }
+*/
