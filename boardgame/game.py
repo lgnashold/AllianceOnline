@@ -23,7 +23,7 @@ def run_game():
 def connect():
     print("connected")
     join_code = session["join_code"]
-    emit('update_board', {"board":board.get_json_board(join_code),"room":join_code}, broadcast = True)
+    emit('update_board', {"board":boardmodule.get_json_board(join_code),"room":join_code}, broadcast = True)
 
 @socketio.on('startgame')
 def start_game():
@@ -37,18 +37,18 @@ def start_game():
         board[8][8]["color"] = COLOR1
     if(game["player2"] != None):
         board[12][12]["color"] = COLOR2
-    
+
     # Sets turn
     db.execute(
             "UPDATE game SET turn = (?) WHERE join_code = (?)", (game["player1"], join_code)
     )
     db.commit()
     board.update_board(join_code)
-    game_message("Game started! %s's turn" % game["player1"], join_code) 
+    game_message("Game started! %s's turn" % game["player1"], join_code)
 
-    
+
 @socketio.on('end_turn')
-def end_turn:
+def end_turn():
     join_code = session["join_code"]
     nickname = session["nickname"]
     game = get_game(join_code)
@@ -58,8 +58,8 @@ def move(data):
     join_code = session["join_code"]
     nickname = session["nickname"]
     db = get_db()
-    
-def get_game(join_code)
+
+def get_game(join_code):
     game = db.execute(
             "SELECT * FROM game WHERE join_code = (?)", (join_code,)
     ).fetchone()
