@@ -62,6 +62,7 @@
     }
 
     function makeMove(iPos,jPos) {
+      console.log("emit move " + iPos + " "+ jPos);
       socket.emit('make_move', {i:iPos,j:jPos});
     }
 

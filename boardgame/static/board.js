@@ -30,7 +30,7 @@ $(document).mouseup(function(e) {
   gridSquare = get_col(getMousePos(c,e));
   if(gridSquare.i != -1) {
     makeMove(gridSquare.i,gridSquare.j);
-    console.log(gridSquare.i + " " + gridSquare.j)
+    //console.log(gridSquare.i + " " + gridSquare.j)
   }
 });
 
@@ -72,6 +72,7 @@ function draw_board() {
   ctx.fillRect(0,0,WIDTH,HEIGHT);
   for(var i = 0; i < boardPos.length; i++) {
     for(var j = 0; j < boardPos[i].length; j++) {
+      ctx.fillText(boardPos[i][j].name,j,i);
       console.log(boardPos[i][j].color);
       ctx.fillStyle = boardPos[i][j].color;
       ctx.strokeStyle = "black";
