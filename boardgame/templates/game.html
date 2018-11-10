@@ -13,6 +13,7 @@
     <p> <b> Room: </b> {{join_code}} </p>
     <p> <b> Players: </b> {{players}} </p>
     <p> <b> Nickname: </b> {{nickname}} </p>
+    <button onclick = "startGame()"> Start Game </button>
 
       <div id = "log" class = "log-area">
         <!--Log Messages will be added here -->
@@ -53,6 +54,11 @@
 
     function makeMove(iPos,jPos) {
       socket.emit('make_move', {i:iPos,j:jPos});
+    }
+
+    function startGame() {
+      console.log("emit");
+      socket.emit('start_game');
     }
   </script>
   </body>
