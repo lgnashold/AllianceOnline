@@ -33,14 +33,15 @@ def start_game():
     board = boardmodule.get_board(join_code)
 
     # Inserts starting position
-    if(game["player"] != None):
-        board[8][8]["color"] = COLOR1
-    if(game["name2"] != None):
+    if(game["name1"] != None):
+        board[8][8] = {"color":colors["team1"], "name":game["name1"]}
+
+    """if(game["name2"] != None):
         board[12][12]["color"] = COLOR2
     if(game["player3"] != None):
         board[8][12] = COLOR3
     if(game["player4"] != None):
-        board[12][8] = COLOR4
+        board[12][8] = COLOR4"""
 
     # Sets turn
     db.execute(
