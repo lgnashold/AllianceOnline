@@ -6,5 +6,6 @@ CREATE TABLE game (
 	name1 TEXT,
 	name2 TEXT,
 	name3 TEXT,
-	name4 TEXT
+	name4 TEXT,
+	turn TEXT
 );
