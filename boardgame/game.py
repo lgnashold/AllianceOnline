@@ -25,7 +25,7 @@ def connect():
     join_code = session["join_code"]
     emit('update_board', {"board":boardmodule.get_json_board(join_code),"room":join_code}, broadcast = True)
 
-@socketio.on('startgame')
+@socketio.on('start_game')
 def start_game():
     join_code = session["join_code"]
     db = get_db()
