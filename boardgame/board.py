@@ -1,5 +1,5 @@
-BOARD_WIDTH = 3
-BOARD_HEIGHT = 3
+BOARD_WIDTH = 20
+BOARD_HEIGHT = 20
 DEFAULT_SQUARE = {"color":"#ff0055"}
 
 import json
