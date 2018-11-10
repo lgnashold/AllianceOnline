@@ -11,10 +11,10 @@ bp = Blueprint('game', __name__)
 
 @bp.route("/game")
 def run_game():
-    join_code = "0"
     #board.get_json_board(join_code)
     return render_template("game.html");
 
 @socketio.on('connect')
 def connect():
+    join_code = "0"
     emit('update_board', board.get_json_board(join_code), broadcast = True)
