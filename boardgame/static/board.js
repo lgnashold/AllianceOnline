@@ -57,7 +57,10 @@ function draw_board() {
     for(var j = 0; j < boardPos[i].length; j++) {
       console.log(boardPos[i][j].color);
       ctx.fillStyle = boardPos[i][j].color;
+      ctx.strokeStyle = "black";
+      ctx.lineWidth = 5;
       ctx.fillRect(j*GRID_SIZE + centerX,i*GRID_SIZE+centerY,GRID_SIZE,GRID_SIZE);
+      ctx.strokeRect(j*GRID_SIZE + centerX,i*GRID_SIZE+centerY,GRID_SIZE,GRID_SIZE);
     }
   }
 }
