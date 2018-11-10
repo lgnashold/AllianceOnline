@@ -27,6 +27,10 @@ def create_app():
     def hello():
         return "Hello World"
     
+    # Initialises database, including registering init-db command
+    from . import db
+    db.init_app(app)
+    
     socketio.init_app(app)
 
     # returns created app
