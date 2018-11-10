@@ -1,1 +1,2 @@
 FLASK_APP=boardgame
+FLASK_ENV=development

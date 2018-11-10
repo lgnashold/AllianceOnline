@@ -1,6 +1,10 @@
 import os
 
 from flask import Flask
+from flask_socketio import SocketIO
+
+# socketio is what you actually use
+socketio = SocketIO()
 
 def create_app():
     # Creates an app
@@ -23,4 +27,7 @@ def create_app():
     def hello():
         return "Hello World"
     
+    socketio.init_app(app)
+
+    # returns created app
     return app
