@@ -33,8 +33,8 @@ def start_game():
     board = boardmodule.get_board(join_code)
 
     # Inserts starting position
-    if(game["name1"] != None):
-        board[8][8] = {"color":colors["team1"], "name":game["name1"]}
+    if(game["player1"] != None):
+        board[8][8] = {"color":colors["team1"], "name":game["player1"]}
 
     """if(game["name2"] != None):
         board[12][12]["color"] = COLOR2
@@ -50,7 +50,7 @@ def start_game():
     db.commit()
     boardmodule.set_board(board, join_code)
 
-    game_message("Game started! %s's turn" % game["name1"], join_code)
+    game_message("Game started! %s's turn" % game["player1"], join_code)
     emit_board(join_code)
 
 @socketio.on('end_turn')

@@ -3,6 +3,7 @@ from flask import (Blueprint, flash, g, redirect, render_template, request, sess
 from boardgame.db import get_db
 
 from boardgame.board import create_board
+from boardgame.player import add_player, get_players
 
 bp = Blueprint("matchmaking", __name__)
 
@@ -14,14 +15,15 @@ def index():
 
         db = get_db()
 
-        game_result = db.execute('SELECT name1,name2,join_code FROM game WHERE join_code = ?', (join_code,)).fetchone()
+        game_result = db.execute('SELECT player1, player2,join_code FROM game WHERE join_code = ?', (join_code,)).fetchone()
 
         if game_result is None:
             #create new game
             db.execute(
-                'INSERT INTO game (join_code,name1) VALUES (?,?)',(join_code,nickname)
+                'INSERT INTO game (join_code) VALUES (?)', (join_code)
             )
             db.commit()
+            add_player(join_code, nickname)
 
             # Creates a board, updates it in sql
             create_board(join_code)
@@ -34,13 +36,13 @@ def index():
 
         else:
             #join exsisting game
-            if game_result["name2"] != None:
+            if game_result["player2"] != None:
                 print("SORRY PAL. GAME IS FULL");
 
             else:
                 # Edits game row in server
                 db.execute(
-                    'UPDATE game SET name2 = (?) WHERE join_code = (?)',(nickname,join_code)
+                    'UPDATE game SET player2 = (?) WHERE join_code = (?)',(nickname,join_code)
                 )
                 db.commit()
 
