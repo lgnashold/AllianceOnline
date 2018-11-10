@@ -31,6 +31,12 @@ def create_app():
     from . import db
     db.init_app(app)
     
+    from . import board
+    
+    @app.route('/board')
+    def getboard():
+        board.create_board("0")
+        return "word"
     socketio.init_app(app)
 
     # returns created app
