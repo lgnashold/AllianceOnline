@@ -2,9 +2,11 @@ body {
   font-family: sans-serif;
 }
 
-log-area {
+.log-area {
   width: 100%;
-  height: 500px;
+  height: 200px;
   overflow-y: scroll;
-  background-color: lightgray;
+  background-color: lightblue;
+  boarder-radius: 15px;
+  margin-bottom:5px;
 }
