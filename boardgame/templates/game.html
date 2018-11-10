@@ -9,11 +9,20 @@
   </head>
   <body>
     <div id = "info">
+    <div style = "float: right">
+    <button  onclick = "startGame()"> Start Game </button>
+    <p>
+      <button style = " width: 50px; height: 50px; background-color: {{team_colors.team1}}" onclick = "change_team('team1')">Join</button>
+      <button style = " width: 50px; height: 50px; background-color: {{team_colors.team2}}" onclick = "change_team('team2')">Join</button>
+      <button style = "width: 50px; height: 50px; background-color: {{team_colors.team3}}" onclick = "change_team('team3')">Join</button>
+      <button style = "width: 50px; height: 50px;background-color: {{team_colors.team4}}" onclick = "change_team('team4')">Join</button>
+    </div>
+    </p>
+
     <h1> Play Alliance </h1>
     <p> <b> Room: </b> {{join_code}} </p>
     <p> <b> Players: </b> {{players}} </p>
     <p> <b> Nickname: </b> {{nickname}} </p>
-    <button onclick = "startGame()"> Start Game </button>
 
       <div id = "log" class = "log-area">
         <!--Log Messages will be added here -->

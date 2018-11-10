@@ -29,6 +29,7 @@ $(document).mouseup(function(e) {
   isDragging = false;
   gridSquare = get_col(getMousePos(c,e));
   if(gridSquare.i != -1) {
+    makeMove(gridSquare.i,gridSquare.j);
     console.log(gridSquare.i + " " + gridSquare.j)
   }
 });
