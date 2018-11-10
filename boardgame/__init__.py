@@ -34,6 +34,9 @@ def create_app():
     from . import game
     app.register_blueprint(game.bp)
 
+    from . import matchmaking
+    app.register_blueprint(matchmaking.bp)
+
     socketio.init_app(app)
 
     # returns created app
