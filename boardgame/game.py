@@ -3,6 +3,7 @@ from flask import (
 )
 from . import board
 from . import socketio
+from boardgame.db import get_db
 
 from flask_socketio import emit
 
@@ -16,5 +17,11 @@ def run_game():
 
 @socketio.on('connect')
 def connect():
-    join_code = "0"
+    join_code = session["join_code"]
     emit('update_board', board.get_json_board(join_code), broadcast = True)
+    
+@socketio.on('move')
+def move(data):
+    join_code = session["join_code"]
+    nickname = session["nickname"]
+    db = get_db()
