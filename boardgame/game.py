@@ -1,5 +1,5 @@
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, url_for, current_app
+    Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
 from . import board as boardmodule
 from . import socketio
@@ -7,7 +7,7 @@ from boardgame.db import get_db
 
 from flask_socketio import emit
 
-colors = current_app.config['COLORS']
+from boardgame.colors import colors
 
 from boardgame.db import get_db
 bp = Blueprint('game', __name__)
