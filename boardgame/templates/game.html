@@ -83,13 +83,13 @@ socket.on('update_money', function(msg) {
         // console.log("PLAYers" + msg.players);
         for(var i = 0; i < players.length; i++) {
           console.log("LOOP")
-            player = players[i];
+            player = msg.players[players[i]];
             if(player.nickname = "{{nickname}}")   {
 
               //console.log("FOUND");
-              console.log("colors:")
+              console.log("colors:");
               console.log(colors);
-              console.log("layers: ")
+              console.log("players: ");
               console.log(player);
               $("#log").css("background-color", colors[player["team"]]);
             }
