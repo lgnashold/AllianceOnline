@@ -43,36 +43,19 @@ def start_game():
     if(players["player4"] != None):
        boardmodule.set_square(join_code, 12, 8, players["player4"])
 
-    # Sets turn
-    db.execute(
-            "UPDATE game SET turn = (?) WHERE join_code = (?)", (1, join_code)
-    )
-    db.commit()
+    set_turn(join_code, 1)
 
     game_message("Game started! %s's turn" % players["player1"]["nickname"], join_code)
     emit_board(join_code)
 
 @socketio.on('end_turn')
 def end_turn():
+    """Called when a player ends their turn"""
     join_code = session["join_code"]
     nickname = session["nickname"]
     players = get_players(join_code)
 
-    db = get_db()
-    turn = db.execute(
-        "SELECT turn FROM game WHERE join_code = (?)", (join_code,)
-    ).fetchone()["turn"]
-
-    #find next non-none player
-    turn = (turn % 4) + 1
-    while(players["player" + str(turn)] == None):
-        turn = (turn % 4) + 1
-
-    # Sets turn
-    db.execute(
-            "UPDATE game SET turn = (?) WHERE join_code = (?)", (turn, join_code)
-    )
-    db.commit()
+    increment_turn()
 
     game_message("Next Turn! %s's turn" % players["player" + str(turn)]["nickname"], join_code)
 

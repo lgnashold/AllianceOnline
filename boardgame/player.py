@@ -1,11 +1,12 @@
 from boardgame.db import get_db
 
+from boardgame.players import get_players 
 import json
 
-def add_player(join_code, nickname, money=300, team=None):
-    """Adds a player to the game
-    If games full, returns None, otherwise return player"""
+def set_turn(join_code, player_num):
+    """Set's the player whose turn it currently is"""
     db = get_db()
+<<<<<<< HEAD
     players = get_players(join_code)
     player_obj = {}
 
@@ -31,17 +32,22 @@ def remove_player(join_code, nickname):
 
 def get_players(join_code):
     """returns a dictonary of all players in a game"""
-    db = get_db()
-    player_jsons = dict(db.execute(
-            "SELECT player1, player2, player3, player4 FROM game WHERE join_code = (?)", (join_code,)).fetchone())
-    players = {}
-    for key, value in player_jsons.items():
-        if value != None:
-            players[key] = json.loads(value)
-        else:
-            players[key] = None
-    return players
+=======
+    db.execute(
+            "UPDATE game SET turn = (?) WHERE join_code = (?)", (player_num, join_code)
+    )
+    db.commit()
 
+def get_turn(join_code):
+    """Get the number of the player whose turn it currently is"""
+>>>>>>> 40a1c89b76709e108ae2a9372522010e2f93ad00
+    db = get_db()
+    turn = db.execute(
+        "SELECT turn FROM game WHERE join_code = (?)", (join_code,)
+    ).fetchone()["turn"]
+    return turn
+
+<<<<<<< HEAD
 def get_player(join_code,nickname):
     players = get_players(join_code)
     for key, value in players:
@@ -63,3 +69,13 @@ def update_player_money(join_code,nickname,moneyChange):
             "UPDATE game SET %s = (?) WHERE join_code = (?)" % key, (json.dumps(player_obj), join_code)
             )
     db.commit()
+=======
+def increment_turn(join_code):
+    """Sets turn to the next valid player"""
+    players = get_players()
+    turn = get_turn(join_code)
+    turn = (turn % 4) + 1
+    while(players["player" + str(turn)] == None):
+        turn = (turn % 4) + 1
+    set_turn(turn)
+>>>>>>> 40a1c89b76709e108ae2a9372522010e2f93ad00
