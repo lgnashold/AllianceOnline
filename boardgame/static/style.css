@@ -73,3 +73,17 @@ form {
 	margin-right:auto;
 	float: none;
 }
+
+.input {
+	width: 200px;
+	height: 60px;
+}
+
+#form {
+	width:500px;
+}
+
+#submit_button{
+	width: 200px;
+	height:30px;
+}

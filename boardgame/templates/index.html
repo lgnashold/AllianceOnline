@@ -6,11 +6,11 @@
   <p>To create a game, simply choose a code, then share the code with your friends</p>
 {% endblock %}
 {% block content %}
- <form method="post">
+ <form id = "form" method="post">
     <label for="join_code">Join Code</label>
-    <input name="join_code" id="join_code" required>
+    <input class = "input" name="join_code" id="join_code" required>
     <label for="nickname">Nickname</label>
-    <input name="nickname" id="nickname" required>
-    <input type="submit" value="Enter Game!">
+    <input class = "input" name="nickname" id="nickname" required>
+    <input id = "submitbutton" type="submit" value="Enter Game!">
  </form>
 {% endblock %}
