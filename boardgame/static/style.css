@@ -12,4 +12,15 @@ form {
   background-color: lightblue;
   border-radius: 15px;
   margin-bottom:5px;
+  padding: 5px;
+}
+
+#info {
+  width: 30%;
+  float: right;
+}
+
+#board {
+  width: 70%;
+  float: left;
 }
