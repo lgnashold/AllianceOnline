@@ -42,25 +42,24 @@ def get_players(join_code):
             players[key] = None
     return players
 
-def get_player(join_code,nickname):
+def get_player(join_code,player_num):
     players = get_players(join_code)
-    for key, value in players:
-        if(value['nickname'] == nickname):
-            return value
-    return none
+    return players["player" + str(player_num)]
 
-def update_player_money(join_code,nickname,moneyChange):
+def update_player_money(join_code,player_num,moneyChange):
     db = get_db()
-    old_player = get_player(join_code,nickname)
-    if old_playe == None:
+    old_player = get_players(join_code)["player" + str(player_num)]
+    if old_player == None:
         return None
-    player_obj = {}
 
-    player_obj["money"] = old_player["money"] + moneyChange
-    player_obj["nickname"] = old_player["nickname"]
-    player_obj["team"] = old_player["team"]
+    old_player["money"] += moneyChange
+
+    update_player(join_code,player_num, old_player)
+
+def update_player(join_code, player_num, player_obj):
+    db = get_db()
 
     db.execute(
-            "UPDATE game SET %s = (?) WHERE join_code = (?)" % key, (json.dumps(player_obj), join_code)
+            "UPDATE game SET %s = (?) WHERE join_code = (?)" % "player" + str(player_num), (json.dumps(player_obj), join_code)
             )
     db.commit()
