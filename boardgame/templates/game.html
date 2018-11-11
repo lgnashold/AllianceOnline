@@ -2,43 +2,64 @@
 {%block title %}Play{% endblock %}
 {% block info %}
 
-    <button  onclick = "endTurn()"> End Turn </button>
-    <p>
-      <button style = " width: 50px; height: 50px; background-color: {{team_colors.team1}}" onclick = "change_team('team1')">Join</button>
-      <button style = " width: 50px; height: 50px; background-color: {{team_colors.team2}}" onclick = "change_team('team2')">Join</button>
-      <button style = "width: 50px; height: 50px; background-color: {{team_colors.team3}}" onclick = "change_team('team3')">Join</button>
-      <button style = "width: 50px; height: 50px;background-color: {{team_colors.team4}}" onclick = "change_team('team4')">Join</button>
-    </p>
-    <p> <b> Room: </b> {{join_code}} </p>
-    <p> <b> Nickname: </b> {{nickname}} </p>
-    <p id = "player1"></p>
-    <p id = "player2"></p>
-    <p id = "player3"></p>
-    <p id = "player4"></p>
+<p class = "big_text" > <b> Nickname: </b> {{nickname}} </p>
+<button  onclick = "endTurn()" class = "game_button"> End Turn </button>
+<p>
+  <button class = "team-button" style = " background-color: {{team_colors.team1}}" onclick = "change_team('team1')">Join</button>
+  <button class = "team-button" style = " background-color: {{team_colors.team2}}" onclick = "change_team('team2')">Join</button>
+  <button class = "team-button" style = " background-color: {{team_colors.team3}}" onclick = "change_team('team3')">Join</button>
+  <button class = "team-button" style = " background-color: {{team_colors.team4}}" onclick = "change_team('team4')">Join</button>
+</p>
+<p class = "big_text" id = "player1"></p>
+<p class = "big_text" id = "player2"></p>
+<p class = "big_text" id = "player3"></p>
+<p class = "big_text"  id = "player4"></p>
 
-    <div id = "log" class = "log-area">
-      <!--Log Messages will be added here -->
-    </div>
+<div id = "log" class = "log-area">
+  <!--Log Messages will be added here -->
+</div>
 
 {% endblock %}
 {% block content %}
-    <h1 style = "text-align: center; font-size: 128, postion: fixed" id = "turnmsg"></h1>
-    <canvas id = "gameCanvas" style = "background-color:lightgray">Your browser does not support HTML5 Canvas</canvas>
-    <script src = "{{ url_for('static', filename='board.js') }}"> </script>
-    <script>
-    console.log("connected");
+<h1 style = "text-align: center; font-size: 128, postion: fixed" id = "turnmsg"></h1>
+<canvas id = "gameCanvas" style = "background-color:lightgray">Your browser does not support HTML5 Canvas</canvas>
+<script src = "{{ url_for('static', filename='board.js') }}"> </script>
+<script>
+console.log("connected");
 
-    var socket = io.connect("/game");
+var socket = io.connect("/game");
 
-    //when you recieve a message append it to the log
+//when you recieve a message append it to the log
 
-    socket.on("update_board",function(msg) {
-      if(msg.room == "{{join_code}}") {
-        console.log("recieved: " + msg);
-        boardPos = JSON.parse(msg.board);
-        console.log(boardPos);
-        draw_board();
+socket.on("update_board",function(msg) {
+  if(msg.room == "{{join_code}}") {
+    console.log("recieved: " + msg);
+    boardPos = JSON.parse(msg.board);
+    console.log(boardPos);
+    draw_board();
+  }
+});
+
+socket.on('message', function(msg) {
+  if(msg.room == "{{join_code}}") {
+    $('#log').prepend('<p>' + msg.data + '</p>');
+  }
+});
+
+socket.on('error', function(msg) {
+  $('#log').prepend('<b><p class = "error">'+msg.data + '</b></p>');
+});
+
+socket.on('update_money', function(msg) {
+  if(msg.room == "{{join_code}}") {
+    console.log("players: " + msg.data);
+    options = Object.keys(msg.data);
+    for(var i = 0; i < options.length; i++) {
+      if(msg.data[options[i]] != null) {
+        console.log("worked");
+        $("#"+options[i]).html("<b>"+msg.data[options[i]].nickname + " </b>: $" + msg.data[options[i]].money);
       }
+<<<<<<< HEAD
     });
 
     socket.on('message', function(msg) {
@@ -117,17 +138,50 @@
 
     function change_team(teamToChange) {
       socket.emit('change_team', {team: teamToChange});
+=======
+>>>>>>> a54ff876f1c1b874021764e5964e258e5dce0b22
     }
+  }
+});
 
-    function endTurn() {
-      socket.emit('end_turn');
+socket.on('update_turn', function(msg) {
+  if(msg.room == "{{join_code}}") {
+    console.log("turn: " + msg.data);
+    if("{{nickname}}" == msg.data) {
+      console.log("My nickname");
+      $("#turnmsg").text("IT IS YOUR TURN");
+      $("#turnmsg").css("color", "green");
     }
-
-    function makeMove(iPos,jPos) {
-      console.log("emit move " + iPos + " "+ jPos);
-      socket.emit('make_move', {i:iPos,j:jPos});
+    else {
+      $("#turnmsg").text("It is "+msg.data+"'s turn");
+      $("#turnmsg").css("color", "red");
     }
+  }
+});
+
+socket.on('end_game', function(msg) {
+  console.log("print");
+  if(msg.room == "{{join_code}}") {
+    var text = msg.data + " has won!";
+    $("#turnmsg").text(text);
+    $("#turnmsg").css("color", "blue");
+  }
+
+});
+
+function change_team(teamToChange) {
+  socket.emit('change_team', {team: teamToChange});
+}
+
+function endTurn() {
+  socket.emit('end_turn');
+}
+
+function makeMove(iPos,jPos) {
+  console.log("emit move " + iPos + " "+ jPos);
+  socket.emit('make_move', {i:iPos,j:jPos});
+}
 
 
-    </script>
+</script>
 {% endblock %}
