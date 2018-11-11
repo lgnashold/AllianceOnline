@@ -6,3 +6,4 @@
 - [ ] Disconnect During Turn
 - [ ] Improve UI?
 - [ ] Mobile Optimize
+- [ ] Fix global error messages
