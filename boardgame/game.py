@@ -80,10 +80,13 @@ def move(data):
     j = data['j']
 
     if player_num == get_turn(join_code) :
-        cost = check_connected(join_code, i, j, None) * 30
+        cost = check_connected(join_code, i, j, None) 
         # if cost is -1, then no player controls square
         if cost == -1:
             cost = 100
+        else:
+            # Otherwise does 30 times num of connected squares
+            cost = cost * 30
         if player["money"] >= cost :
             errormsg = set_square(join_code, i, j, player, player_initiated=True)
             if(errormsg == None):
