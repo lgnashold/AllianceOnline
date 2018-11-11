@@ -12,6 +12,12 @@ def add_player(join_code, nickname, money=300, team=None):
     player_obj["money"] = money
     player_obj["nickname"] = nickname
 
+    # checks for dups
+    for key, value in players.items():
+        if value != None and value["nickname"] == nickname:
+            return None
+    
+    # Checks for column to add player
     count = 0
     for key, value in players.items():
         count+=1
