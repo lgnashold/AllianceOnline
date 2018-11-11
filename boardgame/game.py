@@ -1,3 +1,8 @@
+COST_EMPTY_SQUARE = 100
+def COST_FILLED_SQUARE(numconnected):
+    return 50+numconnected * 25
+COST_TEAM_SWITCH=100
+PROFIT_PER_SQUARE=50
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
@@ -57,7 +62,7 @@ def end_turn():
             for space in row:
                 if space["name"] == player["nickname"]:
                     spaces += 1
-        money = spaces * 50
+        money = spaces * PROFIT_PER_SQUARE 
         update_player_money(join_code, turn, money)
         emit_turn(join_code, player["nickname"])
 
@@ -83,10 +88,10 @@ def move(data):
         cost = check_connected(join_code, i, j, None)
         # if cost is -1, then no player controls square
         if cost == -1:
-            cost = 100
+            cost = COST_EMPTY_SQUARE 
         else:
             # Otherwise does 30 times num of connected squares
-            cost = cost * 100
+            cost = COST_FILLED_SQUARE(cost) 
         if player["money"] >= cost :
             errormsg = set_square(join_code, i, j, player, player_initiated=True)
             if(errormsg == None):
@@ -114,8 +119,8 @@ def change_team(data):
     player = get_player(join_code, player_num)
 
     if player_num == get_turn(join_code):
-        if player["money"] >= 50 and num_players_on_team(join_code, team) < get_num_players(join_code)/2:
-            update_player_money(join_code, player_num, -50)
+        if player["money"] >= COST_TEAM_SWITCH and num_players_on_team(join_code, team) < get_num_players(join_code)/2:
+            update_player_money(join_code, player_num, -1 * COST_TEAM_SWITCH)
             update_player_team(join_code, player_num, team)
             emit_message("Player {0} changed to {1}!".format(nickname, team), join_code)
             emit_board(join_code)
