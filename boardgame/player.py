@@ -1,43 +1,29 @@
 from boardgame.db import get_db
 
+from boardgame.players import get_players 
 import json
 
-def add_player(join_code, nickname, money=300, team=None):
-    """Adds a player to the game
-    If games full, returns None, otherwise return player"""
+def set_turn(join_code, player_num):
+    """Set's the player whose turn it currently is"""
     db = get_db()
-    players = get_players(join_code)
-    player_obj = {}
-    
-    player_obj["money"] = money
-    player_obj["nickname"] = nickname
+    db.execute(
+            "UPDATE game SET turn = (?) WHERE join_code = (?)", (player_num, join_code)
+    )
+    db.commit()
 
-    count = 0
-    for key, value in players.items():
-        count+=1
-        if value == None:
-            player_obj["team"] = "team" + str(count)
-            db.execute(
-                    "UPDATE game SET %s = (?) WHERE join_code = (?)" % key, (json.dumps(player_obj), join_code)
-                    )
-            db.commit()
-            return player_obj
-    return None
-
-def remove_player(join_code, nickname):
-    """Removes player from a game"""
-    pass
-
-def get_players(join_code):
-    """returns a dictonary of all players in a game"""
+def get_turn(join_code):
+    """Get the number of the player whose turn it currently is"""
     db = get_db()
-    player_jsons = dict(db.execute(
-            "SELECT player1, player2, player3, player4 FROM game WHERE join_code = (?)", (join_code,)).fetchone())
-    players = {}
-    for key, value in player_jsons.items():
-        if value != None:
-            players[key] = json.loads(value)
-        else:
-            players[key] = None
-    return players
+    turn = db.execute(
+        "SELECT turn FROM game WHERE join_code = (?)", (join_code,)
+    ).fetchone()["turn"]
+    return turn
 
+def increment_turn(join_code):
+    """Sets turn to the next valid player"""
+    players = get_players()
+    turn = get_turn(join_code)
+    turn = (turn % 4) + 1
+    while(players["player" + str(turn)] == None):
+        turn = (turn % 4) + 1
+    set_turn(turn)
