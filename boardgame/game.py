@@ -86,6 +86,7 @@ def end_turn():
 @socketio.on('disconnect')
 def disconnect():
     emit_message("%s left the game..." % session["nickname"], session["join_code"])
+    remove_player(session["join_code"],session["player_num"])
 
 
 @socketio.on('make_move')
