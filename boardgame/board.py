@@ -16,10 +16,10 @@ def create_board(join_code):
             board.append([])
             for col in range(BOARD_HEIGHT):
                 board[row].append(DEFAULT_SQUARE)
-    set_board(board, join_code)
+    set_board(join_code, board)
     return board
 
-def set_board(board, join_code):
+def set_board(join_code, board):
     """Given a board array, saves it to sql database"""
     json_board = json.dumps(board)
     db = get_db()
@@ -32,22 +32,22 @@ def set_board(board, join_code):
 def get_board(join_code):
     return json.loads(get_json_board(join_code))
 
-def refresh_board(join_code):
+"""def refresh_board(join_code):
     board = get_board(join_code)
 
     for :
         color = colors[player["team"]]
         board[i][j] = {"color":color, "name": player["nickname"]}
-
+"""
 def get_json_board(join_code):
     db = get_db()
-    json_board = db.execute(
+    json_board = (db.execute(
             "SELECT game_data FROM game WHERE join_code = (?)", (join_code,)
-    ).fetchone()["game_data"]
+    ).fetchone())["game_data"]
     return json_board
 
 def set_square(join_code, i, j, player):
     board = get_board(join_code)
     color = colors[player["team"]]
     board[i][j] = {"color":color, "name": player["nickname"]}
-    set_board(board, join_code)
+    set_board(join_code, board)

@@ -99,10 +99,12 @@ def change_team(data):
     nickname = session["nickname"]
     player_num = session["player_num"]
     team = data["team"]
+    player = get_player(join_code, player_num)
 
-    if player_num == get_turn(join_code) :
-        if player["money"] >= 50 and num_players_on_team() < 2:
+    if player_num == get_turn(join_code):
+        if player["money"] >= 50 and num_players_on_team(join_code, team) < 2:
             update_player_money(join_code, player_num, -50)
-            set_square(join_code, i, j, player)
-            emit_message("Player %s changed to %s!" % nickname % team, join_code)
+            update_player_team(join_code, player_num, team)
+            emit_message("Player {0} changed to {1}!".format(nickname, team), join_code)
             emit_board(join_code)
+            print("Emitted")
