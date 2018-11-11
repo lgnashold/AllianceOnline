@@ -3,7 +3,7 @@ from boardgame.player import get_players
 
 import json
 
-def set_turn(join_code, playernum):
+def set_turn(join_code, player_num):
     db = get_db()
     db.execute(
             "UPDATE game SET turn = (?) WHERE join_code = (?)", (player_num, join_code)
