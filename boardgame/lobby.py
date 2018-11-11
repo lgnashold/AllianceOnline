@@ -27,7 +27,7 @@ def connect():
 
 @bp.route("/lobby", methods = ("GET","POST"))
 def enter_lobby():
-    return render_template("lobby.html")
+    return render_template("lobby.html", join_code = session["join_code"], nickname = session["nickname"])
 
 @socketio.on('start_game')
 def start_game():
