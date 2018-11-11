@@ -1,6 +1,6 @@
 COST_EMPTY_SQUARE = 100
 def COST_FILLED_SQUARE(numconnected):
-    return 50+numconnected * 25
+    return 75+numconnected * 25
 COST_TEAM_SWITCH=100
 PROFIT_PER_SQUARE=50
 from flask import (
@@ -142,8 +142,8 @@ def move(data):
             else:
                 emit_error(errormsg, join_code)
                 print(errormsg)
-
-
+        else: 
+            emit_error("Not enough money", join_code)
 @socketio.on('change_team', namespace = "/game")
 def change_team(data):
     join_code = session["join_code"]
@@ -158,7 +158,7 @@ def change_team(data):
             update_player_team(join_code, player_num, team)
             emit_message("Player {0} changed to {1}!".format(nickname, team), join_code)
             emit_board(join_code)
-            print("Emitted")
+            emit_teams(join_code, colors, get_players(join_code))
         else:
             emit_error("You cannot switch teams like that.", join_code)
 

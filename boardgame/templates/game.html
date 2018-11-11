@@ -59,10 +59,36 @@
           if(msg.data[options[i]] != null) {
             console.log("worked");
             $("#"+options[i]).text("Name: "+msg.data[options[i]].nickname + " Money: " + msg.data[options[i]].money);
+            if(msg.data[options[i]].nickname = "{{nickname}}") {
+              $("#board").css("background-color", msg.data[options[i]].color)
+            }
           }
+
         }
       }
     });
+
+    socket.on('update_teams', function(msg) {
+      console.log("UPDATE TEAMS");
+      if(msg.room == "{{join_code}}") {
+
+        var players = Object.keys(msg.players);
+        var colors = msg.colors;
+        // console.log("INNER");
+        // console.log("PLAYers" + msg.players); 
+        for(var i = 0; i < players.length; i++) {
+          console.log("LOOP")
+            player = players[i];
+            if(player.nickname = "{{nickname}}")   {
+
+              //console.log("FOUND");
+              console.log(colors[player["team"]]);
+              console.log(player);
+              $("#log").css("background-color", colors[player["team"]]);
+            }
+        }
+      }
+    } );
 
     socket.on('update_turn', function(msg) {
         if(msg.room == "{{join_code}}") {
