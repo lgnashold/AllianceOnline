@@ -31,9 +31,9 @@ def add_player(join_code, nickname, money=300, team=None):
             return count
     return None
 
-def remove_player(join_code, nickname):
+def remove_player(join_code, player_num):
     """Removes player from a game"""
-    pass
+    update_player(join_code,player_num,None)
 
 def get_players(join_code):
     """returns a dictonary of all players in a game"""
@@ -69,7 +69,7 @@ def update_player_team(join_code,player_num,team_name):
         return None
     board = get_board(join_code)
 
-       
+
     player["team"] = team_name
 
     update_player(join_code,player_num, player)
@@ -91,6 +91,16 @@ def num_players_on_team(join_code,team_name):
 
     return count
 
+def get_num_player(join_code, nickname):
+    players = get_players(join_code)
+
+    count = 0;
+    for key,value in players.items():
+        count+=1
+        if(value != None and value["nickname"] == nickname):
+            return count
+
+    return None
 
 def update_player(join_code, player_num, player_obj):
     db = get_db()
