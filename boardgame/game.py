@@ -5,6 +5,8 @@ from boardgame.board import *
 from . import socketio
 from boardgame.db import get_db
 
+from boardgame.emissions import emit_message, emit_board 
+
 from flask_socketio import emit
 
 from boardgame.colors import colors
@@ -47,7 +49,7 @@ def start_game():
 
     set_turn(join_code, 1)
 
-    game_message("Game started! %s's turn" % players["player1"]["nickname"], join_code)
+    emit_message("Game started! %s's turn" % players["player1"]["nickname"], join_code)
     emit_board(join_code)
 
 @socketio.on('end_turn')
@@ -59,7 +61,7 @@ def end_turn():
 
     increment_turn()
 
-    game_message("Next Turn! %s's turn" % players["player" + str(turn)]["nickname"], join_code)
+    emit_message("Next Turn! %s's turn" % players["player" + str(turn)]["nickname"], join_code)
 
 
 
@@ -76,12 +78,5 @@ def move(data):
         if player["money"] >= 100 :
             update_player_money(join_code, player_num, -100)
             set_square(join_code, i, j, player)
-            game_message("Player %s took a square!" % nickname, join_code)
+            emit_message("Player %s took a square!" % nickname, join_code)
             emit_board(join_code)
-
-
-def game_message(msg, join_code):
-    emit('message', {"data":msg, "room":join_code}, broadcast = True)
-
-def emit_board(join_code):
-    emit('update_board', {"board":get_json_board(join_code),"room":join_code}, broadcast = True)
