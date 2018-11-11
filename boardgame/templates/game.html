@@ -61,16 +61,16 @@
     });
 
     socket.on('update_money', function(msg) {
-        console.log("players: " + msg);
-        options = Object.keys(msg);
+      if(msg.room == "{{join_code}}") {
+        console.log("players: " + msg.data);
+        options = Object.keys(msg.data);
         for(var i = 0; i < options.length; i++) {
-          console.log(options[i]);
-          console.log(msg.player1);
-          if(msg[options[i]] != null) {
+          if(msg.data[options[i]] != null) {
             console.log("worked");
-            $("#"+options[i]).text("Money: " + msg[options[i]].money);
+            $("#"+options[i]).text("Money: " + msg.data[options[i]].money);
           }
         }
+      }
     });
 
     function change_team(teamToChange) {
