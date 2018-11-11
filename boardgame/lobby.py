@@ -54,7 +54,7 @@ def start_game():
     emit_message("Game started! %s's turn" % players["player1"]["nickname"], join_code)
     emit_money(join_code,get_players(join_code))
     emit_board(join_code)
-    emit('redirect', {'url': url_for('game.run_game')})
+    emit('redirect', {'url': url_for('game.run_game')}, broadcast = True)
 
 @socketio.on('disconnect')
 def disconnect():
