@@ -69,18 +69,6 @@ def end_turn():
     if turn == player_num:
         increment_turn(join_code)
         emit_message("Next Turn! %s's turn" % players["player" + str(turn)]["nickname"], join_code)
-<<<<<<< HEAD
-    # sums total spaces on board controlled by a player
-    spaces = 0
-    board = get_board(join_code)
-    for row in board:
-        for space in row:
-            if space["name"] == nickname:
-                spaces += 1
-    money = spaces * 50
-    update_player_money(join_code, player_num, money)
-
-=======
         # sums total spaces on board controlled by a player
         spaces = 0
         board = get_board(join_code)
@@ -95,7 +83,6 @@ def end_turn():
     else:
         emit_message("Game has not started yet")
     
->>>>>>> 43b4b53341752aa4b3f9efe161abdd6d14d9f2b5
 @socketio.on('disconnect')
 def disconnect():
     emit_message("%s left the game..." % session["nickname"], session["join_code"])
