@@ -54,7 +54,7 @@ def start_game():
     set_turn(join_code, 1)
 
     emit_message("Game started! %s's turn" % players["player1"]["nickname"], join_code)
-    emit_money(join_code)
+    emit_money(join_code,get_players(join_code))
     emit_board(join_code)
 
 @socketio.on('end_turn')

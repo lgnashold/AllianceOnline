@@ -62,7 +62,7 @@ def update_player_money(join_code,player_num,moneyChange):
     old_player["money"] += moneyChange
 
     update_player(join_code,player_num, old_player)
-    emit_money(join_code)
+    emit_money(join_code,get_players(join_code))
 
 def update_player_team(join_code,player_num,team_name):
     db = get_db()
