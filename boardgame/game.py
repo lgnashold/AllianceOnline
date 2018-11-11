@@ -99,16 +99,6 @@ def move(data):
 
     if player_num == get_turn(join_code) :
         if player["money"] >= 100 :
-<<<<<<< HEAD
-            update_player_money(join_code, player_num, -100)
-            set_square(join_code, i, j, player)
-            emit_message("Player %s took a square!" % nickname, join_code)
-            emit_board(join_code)
-            emit_money(join_code)
-            remove_no_territory(join_code)
-            if(check_win(join_code)):
-                emit_message("GAME OVER!")
-=======
             errormsg = set_square(join_code, i, j, player, CheckAdjacency=True, CheckSameColor=True)
             if(errormsg == None):
                 update_player_money(join_code, player_num, -100)
@@ -123,7 +113,6 @@ def move(data):
         emit_message("It is not your turn", join_code)
     else: 
         emit_message("Game has not started yet")
->>>>>>> 43b4b53341752aa4b3f9efe161abdd6d14d9f2b5
 
 
 @socketio.on('change_team')
