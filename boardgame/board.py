@@ -1,5 +1,5 @@
-BOARD_WIDTH = 6 
-BOARD_HEIGHT = 6 
+BOARD_WIDTH = 6
+BOARD_HEIGHT = 6
 
 DEFAULT_SQUARE = {"color":"#B9B7A7","name":None}
 
@@ -48,6 +48,9 @@ def set_square(join_code, i, j, player, player_initiated = False):
         return "Square is not touching your color"
     board[i][j] = {"color":new_color, "name": player["nickname"]}
     set_board(join_code, board)
+
+def get_default_square():
+    return DEFAULT_SQUARE
 
 def check_win(join_code):
     board = get_board(join_code)
