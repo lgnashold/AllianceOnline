@@ -57,7 +57,7 @@ form {
 	background-color:#9999ff;
 	margin: 20px;
 	text-align: center;
-	display: none;
+	opacity: .2;
 }
 
 #startbutton {

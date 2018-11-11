@@ -155,6 +155,7 @@ def remove_no_territory(join_code):
 
 
 def test_end_game():
+    """Tests if the game is over, returns result"""
     join_code = session["join_code"] 
     board = get_board(join_code)
     names = []

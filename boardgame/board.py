@@ -10,7 +10,6 @@ from boardgame.db import get_db
 from boardgame.colors import colors
 
 def create_board(join_code):
-    print("called create board")
     board = []
     for row in range(BOARD_WIDTH):
             board.append([])
