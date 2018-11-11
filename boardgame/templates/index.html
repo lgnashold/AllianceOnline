@@ -7,10 +7,14 @@
 {% endblock %}
 {% block content %}
  <form id = "form" method="post">
-    <label for="join_code">Join Code</label>
-    <input class = "input" name="join_code" id="join_code" required>
-    <label for="nickname">Nickname</label>
-    <input class = "input" name="nickname" id="nickname" required>
-    <input id = "submitbutton" type="submit" value="Enter Game!">
+    <div class = "formline">
+        <label class = "inputlabel" for="join_code">Join Code</label>
+        <input class = "input" name="join_code" id="join_code" required>
+    </div>
+    <div class = "formline">
+      <label class = "inputlabel" for="nickname">Nickname</label>
+      <input class = "input" name="nickname" id="nickname" required> 
+    </div>
+    <input class = "formline" id = "submit_button" type="submit" value="Enter Game!">
  </form>
 {% endblock %}
