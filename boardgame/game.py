@@ -153,14 +153,16 @@ def change_team(data):
     player = get_player(join_code, player_num)
 
     if player_num == get_turn(join_code):
-        if player["money"] >= COST_TEAM_SWITCH and num_players_on_team(join_code, team) < math.ceil(get_num_players(join_code)/2):
+        if num_players_on_team(join_code, team) >=  math.ceil(get_num_players(join_code)/2 ):
+            emit_error("There are already do many people on that team", join_code)  
+        else if player["money"] < COST_TEAM_SWITCH:
+            emit_error("You do not have enough money to switch teams!", join_code)
+        else:
             update_player_money(join_code, player_num, -1 * COST_TEAM_SWITCH)
             update_player_team(join_code, player_num, team)
             emit_message("Player {0} changed to {1}!".format(nickname, team), join_code)
             emit_board(join_code)
             emit_teams(join_code, colors, get_players(join_code))
-        else:
-            emit_error("You cannot switch teams like that.", join_code)
 
 def remove_no_territory(join_code):
     board = get_board(join_code)
