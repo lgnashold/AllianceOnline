@@ -69,12 +69,12 @@ def move(data):
     nickname = session[nickname]
 
     print(str(data["i"]) + " " + str(data["j"]))
-    if(session["player_num"] == get_turn()):
+    if session["player_num"] == get_turn() :
         curr_player = get_player(join_code,nickname)
-        if(curr_player["money"] >= 100) {
+        if curr_player["money"] >= 100 :
             update_player_money(join_code, nickname, -100)
             set_square(join_code,data["i"], data["j"], curr_player)
-        }
+
 
     db = get_db()
 
