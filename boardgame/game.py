@@ -25,10 +25,6 @@ def run_game():
     """"Serves game page"""
     return render_template("game.html", join_code = session["join_code"], nickname = session["nickname"], team_colors = colors);
 
-@bp.route("/lobby")
-def enter_lobby():
-        return render_template("lobby.html", join_code = session["join_code"], nickname = session["nickname"], team_colors = colors);
-
 @socketio.on('connect')
 def connect():
     print("connected")
