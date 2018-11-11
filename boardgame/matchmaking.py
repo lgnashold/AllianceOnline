@@ -20,35 +20,22 @@ def index():
         if game_result is None:
             #create new game
             db.execute(
-                'INSERT INTO game (join_code) VALUES (?)', (join_code)
+                'INSERT INTO game (join_code) VALUES (?)', (join_code,)
             )
             db.commit()
-            add_player(join_code, nickname)
-
             # Creates a board, updates it in sql
             create_board(join_code)
 
-            # Updates session variables
-            session["join_code"] = join_code
-            session["nickname"] = nickname
 
-            return redirect(url_for('game.run_game'))
+        res = add_player(join_code, nickname)
+        if(res == None):
+            print("Game FULL")
+            return render_template("index.html")
+        # Updates session variables
+        session["join_code"] = join_code
+        session["nickname"] = nickname
 
-        else:
-            #join exsisting game
-            if game_result["player2"] != None:
-                print("SORRY PAL. GAME IS FULL");
-
-            else:
-                # Edits game row in server
-                db.execute(
-                    'UPDATE game SET player2 = (?) WHERE join_code = (?)',(nickname,join_code)
-                )
-                db.commit()
-
-                session["join_code"] = game_result["join_code"]
-                session["nickname"] = nickname
-                return redirect(url_for('game.run_game'))
+        return redirect(url_for('game.run_game'))
 
     # Run if request is GET
     return render_template("index.html")

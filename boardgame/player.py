@@ -31,10 +31,13 @@ def remove_player(join_code, nickname):
 def get_players(join_code):
     """returns a dictonary of all players in a game"""
     db = get_db()
-    player_jsons = db.execute(
-            "SELECT (player1, player2, player3, player4) FROM game WHERE join_code = (?)", (join_code,)).fetchone()
+    player_jsons = dict(db.execute(
+            "SELECT player1, player2, player3, player4 FROM game WHERE join_code = (?)", (join_code,)).fetchone())
     players = {}
-    for key, value in playerjsons.items():
-        players[key] = json.loads(value)
+    for key, value in player_jsons.items():
+        if value != None:
+            players[key] = json.loads(value)
+        else:
+            players[key] = None
     return players
 
