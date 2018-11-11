@@ -1,6 +1,7 @@
 from boardgame.db import get_db
 from boardgame.board import *
 from boardgame.colors import *
+from boardgame.emissions import emit_money
 import json
 
 def add_player(join_code, nickname, money=300, team=None):
@@ -61,6 +62,7 @@ def update_player_money(join_code,player_num,moneyChange):
     old_player["money"] += moneyChange
 
     update_player(join_code,player_num, old_player)
+    emit_money(join_code)
 
 def update_player_team(join_code,player_num,team_name):
     db = get_db()
