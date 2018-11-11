@@ -151,16 +151,18 @@ def remove_no_territory(join_code):
     player2 = False
     player3 = False
     player4 = False
+    
+    players = get_players(join_code)
 
     for row in range(len(board)):
         for col in range(len(board[row])):
-            if (get_num_player(join_code,board[row][col]["nickname"]) == 1):
+            if (get_num_player(join_code,board[row][col]["name"]) == 1):
                 player1 = True
-            elif (get_num_player(join_code,board[row][col]["nickname"]) == 2):
+            elif (get_num_player(join_code,board[row][col]["name"]) == 2):
                 player2 = True
-            elif (get_num_player(join_code,board[row][col]["nickname"]) == 3):
+            elif (get_num_player(join_code,board[row][col]["name"]) == 3):
                 player3 = True
-            elif (get_num_player(join_code,board[row][col]["nickname"]) == 4):
+            elif (get_num_player(join_code,board[row][col]["name"]) == 4):
                 player4 = True
 
     if(not player1 and players.player1 != None):
