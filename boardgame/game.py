@@ -28,6 +28,8 @@ def connect():
     print("connected")
     join_code = session["join_code"]
     emit_board(join_code)
+    emit_message("%s joined the game!" % session["nickname"], join_code)
+
 
 @socketio.on('start_game')
 def start_game():
@@ -66,15 +68,19 @@ def end_turn():
     if turn == player_num:
         increment_turn(join_code)
         emit_message("Next Turn! %s's turn" % players["player" + str(turn)]["nickname"], join_code)
-    
     # sums total spaces on board controlled by a player
     spaces = 0
-    board = get_board()
-    for row in board():
-        for space in board():
-            if space["nickname"] == nickname:
+    board = get_board(join_code)
+    for row in board:
+        for space in row:
+            if space["name"] == nickname:
                 spaces += 1
     money = spaces * 50 
+    update_player_money(join_code, player_num, money)
+@socketio.on('disconnect')
+def disconnect():
+    emit_message("%s left the game..." % session["nickname"], join_code)
+
 
 @socketio.on('make_move')
 def move(data):
