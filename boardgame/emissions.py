@@ -9,4 +9,4 @@ def emit_board(join_code):
     emit('update_board', {"board":get_json_board(join_code),"room":join_code}, broadcast = True)
 
 def emit_money(join_code,players):
-    emit('update_money', {"data":players, "room":join_code, broadcast = True)
+    emit('update_money', {"data":players, "room":join_code}, broadcast = True)
