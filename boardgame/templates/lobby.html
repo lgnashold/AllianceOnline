@@ -1,31 +1,46 @@
-<!doctype html>
-<html>
-  <head>
-    <title> Alliance -- Join Game </title>
-    <link rel = "stylesheet" href = "{{ url_for('static', filename='style.css') }}">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src = "https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.dev.js"> </script>
-
-  </head>
-  <body>
-
-
-    <h1> Play Alliance </h1>
-    <button  onclick = "startGame()"> Start Game </button>
-    <p> <b> Room: </b> {{join_code}} </p>
-    <p> <b> Nickname: </b> {{nickname}} </p>
-
-    <div id = "log" class = "log-area">
+{%extends 'base.html' %}
+{%block title %}Lobby{% endblock %}
+{% block info %}
+   <div class = explanation>
+    <h4>Welcome to the Lobby. Wait here while the rest of your team joins using the code below. When you're ready, press start</h4>
+  </div>
+  <div id = code>
+    <h1><b>CODE: </b>{{ join_code }}</h1>
+  </div>
+  <div id = "log" class = "log-area">
       <!--Log Messages will be added here -->
-    </div>
-
-    <script>
+  </div>
+{%endblock %}
+{% block content %}
+  <div id = "playertext" >
+    <h1 style = "text-align: center">Players</h1>
+    <div  class = 'playerdiv' style="float:left"><p id = "player1"></p></div>
+    <div class = 'playerdiv' style="float:right"><p id = "player2"></p></div>
+    <div class = 'playerdiv' style = "float:left"><p id = "player3"></p></div>
+    <div class = 'playerdiv' style = "float:right"><p id = "player4"></p></div>
+    <button  onclick = "startGame()" id = "startbutton"> Start Game </button>
+    <h1 style = "text-align: center; font-size: 54px">CODE: {{ join_code }}
+  </div>
+  <script>
     console.log("connected");
 
     var socket = io.connect("/lobby");
 
     //when you recieve a message append it to the log
-
+    socket.on('update_money', function(msg) {
+              console.log("players: " + msg.data);
+      if(msg.room == "{{join_code}}") {
+        console.log("players: " + msg.data);
+        options = Object.keys(msg.data);
+        for(var i = 0; i < options.length; i++) {
+          if(msg.data[options[i]] != null) {
+            console.log("worked");
+            $("#"+options[i]).text(""+msg.data[options[i]].nickname);
+            $("#"+options[i]).parent().css("display", "inline");
+          }
+        }
+      }
+    });
 
 
     socket.on('message', function(msg) {
@@ -43,5 +58,4 @@
       socket.emit('start_game');
     }
   </script>
-  </body>
-</html>
+{% endblock %}

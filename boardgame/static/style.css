@@ -1,5 +1,6 @@
 body {
   font-family: sans-serif;
+  margin 0;
 }
 
 form {
@@ -19,14 +20,56 @@ form {
 #info {
   width: 30%;
   float: right;
+  margin: auto;
 }
 
 #board {
   width: 70%;
   float: left;
+  background-color: lightgray;
+  height: 100vh;
+
+  padding: auto;
 }
 
 .error {
 	color:#FF0000;
 	font-size: 22px;
+}
+
+#playertext {
+	vertical-align: middle;
+	margin-left:auto;
+	margin-right: auto;
+	width: 700px;
+	float:none;
+	padding: 20px;
+
+}
+
+.playerdiv {
+	width: 300px;
+	border-radius: 50px;
+	height: 80px;
+	border: 5px solid black;
+	font-size: 30px;
+	text-align: center;
+	background-color:#9999ff;
+	margin: 20px;
+	text-align: center;
+	display: none;
+}
+
+#startbutton {
+	width: 600px;
+	border-radius: 50px;
+	height: 80px;
+	border: 5px solid black;
+	font-size: 30px;
+	text-align: center;
+	background-color:#1a1aff;
+	margin: 20px;
+	margin-left:auto;
+	margin-right:auto;
+	float: none;
 }

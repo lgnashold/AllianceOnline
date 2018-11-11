@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+  <head>
+    <title> Alliance -- Join Game </title>
+    <link rel = "stylesheet" href = "{{ url_for('static', filename='style.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src = "https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.dev.js"> </script>
+
+  </head>
+  <body>
+
+
+    <h1> Play Alliance </h1>
+    <button  onclick = "startGame()"> Start Game </button>
+    <p> <b> Room: </b> {{join_code}} </p>
+    <p> <b> Nickname: </b> {{nickname}} </p>
+
+    <div id = "log" class = "log-area">
+      <!--Log Messages will be added here -->
+    </div>
+
+    <script>
+    console.log("connected");
+
+    var socket = io.connect("/lobby");
+
+    //when you recieve a message append it to the log
+
+
+
+    socket.on('message', function(msg) {
+        if(msg.room == "{{join_code}}") {
+          $('#log').prepend('<p>Received: ' + msg.data + '</p>');
+        }
+    });
+
+    socket.on('redirect', function (data) {
+      window.location = data.url;
+    });
+
+    function startGame() {
+      console.log("emit");
+      socket.emit('start_game');
+    }
+  </script>
+  </body>
+</html>

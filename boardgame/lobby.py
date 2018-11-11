@@ -23,7 +23,8 @@ def connect():
     join_code = session["join_code"]
     emit_board(join_code)
     emit_message("%s joined the game!" % session["nickname"], join_code)
-
+    print(join_code)
+    emit_money(join_code,get_players(join_code), "/lobby")
 
 @bp.route("/lobby", methods = ("GET","POST"))
 def enter_lobby():
