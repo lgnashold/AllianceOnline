@@ -17,19 +17,19 @@ from boardgame.player import *
 from boardgame.turn import get_turn, set_turn, increment_turn
 
 
-"""@socketio.on('connect')
+@socketio.on('connect', namespace="/lobby")
 def connect():
     print("connected")
     join_code = session["join_code"]
     emit_board(join_code)
     emit_message("%s joined the game!" % session["nickname"], join_code)
-"""
+
 
 @bp.route("/lobby", methods = ("GET","POST"))
 def enter_lobby():
     return render_template("lobby.html", join_code = session["join_code"], nickname = session["nickname"])
 
-@socketio.on('start_game')
+@socketio.on('start_game', namespace="/lobby")
 def start_game():
     print("got it")
     join_code = session["join_code"]
@@ -56,7 +56,6 @@ def start_game():
     emit_board(join_code)
     emit('redirect', {'url': url_for('game.run_game')}, broadcast = True)
 
-"""@socketio.on('disconnect')
+@socketio.on('disconnect', namespace="lobby")
 def disconnect():
     emit_message("%s left the game..." % session["nickname"], session["join_code"])
-    remove_player(session["join_code"],session["player_num"])"""
