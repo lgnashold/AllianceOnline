@@ -23,3 +23,6 @@ def emit_turn(join_code, nickname):
 
 def emit_end_game(join_code, nickname):
     socketio.emit("end_game", {"data":nickname, "room":join_code}, broadcast = True, namespace = "/game")
+
+def emit_teams(join_code, teamcolors, players) :
+        socketio.emit('update_teams', {"players": players, "colors":teamcolors, 'room':join_code}, broadcast=True, namespace = "/game")

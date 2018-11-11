@@ -59,6 +59,87 @@ socket.on('update_money', function(msg) {
         console.log("worked");
         $("#"+options[i]).html("<b>"+msg.data[options[i]].nickname + " </b>: $" + msg.data[options[i]].money);
       }
+<<<<<<< HEAD
+    });
+
+    socket.on('message', function(msg) {
+      if(msg.room == "{{join_code}}") {
+        $('#log').prepend('<p>' + msg.data + '</p>');
+      }
+    });
+
+    socket.on('error', function(msg) {
+      $('#log').prepend('<b><p class = "error">'+msg.data + '</b></p>');
+    });
+
+    socket.on('update_money', function(msg) {
+      if(msg.room == "{{join_code}}") {
+        console.log("players: " + msg.data);
+        options = Object.keys(msg.data);
+        for(var i = 0; i < options.length; i++) {
+          if(msg.data[options[i]] != null) {
+            console.log("worked");
+            $("#"+options[i]).text("Name: "+msg.data[options[i]].nickname + " Money: " + msg.data[options[i]].money);
+            if(msg.data[options[i]].nickname = "{{nickname}}") {
+              $("#board").css("background-color", msg.data[options[i]].color)
+            }
+          }
+
+        }
+      }
+    });
+
+    socket.on('update_teams', function(msg) {
+      console.log("UPDATE TEAMS");
+      if(msg.room == "{{join_code}}") {
+
+        var players = Object.keys(msg.players);
+        var colors = msg.colors;
+        // console.log("INNER");
+        // console.log("PLAYers" + msg.players); 
+        for(var i = 0; i < players.length; i++) {
+          console.log("LOOP")
+            player = players[i];
+            if(player.nickname = "{{nickname}}")   {
+
+              //console.log("FOUND");
+              console.log(colors[player["team"]]);
+              console.log(player);
+              $("#log").css("background-color", colors[player["team"]]);
+            }
+        }
+      }
+    } );
+
+    socket.on('update_turn', function(msg) {
+        if(msg.room == "{{join_code}}") {
+          console.log("turn: " + msg.data);
+            if("{{nickname}}" == msg.data) {
+              console.log("My nickname");
+              $("#turnmsg").text("IT IS YOUR TURN");
+              $("#turnmsg").css("color", "green");
+            }
+            else {
+              $("#turnmsg").text("It is "+msg.data+"'s turn");
+              $("#turnmsg").css("color", "red");              
+            }
+        }
+    });
+
+    socket.on('end_game', function(msg) {
+      console.log("print");
+      if(msg.room == "{{join_code}}") {
+        var text = msg.data + " has won!";
+        $("#turnmsg").text(text);
+        $("#turnmsg").css("color", "blue"); 
+      } 
+    
+    });
+
+    function change_team(teamToChange) {
+      socket.emit('change_team', {team: teamToChange});
+=======
+>>>>>>> a54ff876f1c1b874021764e5964e258e5dce0b22
     }
   }
 });
