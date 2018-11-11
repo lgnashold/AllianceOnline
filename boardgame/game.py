@@ -18,6 +18,8 @@ from boardgame.player import *
 
 from boardgame.turn import get_turn, set_turn, increment_turn
 
+import json
+
 @bp.route("/game")
 def run_game():
     """"Serves game page"""
@@ -91,6 +93,7 @@ def end_turn():
 def disconnect():
     emit_message("%s left the game..." % session["nickname"], session["join_code"])
     remove_player(session["join_code"],session["player_num"])
+    check_empty(session["join_code"])
 
 
 @socketio.on('make_move')
@@ -174,3 +177,11 @@ def remove_no_territory(join_code):
         remove_player(join_code,3)
     if(not player4):
         remove_player(join_code,4)
+
+def check_empty(join_code):
+    db = get_db()
+    result = db.execute("SELECT player1, player2, player3, player4 FROM game WHERE join_code = ?",(join_code,)).fetchone()
+
+    if json.loads(result["player1"])==None and json.loads(result["player2"])==None and json.loads(result["player3"])==None and json.loads(result["player2"])==None:
+        db.execute("DELETE FROM game WHERE join_code = (?)",(join_code,))
+        db.commit()
