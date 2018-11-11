@@ -156,7 +156,7 @@ def change_team(data):
     if player_num == get_turn(join_code):
         if num_players_on_team(join_code, team) >=  math.ceil(get_num_players(join_code)/2 ):
             emit_error("There are already do many people on that team", join_code)  
-        else if player["money"] < COST_TEAM_SWITCH:
+        elif player["money"] < COST_TEAM_SWITCH:
             emit_error("You do not have enough money to switch teams!", join_code)
         else:
             update_player_money(join_code, player_num, -1 * COST_TEAM_SWITCH)
