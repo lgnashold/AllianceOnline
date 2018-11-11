@@ -20,6 +20,7 @@ def get_turn(join_code):
 def increment_turn(join_code):
     turn = get_turn(join_code)
     turn = (turn % 4) + 1
+    players = get_players(join_code)
     while(players["player" + str(turn)] == None):
         turn = (turn % 4) + 1
     set_turn(join_code, turn)

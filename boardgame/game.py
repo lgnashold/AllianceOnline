@@ -35,6 +35,8 @@ def start_game():
     players = get_players(join_code)
     board = get_board(join_code)
 
+    if get_turn(join_code) != None:
+        return
     # Inserts starting position
     if(players["player1"] != None):
        set_square(join_code, 8, 8, players["player1"])
@@ -55,11 +57,13 @@ def end_turn():
     """Called when a player ends their turn"""
     join_code = session["join_code"]
     nickname = session["nickname"]
+    player_num = session["player_num"]
     players = get_players(join_code)
+    turn = get_turn(join_code)
 
-    increment_turn()
-
-    game_message("Next Turn! %s's turn" % players["player" + str(turn)]["nickname"], join_code)
+    if turn == player_num:
+        increment_turn(join_code)
+        game_message("Next Turn! %s's turn" % players["player" + str(turn)]["nickname"], join_code)
 
 
 
