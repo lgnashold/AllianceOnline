@@ -102,6 +102,7 @@ def move(data):
             errormsg = set_square(join_code, i, j, player, CheckAdjacency=True, CheckSameColor=True)
             if(errormsg == None):
                 update_player_money(join_code, player_num, -100)
+                remove_no_territory(join_code)
                 emit_message("Player %s took a square!" % nickname, join_code)
                 emit_board(join_code)
             else:
@@ -109,7 +110,7 @@ def move(data):
                 print(errormsg)
         else:
             emit_message("You do not have enough money", join_code)
-    elif Turn != None:
+    elif get_turn(join_code) != None:
         emit_message("It is not your turn", join_code)
     else:
         emit_message("Game has not started yet")
@@ -132,7 +133,7 @@ def change_team(data):
             print("Emitted")
         else:
             emit_message("You do not have enough money to change teams", join_code)
-    elif (turn != None):
+    elif (get_turn(join_code) != None):
         emit_message("It is not your turn", join_code)
 
 def remove_no_territory(join_code):
