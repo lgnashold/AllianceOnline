@@ -1,7 +1,7 @@
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
-from . import board as boardmodule
+from boardgame.board import *
 from . import socketio
 from boardgame.db import get_db
 
@@ -33,17 +33,17 @@ def start_game():
     join_code = session["join_code"]
     db = get_db()
     players = get_players(join_code)
-    board = boardmodule.get_board(join_code)
+    board = get_board(join_code)
 
     # Inserts starting position
     if(players["player1"] != None):
-       boardmodule.set_square(join_code, 8, 8, players["player1"])
+       set_square(join_code, 8, 8, players["player1"])
     if(players["player2"] != None):
-       boardmodule.set_square(join_code, 12, 12, players["player2"])
+       set_square(join_code, 12, 12, players["player2"])
     if(players["player3"] != None):
-       boardmodule.set_square(join_code, 8, 12, players["player3"])
+       set_square(join_code, 8, 12, players["player3"])
     if(players["player4"] != None):
-       boardmodule.set_square(join_code, 12, 8, players["player4"])
+       set_square(join_code, 12, 8, players["player4"])
 
     set_turn(join_code, 1)
 
@@ -68,19 +68,20 @@ def move(data):
     join_code = session["join_code"]
     nickname = session["nickname"]
     player_num = session["player_num"]
-    player = get_player(player_num)
+    player = get_player(join_code, player_num)
     i = data['i']
     j = data['j']
 
-    if player_num == get_turn() :
+    if player_num == get_turn(join_code) :
         if player["money"] >= 100 :
             update_player_money(join_code, player_num, -100)
             set_square(join_code, i, j, player)
-            game_message("Player %s took a square!" % nickname, join_code) 
+            game_message("Player %s took a square!" % nickname, join_code)
+            emit_board(join_code)
 
 
 def game_message(msg, join_code):
     emit('message', {"data":msg, "room":join_code}, broadcast = True)
 
 def emit_board(join_code):
-    emit('update_board', {"board":boardmodule.get_json_board(join_code),"room":join_code}, broadcast = True)
+    emit('update_board', {"board":get_json_board(join_code),"room":join_code}, broadcast = True)

@@ -31,6 +31,8 @@ def index():
         if(res == None):
             print("Game FULL")
             return render_template("index.html")
+
+        session["player_num"] = res
         # Updates session variables
         session["join_code"] = join_code
         session["nickname"] = nickname

@@ -21,8 +21,7 @@ def add_player(join_code, nickname, money=300, team=None):
                     "UPDATE game SET %s = (?) WHERE join_code = (?)" % key, (json.dumps(player_obj), join_code)
                     )
             db.commit()
-            session["player_num"] = count
-            return player_obj
+            return count
     return None
 
 def remove_player(join_code, nickname):
@@ -60,6 +59,6 @@ def update_player(join_code, player_num, player_obj):
     db = get_db()
 
     db.execute(
-            "UPDATE game SET %s = (?) WHERE join_code = (?)" % "player" + str(player_num), (json.dumps(player_obj), join_code)
+            "UPDATE game SET %s = (?) WHERE join_code = (?)" % ("player" + str(player_num)), (json.dumps(player_obj), join_code)
             )
     db.commit()
