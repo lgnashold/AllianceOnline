@@ -98,10 +98,11 @@ def move(data):
     j = data['j']
 
     if player_num == get_turn(join_code) :
-        if player["money"] >= 100 :
-            errormsg = set_square(join_code, i, j, player, CheckAdjacency=True, CheckSameColor=True)
+        cost = check_connected(join_code, i, j, None) * 30 
+        if player["money"] >= cost :
+            errormsg = set_square(join_code, i, j, player, player_initiated=True) 
             if(errormsg == None):
-                update_player_money(join_code, player_num, -100)
+                update_player_money(join_code, player_num, -1 * cost)
                 emit_message("Player %s took a square!" % nickname, join_code)
                 emit_board(join_code)
             else:
