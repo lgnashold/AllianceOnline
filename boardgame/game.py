@@ -31,7 +31,7 @@ def connect():
     join_code = session["join_code"]
     emit_board(join_code)
     emit_message("%s joined the game!" % session["nickname"], join_code)
-
+    flash("Test Flash")
 
 @socketio.on('end_turn')
 def end_turn():

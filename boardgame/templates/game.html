@@ -9,8 +9,9 @@
   </head>
   <body>
     <div id = "info">
-    <div style = "float: right">
+    <div style = "float:right:">
       <button  onclick = "endTurn()"> End Turn </button>
+      <p>Change Team:</p>
       <p>
         <button style = " width: 50px; height: 50px; background-color: {{team_colors.team1}}" onclick = "change_team('team1')">Join</button>
         <button style = " width: 50px; height: 50px; background-color: {{team_colors.team2}}" onclick = "change_team('team2')">Join</button>
@@ -33,6 +34,15 @@
         <!--Log Messages will be added here -->
       </div>
     </div>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class=flashes>
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
 
     <canvas id = "gameCanvas" style = "background-color:lightgray">Your browser does not support HTML5 Canvas</canvas>
     <script src = "{{ url_for('static', filename='board.js') }}"> </script>
@@ -59,6 +69,19 @@
     });
 
     socket.on('update_money', function(msg) {
+      if(msg.room == "{{join_code}}") {
+        console.log("players: " + msg.data);
+        options = Object.keys(msg.data);
+        for(var i = 0; i < options.length; i++) {
+          if(msg.data[options[i]] != null) {
+            console.log("worked");
+            $("#"+options[i]).text("Name: "+msg.data[options[i]].nickname + " Money: " + msg.data[options[i]].money);
+          }
+        }
+      }
+    });
+
+    socket.on('update_players', function(msg) {
       if(msg.room == "{{join_code}}") {
         console.log("players: " + msg.data);
         options = Object.keys(msg.data);
