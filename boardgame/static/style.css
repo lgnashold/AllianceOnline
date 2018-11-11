@@ -37,18 +37,18 @@ form {
 	font-size: 22px;
 }
 
-#playertext {
+#namecontainer {
 	vertical-align: middle;
 	margin-left:auto;
 	margin-right: auto;
-	width: 700px;
+	width: 80%;
 	float:none;
 	padding: 20px;
-
+	text-align:center;
 }
 
 .playerdiv {
-	width: 300px;
+	width: 40%;
 	border-radius: 50px;
 	height: 80px;
 	border: 5px solid black;
@@ -61,16 +61,14 @@ form {
 }
 
 #startbutton {
-	width: 600px;
+	width: 100%;
 	border-radius: 50px;
 	height: 80px;
 	border: 5px solid black;
 	font-size: 30px;
 	text-align: center;
 	background-color:#1a1aff;
-	margin: 20px;
-	margin-left:auto;
-	margin-right:auto;
+	margin: auto;
 	float: none;
 }
 
