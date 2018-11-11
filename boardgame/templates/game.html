@@ -1,15 +1,6 @@
-<!doctype html>
-<html>
-<head>
-  <title> Alliance -- Join Game </title>
-  <link rel = "stylesheet" href = "{{ url_for('static', filename='style.css') }}">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src = "https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.dev.js"> </script>
-</head>
-<body>
-  <div id = "info">
-
-    <h1> Play Alliance </h1>
+{%extends 'base.html' %}
+{%block title %}Play{% endblock %}
+{% block info %}
     <p> <b> Room: </b> {{join_code}} </p>
     <p> <b> Nickname: </b> {{nickname}} </p>
 
@@ -28,8 +19,8 @@
     <div id = "log" class = "log-area">
       <!--Log Messages will be added here -->
     </div>
-  </div>
-  <div id = "board">
+{% endblock %}
+{% block content %}
     <canvas id = "gameCanvas" style = "background-color:lightgray">Your browser does not support HTML5 Canvas</canvas>
     <script src = "{{ url_for('static', filename='board.js') }}"> </script>
     <script>
@@ -97,6 +88,4 @@
       socket.emit('make_move', {i:iPos,j:jPos});
     }
     </script>
-  </div>
-</body>
-</html>
+{% endblock %}
