@@ -116,6 +116,10 @@ body {
   font-size: 30px;
 }
 
+.big_text {
+  font-size: 30px
+}
+
 .inputlabel {
 	width: 35%;
 	height: 60px;

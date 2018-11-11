@@ -2,7 +2,7 @@
 {%block title %}Play{% endblock %}
 {% block info %}
 
-<p> <b> Nickname: </b> {{nickname}} </p>
+<p class = "big_text" > <b> Nickname: </b> {{nickname}} </p>
 <button  onclick = "endTurn()" class = "game_button"> End Turn </button>
 <p>
   <button class = "team-button" style = " background-color: {{team_colors.team1}}" onclick = "change_team('team1')">Join</button>
@@ -10,10 +10,10 @@
   <button class = "team-button" style = " background-color: {{team_colors.team3}}" onclick = "change_team('team3')">Join</button>
   <button class = "team-button" style = " background-color: {{team_colors.team4}}" onclick = "change_team('team4')">Join</button>
 </p>
-<p id = "player1"></p>
-<p id = "player2"></p>
-<p id = "player3"></p>
-<p id = "player4"></p>
+<p class = "big_text" id = "player1"></p>
+<p class = "big_text" id = "player2"></p>
+<p class = "big_text" id = "player3"></p>
+<p class = "big_text"  id = "player4"></p>
 
 <div id = "log" class = "log-area">
   <!--Log Messages will be added here -->
