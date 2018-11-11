@@ -23,6 +23,10 @@ def run_game():
     """"Serves game page"""
     return render_template("game.html", join_code = session["join_code"], nickname = session["nickname"], team_colors = colors);
 
+@bp.route("/lobby")
+def enter_lobby():
+        return render_template("lobby.html", join_code = session["join_code"], nickname = session["nickname"], team_colors = colors);
+
 @socketio.on('connect')
 def connect():
     print("connected")
@@ -100,6 +104,9 @@ def move(data):
 
     if player_num == get_turn(join_code) :
         cost = check_connected(join_code, i, j, None) * 30
+        # if cost is -1, then no player controls square
+        if cost == -1:
+            cost = 100 
         if player["money"] >= cost :
             errormsg = set_square(join_code, i, j, player, player_initiated=True)
             if(errormsg == None):
