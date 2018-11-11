@@ -1,5 +1,6 @@
 from boardgame.db import get_db
-
+from boardgame.board import *
+from boardgame.colors import *
 import json
 
 def add_player(join_code, nickname, money=300, team=None):
@@ -63,21 +64,30 @@ def update_player_money(join_code,player_num,moneyChange):
 
 def update_player_team(join_code,player_num,team_name):
     db = get_db()
-    old_player = get_players(join_code)["player" + str(player_num)]
-    if old_player == None:
+    player = get_players(join_code)["player" + str(player_num)]
+    if player == None:
         return None
+    board = get_board(join_code)
 
-    old_player["team"] = team_name
+       
+    player["team"] = team_name
 
-    update_player(join_code,player_num, old_player)
+    update_player(join_code,player_num, player)
+
+    for i in range(len(board)):
+        for j in range(len(board[i])):
+            if(board[i][j]["name"] == player["nickname"]):
+                board[i][j]["color"] = colors[player["team"]]
+                print(board[i][j])
+    set_board(join_code, board)
 
 def num_players_on_team(join_code,team_name):
     players = get_players(join_code)
     count = 0;
 
-    for key,value in players:
-        if(team_name == value["team"]):
-            count++
+    for key,value in players.items():
+        if(value != None and team_name == value["team"]):
+            count+=1
 
     return count
 
