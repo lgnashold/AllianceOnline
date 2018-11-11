@@ -12,7 +12,7 @@
   </div>
 {%endblock %}
 {% block content %}
-  <div id = "playertext" >
+  <div id = "namecontainer" >
     <h1 style = "text-align: center">Players</h1>
     <div  class = 'playerdiv' style="float:left"><p id = "player1"></p></div>
     <div class = 'playerdiv' style="float:right"><p id = "player2"></p></div>
@@ -36,7 +36,7 @@
           if(msg.data[options[i]] != null) {
             console.log("worked");
             $("#"+options[i]).text(""+msg.data[options[i]].nickname);
-            $("#"+options[i]).parent().css("display", "inline");
+            $("#"+options[i]).parent().css("opacity", "1");
           }
         }
       }
