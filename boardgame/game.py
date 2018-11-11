@@ -23,6 +23,8 @@ from boardgame.player import *
 
 from boardgame.turn import get_turn, set_turn, increment_turn
 
+import math
+
 import json
 
 @bp.route("/game")
@@ -54,7 +56,7 @@ def end_turn():
         increment_turn(join_code)
         turn = get_turn(join_code)
         player = get_player(join_code, turn)
-        
+
         # sums total spaces on board controlled by a player
         spaces = 0
         board = get_board(join_code)
@@ -62,17 +64,49 @@ def end_turn():
             for space in row:
                 if space["name"] == player["nickname"]:
                     spaces += 1
-        money = spaces * PROFIT_PER_SQUARE 
+        money = spaces * PROFIT_PER_SQUARE
         update_player_money(join_code, turn, money)
         emit_turn(join_code, player["nickname"])
 
 
 @socketio.on('disconnect', namespace="/game")
 def disconnect():
+    join_code = session["join_code"]
     print("DISCONNECT")
-    emit_message("%s left the game..." % session["nickname"], session["join_code"])
-    remove_player(session["join_code"],session["player_num"])
-    check_empty(session["join_code"])
+    emit_message("%s left the game..." % session["nickname"], join_code)
+    make_squares_empty(join_code,session["player_num"])
+    remove_player(join_code,session["player_num"])
+
+    #checks if two final players are on same team, if so fixes that
+    team = "none"
+    count = 0
+    if (get_num_players(join_code) == 2):
+        count+=1
+        players = get_players(join_code)
+        for key,value in players.items():
+            if value != None:
+                if team == "none":
+                    team = value["team"]
+                else:
+                    if team == value["team"]:
+                        if (team == "team1"):
+                            update_player_team(join_code, count, "team2")
+                        else:
+                            update_player_team(join_code, count, "team1")
+
+        emit_board(join_code)
+        check_empty(join_code)
+
+
+
+
+def make_squares_empty(join_code, player_num):
+    board = get_board(join_code)
+    for row in range(BOARD_WIDTH):
+            for col in range(BOARD_HEIGHT):
+                if(board[row][col]["name"] == get_player(join_code,player_num)["nickname"]):
+                    board[row][col] = get_default_square()
+    set_board(join_code, board)
 
 
 @socketio.on('make_move', namespace ="/game")
@@ -88,10 +122,10 @@ def move(data):
         cost = check_connected(join_code, i, j, None)
         # if cost is -1, then no player controls square
         if cost == -1:
-            cost = COST_EMPTY_SQUARE 
+            cost = COST_EMPTY_SQUARE
         else:
             # Otherwise does 30 times num of connected squares
-            cost = COST_FILLED_SQUARE(cost) 
+            cost = COST_FILLED_SQUARE(cost)
         if player["money"] >= cost :
             errormsg = set_square(join_code, i, j, player, player_initiated=True)
             if(errormsg == None):
@@ -119,7 +153,7 @@ def change_team(data):
     player = get_player(join_code, player_num)
 
     if player_num == get_turn(join_code):
-        if player["money"] >= COST_TEAM_SWITCH and num_players_on_team(join_code, team) < get_num_players(join_code)/2:
+        if player["money"] >= COST_TEAM_SWITCH and num_players_on_team(join_code, team) < math.ceil(get_num_players(join_code)/2):
             update_player_money(join_code, player_num, -1 * COST_TEAM_SWITCH)
             update_player_team(join_code, player_num, team)
             emit_message("Player {0} changed to {1}!".format(nickname, team), join_code)
@@ -148,7 +182,7 @@ def remove_no_territory(join_code):
                 player3 = True
             elif (get_num_player(join_code,board[row][col]["name"]) == 4):
                 player4 = True
-     
+
     if(not player1):
         remove_player(join_code,1)
     if(not player2):
@@ -161,7 +195,7 @@ def remove_no_territory(join_code):
 
 def test_end_game():
     """Tests if the game is over, returns result"""
-    join_code = session["join_code"] 
+    join_code = session["join_code"]
     board = get_board(join_code)
     names = []
     for row in board:
@@ -185,4 +219,3 @@ def check_empty(join_code):
         db.execute("DELETE FROM game WHERE join_code = (?)",(join_code,))
         db.commit()
     remove_player(session["join_code"],session["player_num"])
-
