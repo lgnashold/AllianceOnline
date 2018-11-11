@@ -7,5 +7,5 @@ CREATE TABLE game (
 	player2 TEXT,
 	player3 TEXT,
 	player4 TEXT,
-	turn TEXT
+	turn INTEGER
 );
