@@ -59,7 +59,6 @@ socket.on('update_money', function(msg) {
         console.log("worked");
         $("#"+options[i]).html("<b>"+msg.data[options[i]].nickname + " </b>: $" + msg.data[options[i]].money);
       }
-<<<<<<< HEAD
     });
 
     socket.on('message', function(msg) {
@@ -103,7 +102,9 @@ socket.on('update_money', function(msg) {
             if(player.nickname = "{{nickname}}")   {
 
               //console.log("FOUND");
-              console.log(colors[player["team"]]);
+              console.log("colors:")
+              console.log(colors);
+              console.log("layers: ")
               console.log(player);
               $("#log").css("background-color", colors[player["team"]]);
             }
@@ -136,38 +137,8 @@ socket.on('update_money', function(msg) {
     
     });
 
-    function change_team(teamToChange) {
-      socket.emit('change_team', {team: teamToChange});
-=======
->>>>>>> a54ff876f1c1b874021764e5964e258e5dce0b22
-    }
-  }
-});
 
-socket.on('update_turn', function(msg) {
-  if(msg.room == "{{join_code}}") {
-    console.log("turn: " + msg.data);
-    if("{{nickname}}" == msg.data) {
-      console.log("My nickname");
-      $("#turnmsg").text("IT IS YOUR TURN");
-      $("#turnmsg").css("color", "green");
-    }
-    else {
-      $("#turnmsg").text("It is "+msg.data+"'s turn");
-      $("#turnmsg").css("color", "red");
-    }
-  }
-});
 
-socket.on('end_game', function(msg) {
-  console.log("print");
-  if(msg.room == "{{join_code}}") {
-    var text = msg.data + " has won!";
-    $("#turnmsg").text(text);
-    $("#turnmsg").css("color", "blue");
-  }
-
-});
 
 function change_team(teamToChange) {
   socket.emit('change_team', {team: teamToChange});
