@@ -2,6 +2,7 @@ var centerX = 0;
 var centerY = 0;
 var boardPos =[];
 
+var board_color = "lightgray";
 var ctx;
 
 var c = document.getElementById("gameCanvas");
@@ -78,7 +79,7 @@ function get_col(mousePos) {
 }
 
 function draw_board() {
-  ctx.fillStyle = "lightgray";
+  ctx.fillStyle = board_color;
   ctx.fillRect(0,0,WIDTH,HEIGHT);
   for(var i = 0; i < boardPos.length; i++) {
     for(var j = 0; j < boardPos[i].length; j++) {
@@ -96,4 +97,36 @@ function draw_board() {
 
     }
   }
+}
+
+function set_board_color(color) {
+  background_color(LightenDarkenColor(color,5));
+}
+
+/** CREDIT: https://stackoverflow.com/questions/5560248/programmatically-lighten-or-darken-a-hex-color-or-rgb-and-blend-colors **/
+function LightenDarkenColor(col,amt) {
+    var usePound = false;
+    if ( col[0] == "#" ) {
+        col = col.slice(1);
+        usePound = true;
+    }
+
+    var num = parseInt(col,16);
+
+    var r = (num >> 16) + amt;
+
+    if ( r > 255 ) r = 255;
+    else if  (r < 0) r = 0;
+
+    var b = ((num >> 8) & 0x00FF) + amt;
+
+    if ( b > 255 ) b = 255;
+    else if  (b < 0) b = 0;
+
+    var g = (num & 0x0000FF) + amt;
+
+    if ( g > 255 ) g = 255;
+    else if  ( g < 0 ) g = 0;
+
+    return (usePound?"#":"") + (g | (b << 8) | (r << 16)).toString(16);
 }
