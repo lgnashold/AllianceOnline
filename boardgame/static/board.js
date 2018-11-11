@@ -8,8 +8,8 @@ var c = document.getElementById("gameCanvas");
 var ctx = c.getContext("2d");
 
 console.log($("#info").outerHeight( true ));
-ctx.canvas.width  = window.innerWidth - 16;
-ctx.canvas.height = window.innerHeight - $("#info").outerHeight( true ) - 30;
+ctx.canvas.width  = window.innerWidth - $("#info").outerWidth( true ) - 30;
+ctx.canvas.height = ctx.canvas.width;
 
 var WIDTH = ctx.canvas.width;
 var HEIGHT = ctx.canvas.height;

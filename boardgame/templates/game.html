@@ -1,39 +1,37 @@
 <!doctype html>
 <html>
-  <head>
-    <title> Alliance -- Join Game </title>
-    <link rel = "stylesheet" href = "{{ url_for('static', filename='style.css') }}">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src = "https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.dev.js"> </script>
+<head>
+  <title> Alliance -- Join Game </title>
+  <link rel = "stylesheet" href = "{{ url_for('static', filename='style.css') }}">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src = "https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.dev.js"> </script>
 
-  </head>
-  <body>
-    <div id = "info">
-    <div style = "float: right">
-      <button  onclick = "endTurn()"> End Turn </button>
-      <p>
-        <button style = " width: 50px; height: 50px; background-color: {{team_colors.team1}}" onclick = "change_team('team1')">Join</button>
-        <button style = " width: 50px; height: 50px; background-color: {{team_colors.team2}}" onclick = "change_team('team2')">Join</button>
-        <button style = "width: 50px; height: 50px; background-color: {{team_colors.team3}}" onclick = "change_team('team3')">Join</button>
-        <button style = "width: 50px; height: 50px;background-color: {{team_colors.team4}}" onclick = "change_team('team4')">Join</button>
-      </p>
-      <p id = "player1"></id>
-      <p id = "player2"></id>
-      <p id = "player3"></id>
-      <p id = "player4"></id>
-
-    </div>
-
-
+</head>
+<body>
+  <div id = "info">
+    
     <h1> Play Alliance </h1>
     <p> <b> Room: </b> {{join_code}} </p>
     <p> <b> Nickname: </b> {{nickname}} </p>
 
-      <div id = "log" class = "log-area">
-        <!--Log Messages will be added here -->
-      </div>
-    </div>
+    <button  onclick = "endTurn()"> End Turn </button>
+    <p>
+      <button style = " width: 50px; height: 50px; background-color: {{team_colors.team1}}" onclick = "change_team('team1')">Join</button>
+      <button style = " width: 50px; height: 50px; background-color: {{team_colors.team2}}" onclick = "change_team('team2')">Join</button>
+      <button style = "width: 50px; height: 50px; background-color: {{team_colors.team3}}" onclick = "change_team('team3')">Join</button>
+      <button style = "width: 50px; height: 50px;background-color: {{team_colors.team4}}" onclick = "change_team('team4')">Join</button>
+    </p>
+    <p id = "player1"></p>
+    <p id = "player2"></p>
+    <p id = "player3"></p>
+    <p id = "player4"></p>
 
+    <div id = "log" class = "log-area">
+      <!--Log Messages will be added here -->
+    </div>
+  </div>
+
+  <div id = "board">
     <canvas id = "gameCanvas" style = "background-color:lightgray">Your browser does not support HTML5 Canvas</canvas>
     <script src = "{{ url_for('static', filename='board.js') }}"> </script>
     <script>
@@ -53,9 +51,9 @@
     });
 
     socket.on('message', function(msg) {
-        if(msg.room == "{{join_code}}") {
-          $('#log').prepend('<p>Received: ' + msg.data + '</p>');
-        }
+      if(msg.room == "{{join_code}}") {
+        $('#log').prepend('<p>Received: ' + msg.data + '</p>');
+      }
     });
 
     socket.on('update_money', function(msg) {
@@ -83,6 +81,7 @@
       console.log("emit move " + iPos + " "+ jPos);
       socket.emit('make_move', {i:iPos,j:jPos});
     }
-  </script>
-  </body>
+    </script>
+  </div>
+</body>
 </html>
