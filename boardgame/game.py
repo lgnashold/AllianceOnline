@@ -106,7 +106,7 @@ def move(data):
         cost = check_connected(join_code, i, j, None) * 30
         # if cost is -1, then no player controls square
         if cost == -1:
-            cost = 100 
+            cost = 100
         if player["money"] >= cost :
             errormsg = set_square(join_code, i, j, player, player_initiated=True)
             if(errormsg == None):
@@ -152,7 +152,7 @@ def remove_no_territory(join_code):
     player2 = False
     player3 = False
     player4 = False
-    
+
     players = get_players(join_code)
 
     for row in range(len(board)):
@@ -166,11 +166,11 @@ def remove_no_territory(join_code):
             elif (get_num_player(join_code,board[row][col]["name"]) == 4):
                 player4 = True
 
-    if(not player1 and players.player1 != None):
-        remove_player(1)
-    if(not player2 and players.player2 != None):
-        remove_player(2)
-    if(not player3 and players.player3 != None):
-        remove_player(3)
-    if(not player4 and players.player4 != None):
-        remove_player(4)
+    if(not player1):
+        remove_player(join_code,1)
+    if(not player2):
+        remove_player(join_code,2)
+    if(not player3):
+        remove_player(join_code,3)
+    if(not player4):
+        remove_player(join_code,4)
