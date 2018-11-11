@@ -111,7 +111,7 @@ def change_team(data):
     player = get_player(join_code, player_num)
 
     if player_num == get_turn(join_code):
-        if player["money"] >= 50 and num_players_on_team(join_code, team) < 2:
+        if player["money"] >= 50 and num_players_on_team(join_code, team) < get_num_player(join_code)/2:
             update_player_money(join_code, player_num, -50)
             update_player_team(join_code, player_num, team)
             emit_message("Player {0} changed to {1}!".format(nickname, team), join_code)
