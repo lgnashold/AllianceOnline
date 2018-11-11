@@ -37,32 +37,6 @@ def connect():
     emit_message("%s joined the game!" % session["nickname"], join_code)
 
 
-@socketio.on('start_game')
-def start_game():
-    print("starting!")
-    join_code = session["join_code"]
-    db = get_db()
-    players = get_players(join_code)
-    board = get_board(join_code)
-
-    if get_turn(join_code) != None:
-        return
-    # Inserts starting position
-    if(players["player1"] != None):
-       set_square(join_code, 8, 8, players["player1"])
-    if(players["player2"] != None):
-       set_square(join_code, 12, 12, players["player2"])
-    if(players["player3"] != None):
-       set_square(join_code, 8, 12, players["player3"])
-    if(players["player4"] != None):
-       set_square(join_code, 12, 8, players["player4"])
-
-    set_turn(join_code, 1)
-
-    emit_message("Game started! %s's turn" % players["player1"]["nickname"], join_code)
-    emit_money(join_code,get_players(join_code))
-    emit_board(join_code)
-
 @socketio.on('end_turn')
 def end_turn():
     """Called when a player ends their turn"""

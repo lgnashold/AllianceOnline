@@ -50,7 +50,7 @@ def enter_lobby():
         emit_message("Game started! %s's turn" % players["player1"]["nickname"], join_code)
         emit_money(join_code,get_players(join_code))
         emit_board(join_code)
-        return redirect(url_for("game.play_game"))
+        return redirect(url_for("game.run_game"))
     return render_template("lobby.html")
 
 @socketio.on('disconnect')

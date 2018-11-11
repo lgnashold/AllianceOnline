@@ -10,7 +10,6 @@
   <body>
     <div id = "info">
     <div style = "float: right">
-      <button  onclick = "startGame()"> Start Game </button>
       <button  onclick = "endTurn()"> End Turn </button>
       <p>
         <button style = " width: 50px; height: 50px; background-color: {{team_colors.team1}}" onclick = "change_team('team1')">Join</button>
@@ -84,11 +83,6 @@
     function makeMove(iPos,jPos) {
       console.log("emit move " + iPos + " "+ jPos);
       socket.emit('make_move', {i:iPos,j:jPos});
-    }
-
-    function startGame() {
-      console.log("emit");
-      socket.emit('start_game');
     }
   </script>
   </body>
