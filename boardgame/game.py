@@ -14,6 +14,8 @@ bp = Blueprint('game', __name__)
 
 from boardgame.player import get_players, get_player, update_player_money
 
+from boardgame.turns import get_turn, set_turn, increment_turn
+
 @bp.route("/game")
 def run_game():
     """"Serves game page"""
@@ -63,11 +65,16 @@ def end_turn():
 
 @socketio.on('make_move')
 def move(data):
+    join_code = session[join_code]
+    nickname = session[nickname]
+
     print(str(data["i"]) + " " + str(data["j"]))
-    if(session["player_num"] == get_turn()):
-        if(get_player[nickname].money >= 100) {
-            update_player_money(-100)
-        }
+    if session["player_num"] == get_turn() :
+        curr_player = get_player(join_code,nickname)
+        if curr_player["money"] >= 100 :
+            update_player_money(join_code, nickname, -100)
+            set_square(join_code,data["i"], data["j"], curr_player)
+
 
     db = get_db()
 
