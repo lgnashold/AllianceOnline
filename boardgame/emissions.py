@@ -20,3 +20,6 @@ def emit_error(msg, join_code):
 def emit_turn(join_code, nickname):
     print("Emit turn")
     socketio.emit('update_turn', {"data":nickname, "room":join_code}, broadcast = True, namespace="/game")
+
+def emit_end_game(join_code, nickname):
+    socketio.emit("end_game", {"data":nickname, "room":join_code}, broadcast = True, namespace = "/game")

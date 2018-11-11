@@ -65,7 +65,6 @@
     });
 
     socket.on('update_turn', function(msg) {
-        console.log("outer");
         if(msg.room == "{{join_code}}") {
           console.log("turn: " + msg.data);
             if("{{nickname}}" == msg.data) {
@@ -74,10 +73,20 @@
               $("#turnmsg").css("color", "green");
             }
             else {
-              $("#turnmsg").text("WAIT FOR YOUR TURN");
+              $("#turnmsg").text("It is "+msg.data+"'s turn");
               $("#turnmsg").css("color", "red");              
             }
         }
+    });
+
+    socket.on('end_game', function(msg) {
+      console.log("print");
+      if(msg.room == "{{join_code}}") {
+        var text = msg.data + " has won!";
+        $("#turnmsg").text(text);
+        $("#turnmsg").css("color", "blue"); 
+      } 
+    
     });
 
     function change_team(teamToChange) {

@@ -32,7 +32,9 @@ def connect():
     emit_board(join_code)
     emit_money(join_code, get_players(join_code))
     emit_message("%s joined the game!" % session["nickname"], join_code)
-    emit_turn(join_code, get_turn(join_code))
+    player = get_player(join_code, get_turn(join_code))
+    print(player)
+    emit_turn(join_code, player["nickname"])
 
 @socketio.on('end_turn', namespace ="/game")
 def end_turn():
@@ -47,8 +49,7 @@ def end_turn():
         increment_turn(join_code)
         turn = get_turn(join_code)
         player = get_player(join_code, turn)
-
-        emit_message("Next Turn! %s's turn" % player["nickname"], join_code)
+        
         # sums total spaces on board controlled by a player
         spaces = 0
         board = get_board(join_code)
@@ -92,13 +93,16 @@ def move(data):
                 update_player_money(join_code, player_num, -1 * cost)
                 remove_no_territory(join_code)
                 emit_board(join_code)
+                gameover = test_end_game()
+                if gameover:
+                    emit_end_game(join_code, nickname)
+                    return
                 if (player["money"] - cost  < 100):
                     end_turn()
+
             else:
                 emit_error(errormsg, join_code)
                 print(errormsg)
-        else:
-            emit_error("You do not have enough money", join_code)
 
 
 @socketio.on('change_team', namespace = "/game")
@@ -139,7 +143,7 @@ def remove_no_territory(join_code):
                 player3 = True
             elif (get_num_player(join_code,board[row][col]["name"]) == 4):
                 player4 = True
-
+     
     if(not player1):
         remove_player(join_code,1)
     if(not player2):
@@ -148,6 +152,20 @@ def remove_no_territory(join_code):
         remove_player(join_code,3)
     if(not player4):
         remove_player(join_code,4)
+
+
+def test_end_game():
+    join_code = session["join_code"] 
+    board = get_board(join_code)
+    names = []
+    for row in board:
+        for col in row:
+            space = col["name"]
+            if space != None and space not in names:
+                names.append(space)
+    if(len(names) <= 1):
+        return True
+    return False
 
 def check_empty(join_code):
     db = get_db()
@@ -161,3 +179,4 @@ def check_empty(join_code):
         db.execute("DELETE FROM game WHERE join_code = (?)",(join_code,))
         db.commit()
     remove_player(session["join_code"],session["player_num"])
+
