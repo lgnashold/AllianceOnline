@@ -14,7 +14,7 @@ from boardgame.colors import colors
 from boardgame.db import get_db
 bp = Blueprint('game', __name__)
 
-from boardgame.player import get_players, get_player, update_player_money
+from boardgame.player import *
 
 from boardgame.turn import get_turn, set_turn, increment_turn
 
@@ -93,7 +93,7 @@ def change_team(data):
     team = data["team"]
 
     if player_num == get_turn(join_code) :
-        if player["money"] >= 50 :
+        if player["money"] >= 50 and num_players_on_team() < 2:
             update_player_money(join_code, player_num, -50)
             set_square(join_code, i, j, player)
             emit_message("Player %s changed to %s!" % nickname % team, join_code)

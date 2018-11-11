@@ -16,7 +16,7 @@ def add_player(join_code, nickname, money=300, team=None):
     for key, value in players.items():
         if value != None and value["nickname"] == nickname:
             return None
-    
+
     # Checks for column to add player
     count = 0
     for key, value in players.items():
@@ -76,9 +76,8 @@ def num_players_on_team(join_code,team_name):
     count = 0;
 
     for key,value in players:
-        if(value == "team"):
-            if(team_name == players[key][value]):
-                count++
+        if(team_name == value["team"]):
+            count++
 
     return count
 

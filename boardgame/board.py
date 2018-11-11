@@ -32,6 +32,12 @@ def set_board(board, join_code):
 def get_board(join_code):
     return json.loads(get_json_board(join_code))
 
+def refresh_board(join_code):
+    board = get_board(join_code)
+
+    for :
+        color = colors[player["team"]]
+        board[i][j] = {"color":color, "name": player["nickname"]}
 
 def get_json_board(join_code):
     db = get_db()
