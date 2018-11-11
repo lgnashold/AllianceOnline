@@ -84,7 +84,7 @@ def move(data):
             cost = 100
         else:
             # Otherwise does 30 times num of connected squares
-            cost = cost * 30
+            cost = cost * 100
         if player["money"] >= cost :
             errormsg = set_square(join_code, i, j, player, player_initiated=True)
             if(errormsg == None):
@@ -92,6 +92,8 @@ def move(data):
                 remove_no_territory(join_code)
                 emit_message("Player %s took a square!" % nickname, join_code)
                 emit_board(join_code)
+                if (player["money"] - cost  < 100):
+                    end_turn()
             else:
                 emit_message(errormsg, join_code)
                 print(errormsg)
@@ -164,3 +166,4 @@ def check_empty(join_code):
     if (count < 1):
         db.execute("DELETE FROM game WHERE join_code = (?)",(join_code,))
         db.commit()
+    remove_player(session["join_code"],session["player_num"])
