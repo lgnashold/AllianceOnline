@@ -73,23 +73,6 @@ socket.on('update_money', function(msg) {
       $('#log').prepend('<b><p class = "error">'+msg.data + '</b></p>');
     });
 
-    socket.on('update_money', function(msg) {
-      if(msg.room == "{{join_code}}") {
-        console.log("players: " + msg.data);
-        options = Object.keys(msg.data);
-        for(var i = 0; i < options.length; i++) {
-          if(msg.data[options[i]] != null) {
-            console.log("worked");
-            $("#"+options[i]).text("Name: "+msg.data[options[i]].nickname + " Money: " + msg.data[options[i]].money);
-            if(msg.data[options[i]].nickname = "{{nickname}}") {
-              $("#board").css("background-color", msg.data[options[i]].color)
-            }
-          }
-
-        }
-      }
-    });
-
     socket.on('update_teams', function(msg) {
       console.log("UPDATE TEAMS");
       if(msg.room == "{{join_code}}") {
