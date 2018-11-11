@@ -121,7 +121,7 @@ def move(data):
     elif get_turn(join_code) != None:
         emit_message("It is not your turn", join_code)
     else:
-        emit_message("Game has not started yet")
+        emit_message("Game has not started yet", join_code)
 
 
 @socketio.on('change_team')
