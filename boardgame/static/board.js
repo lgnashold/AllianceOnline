@@ -7,12 +7,12 @@ var ctx;
 var c = document.getElementById("gameCanvas");
 var ctx = c.getContext("2d");
 
-ctx.canvas.width  = window.innerWidth - $("#info").outerWidth( true ) - 30;
+ctx.canvas.width  = window.innerWidth - $("#info").outerWidth( true ) - 39;
 ctx.canvas.height = window.innerHeight - 20;
 
 $(document).ready(function(){
   $(window).resize(function(){
-    ctx.canvas.width  = window.innerWidth - $("#info").outerWidth( true ) - 30;
+    ctx.canvas.width  = window.innerWidth - $("#info").outerWidth( true ) - 39;
     ctx.canvas.height = window.innerHeight - 20;
     draw_board();
   });
