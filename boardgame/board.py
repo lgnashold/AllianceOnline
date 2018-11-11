@@ -39,13 +39,13 @@ def get_json_board(join_code):
     ).fetchone())["game_data"]
     return json_board
 
-def set_square(join_code, i, j, player, CheckAdjacency=False, CheckSameColor=False):
+def set_square(join_code, i, j, player, player_initiated = False):
     board = get_board(join_code)
     new_color = colors[player["team"]]
     old_color = board[i][j]["color"]
-    if (CheckSameColor and new_color == old_color):
+    if (player_initiated and new_color == old_color):
         return "Your team already controls this square"
-    if(CheckAdjacency and check_connected(join_code, i, j, new_color) < 1):
+    if( player_initiated and check_connected(join_code, i, j, new_color) < 1):
         return "Your team doesn't control enough adjacent squares"
     board[i][j] = {"color":new_color, "name": player["nickname"]}
     set_board(join_code, board)
@@ -59,7 +59,9 @@ def check_win(join_code):
                 return False
     return True
 
-def check_connected(join_code, i, j, color):
+def check_connected(join_code, i, j, color=None):
+    if color == None:
+        color = board[i][j]["color"]
     board = get_board(join_code)
     visited = [[False for i in row] for row in board]
     res = 0
