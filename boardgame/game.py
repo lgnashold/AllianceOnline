@@ -119,7 +119,7 @@ def change_team(data):
             emit_board(join_code)
             print("Emitted")
         else:
-            emit_message("You do not have enough money to change teams", join_code)
+            emit_message("You cannot switch teams like that.", join_code)
     elif (get_turn(join_code) != None):
         emit_message("It is not your turn", join_code)
 
