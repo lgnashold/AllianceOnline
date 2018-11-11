@@ -68,18 +68,22 @@ def end_turn():
     if turn == player_num:
         increment_turn(join_code)
         emit_message("Next Turn! %s's turn" % players["player" + str(turn)]["nickname"], join_code)
-    # sums total spaces on board controlled by a player
-    spaces = 0
-    board = get_board(join_code)
-    for row in board:
-        for space in row:
-            if space["name"] == nickname:
-                spaces += 1
-    money = spaces * 50 
-    update_player_money(join_code, player_num, money)
+        # sums total spaces on board controlled by a player
+        spaces = 0
+        board = get_board(join_code)
+        for row in board:
+            for space in row:
+                if space["name"] == nickname:
+                    spaces += 1
+        money = spaces * 50 
+        update_player_money(join_code, player_num, money)
+    else: 
+        emit_message("It is not your turn, it is %s's turn" % players["player" + str(turn)]["nickname"], join_code)
+ 
+    
 @socketio.on('disconnect')
 def disconnect():
-    emit_message("%s left the game..." % session["nickname"], join_code)
+    emit_message("%s left the game..." % session["nickname"], session["join_code"])
 
 
 @socketio.on('make_move')
@@ -93,11 +97,18 @@ def move(data):
 
     if player_num == get_turn(join_code) :
         if player["money"] >= 100 :
-            update_player_money(join_code, player_num, -100)
-            set_square(join_code, i, j, player)
-            emit_message("Player %s took a square!" % nickname, join_code)
-            emit_board(join_code)
-
+            errormsg = set_square(join_code, i, j, player, CheckAdjacency=True, CheckSameColor=True)
+            if(errormsg == None):
+                update_player_money(join_code, player_num, -100)
+                emit_message("Player %s took a square!" % nickname, join_code)
+                emit_board(join_code)
+            else:
+                emit_message(errormsg, join_code)
+                print(errormsg)
+        else:
+            emit_message("You do not have enough money", join_code)
+    else:
+        emit_message("It is not your turn", join_code)
 @socketio.on('change_team')
 def change_team(data):
     join_code = session["join_code"]
@@ -113,3 +124,7 @@ def change_team(data):
             emit_message("Player {0} changed to {1}!".format(nickname, team), join_code)
             emit_board(join_code)
             print("Emitted")
+        else:
+            emit_message("You do not have enough money to change teams", join_code)
+    else:
+        emit_message("It is not your turn", join_code)
