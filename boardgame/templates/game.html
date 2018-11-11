@@ -92,6 +92,7 @@ socket.on('update_money', function(msg) {
               console.log("players: ");
               console.log(player);
               set_board_color(colors[player["team"]]);
+              return;
             }
         }
       }

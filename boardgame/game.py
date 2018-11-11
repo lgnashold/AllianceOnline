@@ -38,6 +38,7 @@ def connect():
     print(join_code)
     emit_board(join_code)
     emit_money(join_code, get_players(join_code))
+    emit_teams(join_code, colors, get_players(join_code))
     emit_message("%s joined the game!" % session["nickname"], join_code)
     player = get_player(join_code, get_turn(join_code))
     print(player)
@@ -142,7 +143,7 @@ def move(data):
             else:
                 emit_error(errormsg, join_code)
                 print(errormsg)
-        else: 
+        else:
             emit_error("Not enough money", join_code)
 @socketio.on('change_team', namespace = "/game")
 def change_team(data):

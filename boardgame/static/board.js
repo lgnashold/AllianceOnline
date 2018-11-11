@@ -100,7 +100,7 @@ function draw_board() {
 }
 
 function set_board_color(color) {
-  board_color = (LightenDarkenColor(color,5));
+  board_color = (LightenDarkenColor(color,60));
   $("#board").css("background-color",board_color);
   draw_board();
 }
