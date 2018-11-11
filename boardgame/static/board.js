@@ -100,7 +100,9 @@ function draw_board() {
 }
 
 function set_board_color(color) {
-  background_color(LightenDarkenColor(color,5));
+  board_color = (LightenDarkenColor(color,5));
+  $("#board").css("background-color",board_color);
+  draw_board();
 }
 
 /** CREDIT: https://stackoverflow.com/questions/5560248/programmatically-lighten-or-darken-a-hex-color-or-rgb-and-blend-colors **/
