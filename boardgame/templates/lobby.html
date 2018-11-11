@@ -10,9 +10,7 @@
   <body>
     <div id = "info">
     <div style = "float: right">
-	    <form method = 'post'>
-      		<button  type = "submit" name = "start_game"> Start Game </button>
-	    </form>
+      	<button  onclick = "startGame()"> Start Game </button>
     </div>
 
 
@@ -39,6 +37,10 @@
         if(msg.room == "{{join_code}}") {
           $('#log').prepend('<p>Received: ' + msg.data + '</p>');
         }
+    });
+
+    socket.on('redirect', function (data) {
+      window.location = data.url;
     });
 
     function startGame() {
