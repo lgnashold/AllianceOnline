@@ -10,15 +10,21 @@
   <body>
     <div id = "info">
     <div style = "float: right">
-    <button  onclick = "startGame()"> Start Game </button>
-    <button  onclick = "endTurn()"> End Turn </button>
-    <p>
-      <button style = " width: 50px; height: 50px; background-color: {{team_colors.team1}}" onclick = "change_team('team1')">Join</button>
-      <button style = " width: 50px; height: 50px; background-color: {{team_colors.team2}}" onclick = "change_team('team2')">Join</button>
-      <button style = "width: 50px; height: 50px; background-color: {{team_colors.team3}}" onclick = "change_team('team3')">Join</button>
-      <button style = "width: 50px; height: 50px;background-color: {{team_colors.team4}}" onclick = "change_team('team4')">Join</button>
+      <button  onclick = "startGame()"> Start Game </button>
+      <button  onclick = "endTurn()"> End Turn </button>
+      <p>
+        <button style = " width: 50px; height: 50px; background-color: {{team_colors.team1}}" onclick = "change_team('team1')">Join</button>
+        <button style = " width: 50px; height: 50px; background-color: {{team_colors.team2}}" onclick = "change_team('team2')">Join</button>
+        <button style = "width: 50px; height: 50px; background-color: {{team_colors.team3}}" onclick = "change_team('team3')">Join</button>
+        <button style = "width: 50px; height: 50px;background-color: {{team_colors.team4}}" onclick = "change_team('team4')">Join</button>
+      </p>
+      <p id = "player1"></id>
+      <p id = "player2"></id>
+      <p id = "player3"></id>
+      <p id = "player4"></id>
+
     </div>
-    </p>
+
 
     <h1> Play Alliance </h1>
     <p> <b> Room: </b> {{join_code}} </p>
@@ -51,6 +57,19 @@
     socket.on('message', function(msg) {
         if(msg.room == "{{join_code}}") {
           $('#log').append('<p>Received: ' + msg.data + '</p>');
+        }
+    });
+
+    socket.on('update_money', function(msg) {
+        console.log("players: " + msg);
+        options = Object.keys(msg);
+        for(var i = 0; i < options.length; i++) {
+          console.log(options[i]);
+          console.log(msg.player1);
+          if(msg[options[i]] != null) {
+            console.log("worked");
+            $("#"+options[i]).text("Money: " + msg[options[i]].money);
+          }
         }
     });
 
