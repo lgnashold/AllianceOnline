@@ -54,6 +54,10 @@
       }
     });
 
+    socket.on('error', function(msg) {
+      $('#log').prepend('<b><p class = "error">'+msg.data + '</b></p>');
+    });
+
     socket.on('update_money', function(msg) {
       if(msg.room == "{{join_code}}") {
         console.log("players: " + msg.data);

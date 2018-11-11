@@ -1,5 +1,5 @@
-BOARD_WIDTH = 20
-BOARD_HEIGHT = 20
+BOARD_WIDTH = 20 
+BOARD_HEIGHT = 20 
 
 DEFAULT_SQUARE = {"color":"#B9B7A7","name":None}
 
@@ -46,7 +46,7 @@ def set_square(join_code, i, j, player, player_initiated = False):
     if (player_initiated and new_color == old_color):
         return "Your team already controls this square"
     if( player_initiated and check_connected(join_code, i, j, new_color) < 1):
-        return "Your team doesn't control enough adjacent squares"
+        return "Square is not touching your color"
     board[i][j] = {"color":new_color, "name": player["nickname"]}
     set_board(join_code, board)
 

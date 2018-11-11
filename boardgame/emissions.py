@@ -4,6 +4,7 @@ from boardgame.board import get_json_board
 from flask_socketio import emit
 
 def emit_message(msg, join_code):
+    """Emits a message to the whole server"""
     socketio.emit('message', {"data":msg, "room":join_code}, broadcast = True, namespace="/game")
 
 def emit_board(join_code):
@@ -11,3 +12,7 @@ def emit_board(join_code):
 
 def emit_money(join_code,players):
     socketio.emit('update_money', {"data":players, "room":join_code}, broadcast = True, namespace="/game")
+
+def emit_error(msg, join_code):
+    """Emits an error to just one player"""
+    socketio.emit('error', {"data":msg}, namespace='/game')

@@ -27,9 +27,7 @@ def run_game():
 
 @socketio.on('connect', namespace="/game")
 def connect():
-    print("connected")
     join_code = session["join_code"]
-    print("JOIN CODE: "+join_code)
     emit_board(join_code)
     emit_money(join_code, get_players(join_code))
     emit_message("%s joined the game!" % session["nickname"], join_code)
@@ -56,9 +54,9 @@ def end_turn():
         money = spaces * 50
         update_player_money(join_code, player_num, money)
     elif turn != None:
-        emit_message("It is not your turn, it is %s's turn" % players["player" + str(turn)]["nickname"], join_code)
+        emit_error("It is not your turn, it is %s's turn" % players["player" + str(turn)]["nickname"], join_code)
     else:
-        emit_message("Game has not started yet")
+        emit_error("Game has not started yet")
 
 @socketio.on('disconnect', namespace="/game")
 def disconnect():
@@ -95,14 +93,14 @@ def move(data):
                 if (player["money"] - cost  < 100):
                     end_turn()
             else:
-                emit_message(errormsg, join_code)
+                emit_error(errormsg, join_code)
                 print(errormsg)
         else:
-            emit_message("You do not have enough money", join_code)
+            emit_error("You do not have enough money", join_code)
     elif get_turn(join_code) != None:
-        emit_message("It is not your turn", join_code)
+        emit_error("It is not your turn", join_code)
     else:
-        emit_message("Game has not started yet", join_code)
+        emit_error("Game has not started yet", join_code)
 
 
 @socketio.on('change_team', namespace = "/game")
@@ -121,9 +119,9 @@ def change_team(data):
             emit_board(join_code)
             print("Emitted")
         else:
-            emit_message("You cannot switch teams like that.", join_code)
+            emit_error("You cannot switch teams like that.", join_code)
     elif (get_turn(join_code) != None):
-        emit_message("It is not your turn", join_code)
+        emit_error("It is not your turn", join_code)
 
 def remove_no_territory(join_code):
     board = get_board(join_code)

@@ -13,6 +13,7 @@ form {
   border-radius: 15px;
   margin-bottom:5px;
   padding: 5px;
+  font-size: 18px;
 }
 
 #info {
@@ -23,4 +24,9 @@ form {
 #board {
   width: 70%;
   float: left;
+}
+
+.error {
+	color:#FF0000;
+	font-size: 22px;
 }
