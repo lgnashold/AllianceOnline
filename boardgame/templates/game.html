@@ -1,38 +1,10 @@
 <!doctype html>
 <html>
-<<<<<<< HEAD
-  <head>
-    <title> Alliance -- Join Game </title>
-    <link rel = "stylesheet" href = "{{ url_for('static', filename='style.css') }}">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src = "https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.dev.js"> </script>
-
-  </head>
-  <body>
-    <div id = "info">
-    <div style = "float:right:">
-      <button  onclick = "endTurn()"> End Turn </button>
-      <p>Change Team:</p>
-      <p>
-        <button style = " width: 50px; height: 50px; background-color: {{team_colors.team1}}" onclick = "change_team('team1')">Join</button>
-        <button style = " width: 50px; height: 50px; background-color: {{team_colors.team2}}" onclick = "change_team('team2')">Join</button>
-        <button style = "width: 50px; height: 50px; background-color: {{team_colors.team3}}" onclick = "change_team('team3')">Join</button>
-        <button style = "width: 50px; height: 50px;background-color: {{team_colors.team4}}" onclick = "change_team('team4')">Join</button>
-      </p>
-      <p id = "player1"></id>
-      <p id = "player2"></id>
-      <p id = "player3"></id>
-      <p id = "player4"></id>
-
-    </div>
-=======
 <head>
   <title> Alliance -- Join Game </title>
   <link rel = "stylesheet" href = "{{ url_for('static', filename='style.css') }}">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src = "https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.dev.js"> </script>
->>>>>>> 218ebaad1b4b55db41b1e52ca08c8122ae6641b8
-
 </head>
 <body>
   <div id = "info">
