@@ -91,7 +91,7 @@ socket.on('update_money', function(msg) {
               console.log(colors);
               console.log("players: ");
               console.log(player);
-              $("#log").css("background-color", colors[player["team"]]);
+              set_board_color(colors[player["team"]]);
             }
         }
       }
