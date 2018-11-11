@@ -1,8 +1,6 @@
 {%extends 'base.html' %}
 {%block title %}Play{% endblock %}
 {% block info %}
-    <p> <b> Room: </b> {{join_code}} </p>
-    <p> <b> Nickname: </b> {{nickname}} </p>
 
     <button  onclick = "endTurn()"> End Turn </button>
     <p>
@@ -24,6 +22,7 @@
 
 {% endblock %}
 {% block content %}
+    <h1 style = "text-align: center; font-size: 128, postion: fixed" id = "turnmsg"></h1>
     <canvas id = "gameCanvas" style = "background-color:lightgray">Your browser does not support HTML5 Canvas</canvas>
     <script src = "{{ url_for('static', filename='board.js') }}"> </script>
     <script>
@@ -65,17 +64,20 @@
       }
     });
 
-    socket.on('update_players', function(msg) {
-      if(msg.room == "{{join_code}}") {
-        console.log("players: " + msg.data);
-        options = Object.keys(msg.data);
-        for(var i = 0; i < options.length; i++) {
-          if(msg.data[options[i]] != null) {
-            console.log("worked");
-            $("#"+options[i]).text("Money: " + msg.data[options[i]].money);
-          }
+    socket.on('update_turn', function(msg) {
+        console.log("outer");
+        if(msg.room == "{{join_code}}") {
+          console.log("turn: " + msg.data);
+            if("{{nickname}}" == msg.data) {
+              console.log("My nickname");
+              $("#turnmsg").text("IT IS YOUR TURN");
+              $("#turnmsg").css("color", "green");
+            }
+            else {
+              $("#turnmsg").text("WAIT FOR YOUR TURN");
+              $("#turnmsg").css("color", "red");              
+            }
         }
-      }
     });
 
     function change_team(teamToChange) {
@@ -90,5 +92,7 @@
       console.log("emit move " + iPos + " "+ jPos);
       socket.emit('make_move', {i:iPos,j:jPos});
     }
+
+
     </script>
 {% endblock %}

@@ -28,9 +28,11 @@ def run_game():
 @socketio.on('connect', namespace="/game")
 def connect():
     join_code = session["join_code"]
+    print(join_code)
     emit_board(join_code)
     emit_money(join_code, get_players(join_code))
     emit_message("%s joined the game!" % session["nickname"], join_code)
+    emit_turn(join_code, get_turn(join_code))
 
 @socketio.on('end_turn', namespace ="/game")
 def end_turn():
@@ -43,20 +45,21 @@ def end_turn():
 
     if turn == player_num:
         increment_turn(join_code)
-        emit_message("Next Turn! %s's turn" % players["player" + str(turn)]["nickname"], join_code)
+        turn = get_turn(join_code)
+        player = get_player(join_code, turn)
+
+        emit_message("Next Turn! %s's turn" % player["nickname"], join_code)
         # sums total spaces on board controlled by a player
         spaces = 0
         board = get_board(join_code)
         for row in board:
             for space in row:
-                if space["name"] == nickname:
+                if space["name"] == player["nickname"]:
                     spaces += 1
         money = spaces * 50
-        update_player_money(join_code, player_num, money)
-    elif turn != None:
-        emit_error("It is not your turn, it is %s's turn" % players["player" + str(turn)]["nickname"], join_code)
-    else:
-        emit_error("Game has not started yet")
+        update_player_money(join_code, turn, money)
+        emit_turn(join_code, player["nickname"])
+
 
 @socketio.on('disconnect', namespace="/game")
 def disconnect():
@@ -88,7 +91,6 @@ def move(data):
             if(errormsg == None):
                 update_player_money(join_code, player_num, -1 * cost)
                 remove_no_territory(join_code)
-                emit_message("Player %s took a square!" % nickname, join_code)
                 emit_board(join_code)
                 if (player["money"] - cost  < 100):
                     end_turn()
@@ -97,10 +99,6 @@ def move(data):
                 print(errormsg)
         else:
             emit_error("You do not have enough money", join_code)
-    elif get_turn(join_code) != None:
-        emit_error("It is not your turn", join_code)
-    else:
-        emit_error("Game has not started yet", join_code)
 
 
 @socketio.on('change_team', namespace = "/game")
@@ -120,8 +118,6 @@ def change_team(data):
             print("Emitted")
         else:
             emit_error("You cannot switch teams like that.", join_code)
-    elif (get_turn(join_code) != None):
-        emit_error("It is not your turn", join_code)
 
 def remove_no_territory(join_code):
     board = get_board(join_code)

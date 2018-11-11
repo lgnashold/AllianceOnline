@@ -17,3 +17,6 @@ def emit_error(msg, join_code):
     """Emits an error to just one player"""
     socketio.emit('error', {"data":msg}, namespace='/game')
  
+def emit_turn(join_code, nickname):
+    print("Emit turn")
+    socketio.emit('update_turn', {"data":nickname, "room":join_code}, broadcast = True, namespace="/game")

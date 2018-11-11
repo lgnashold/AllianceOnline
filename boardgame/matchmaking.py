@@ -38,6 +38,7 @@ def index():
         session["join_code"] = join_code
         session["nickname"] = nickname
 
+        print("JOIN CODE IN MATCHMAKING")
         return redirect(url_for('lobby.enter_lobby'))
 
     # Run if request is GET

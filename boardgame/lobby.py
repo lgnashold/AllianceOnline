@@ -42,13 +42,13 @@ def start_game():
         return
     # Inserts starting position
     if(players["player1"] != None):
-       set_square(join_code, 8, 8, players["player1"])
+       set_square(join_code, 3, 3, players["player1"])
     if(players["player2"] != None):
-       set_square(join_code, 12, 12, players["player2"])
+       set_square(join_code, 4,4 , players["player2"])
     if(players["player3"] != None):
-       set_square(join_code, 8, 12, players["player3"])
+       set_square(join_code, 3, 4, players["player3"])
     if(players["player4"] != None):
-       set_square(join_code, 12, 8, players["player4"])
+       set_square(join_code, 4, 3, players["player4"])
 
     set_turn(join_code, 1)
 

@@ -1,5 +1,5 @@
-BOARD_WIDTH = 20 
-BOARD_HEIGHT = 20 
+BOARD_WIDTH = 6 
+BOARD_HEIGHT = 6 
 
 DEFAULT_SQUARE = {"color":"#B9B7A7","name":None}
 
