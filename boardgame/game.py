@@ -62,8 +62,8 @@ def end_turn():
 @socketio.on('disconnect')
 def disconnect():
     emit_message("%s left the game..." % session["nickname"], session["join_code"])
-    # remove_player(session["join_code"],session["player_num"])
-    # check_empty(session["join_code"])
+    remove_player(session["join_code"],session["player_num"])
+    check_empty(session["join_code"])
 
 
 @socketio.on('make_move')
@@ -76,7 +76,7 @@ def move(data):
     j = data['j']
 
     if player_num == get_turn(join_code) :
-        cost = check_connected(join_code, i, j, None) 
+        cost = check_connected(join_code, i, j, None)
         # if cost is -1, then no player controls square
         if cost == -1:
             cost = 100
@@ -153,8 +153,12 @@ def remove_no_territory(join_code):
 
 def check_empty(join_code):
     db = get_db()
-    result = db.execute("SELECT player1, player2, player3, player4 FROM game WHERE join_code = ?",(join_code,)).fetchone()
+    players = get_players(join_code)
+    count = 0
+    for key,value in players.items():
+        if players[key] != None:
+            count+=1
 
-    if json.loads(result["player1"])==None and json.loads(result["player2"])==None and json.loads(result["player3"])==None and json.loads(result["player2"])==None:
+    if (count < 1):
         db.execute("DELETE FROM game WHERE join_code = (?)",(join_code,))
         db.commit()
