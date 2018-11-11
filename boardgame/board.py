@@ -60,6 +60,7 @@ def check_win(join_code):
     return True
 
 def check_connected(join_code, i, j, color=None):
+    board = get_board(join_code)
     if color == None:
         color = board[i][j]["color"]
     board = get_board(join_code)
