@@ -12,7 +12,7 @@ from boardgame.colors import colors
 from boardgame.db import get_db
 bp = Blueprint('game', __name__)
 
-from boardgame.player import get_players
+from boardgame.player import get_players, get_player, update_player_money
 
 @bp.route("/game")
 def run_game():
@@ -78,10 +78,14 @@ def end_turn():
 
 
 
-@socketio.on('move')
+@socketio.on('make_move')
 def move(data):
-    join_code = session["join_code"]
-    nickname = session["nickname"]
+    print(str(data["i"]) + " " + str(data["j"]))
+    if(session["player_num"] == get_turn()):
+        if(get_player[nickname].money >= 100) {
+            update_player_money(-100)
+        }
+
     db = get_db()
 
 def game_message(msg, join_code):
