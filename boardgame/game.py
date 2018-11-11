@@ -25,15 +25,15 @@ def run_game():
     """"Serves game page"""
     return render_template("game.html", join_code = session["join_code"], nickname = session["nickname"], team_colors = colors);
 
-@socketio.on('connect')
+@socketio.on('connect', namespace="/game")
 def connect():
     print("connected")
     join_code = session["join_code"]
+    print("JOIN CODE: "+join_code)
     emit_board(join_code)
     emit_message("%s joined the game!" % session["nickname"], join_code)
-    flash("Test Flash")
 
-@socketio.on('end_turn')
+@socketio.on('end_turn', namespace ="/game")
 def end_turn():
     """Called when a player ends their turn"""
     join_code = session["join_code"]
@@ -59,14 +59,15 @@ def end_turn():
     else:
         emit_message("Game has not started yet")
 
-@socketio.on('disconnect')
+@socketio.on('disconnect', namespace="/game")
 def disconnect():
+    print("DISCONNECT")
     emit_message("%s left the game..." % session["nickname"], session["join_code"])
     remove_player(session["join_code"],session["player_num"])
     check_empty(session["join_code"])
 
 
-@socketio.on('make_move')
+@socketio.on('make_move', namespace ="/game")
 def move(data):
     join_code = session["join_code"]
     nickname = session["nickname"]
@@ -101,7 +102,7 @@ def move(data):
         emit_message("Game has not started yet", join_code)
 
 
-@socketio.on('change_team')
+@socketio.on('change_team', namespace = "/game")
 def change_team(data):
     join_code = session["join_code"]
     nickname = session["nickname"]
