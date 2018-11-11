@@ -9,7 +9,7 @@
 </head>
 <body>
   <div id = "info">
-    
+
     <h1> Play Alliance </h1>
     <p> <b> Room: </b> {{join_code}} </p>
     <p> <b> Nickname: </b> {{nickname}} </p>
@@ -52,7 +52,7 @@
 
     socket.on('message', function(msg) {
       if(msg.room == "{{join_code}}") {
-        $('#log').prepend('<p>Received: ' + msg.data + '</p>');
+        $('#log').prepend('<p>' + msg.data + '</p>');
       }
     });
 
@@ -63,7 +63,7 @@
         for(var i = 0; i < options.length; i++) {
           if(msg.data[options[i]] != null) {
             console.log("worked");
-            $("#"+options[i]).text("Money: " + msg.data[options[i]].money);
+            $("#"+options[i]).text(msg.data[options[i]].nickname + "'s Money: " + msg.data[options[i]].money);
           }
         }
       }
