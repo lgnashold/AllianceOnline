@@ -67,6 +67,14 @@ def end_turn():
         increment_turn(join_code)
         emit_message("Next Turn! %s's turn" % players["player" + str(turn)]["nickname"], join_code)
 
+@socketio.on('connect')
+def connect():
+    emit_message("%s joined the game!" % session[nickname], join_code)
+
+
+@socketio.on('disconnect')
+def disconnect():
+    emit_message("%s left the game..." % session[nickname], join_code)
 
 
 @socketio.on('make_move')
