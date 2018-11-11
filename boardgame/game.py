@@ -164,3 +164,4 @@ def check_empty(join_code):
     if (count < 1):
         db.execute("DELETE FROM game WHERE join_code = (?)",(join_code,))
         db.commit()
+    remove_player(session["join_code"],session["player_num"])
