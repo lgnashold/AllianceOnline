@@ -78,9 +78,10 @@ def end_turn():
                     spaces += 1
         money = spaces * 50 
         update_player_money(join_code, player_num, money)
-    else: 
+    elif turn != None: 
         emit_message("It is not your turn, it is %s's turn" % players["player" + str(turn)]["nickname"], join_code)
- 
+    else:
+        emit_message("Game has not started yet")
     
 @socketio.on('disconnect')
 def disconnect():
@@ -108,8 +109,12 @@ def move(data):
                 print(errormsg)
         else:
             emit_message("You do not have enough money", join_code)
-    else:
+    elif Turn != None:
         emit_message("It is not your turn", join_code)
+    else: 
+        emit_message("Game has not started yet")
+
+
 @socketio.on('change_team')
 def change_team(data):
     join_code = session["join_code"]
@@ -127,5 +132,5 @@ def change_team(data):
             print("Emitted")
         else:
             emit_message("You do not have enough money to change teams", join_code)
-    else:
+    elif:
         emit_message("It is not your turn", join_code)

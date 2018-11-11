@@ -56,7 +56,7 @@
 
     socket.on('message', function(msg) {
         if(msg.room == "{{join_code}}") {
-          $('#log').append('<p>Received: ' + msg.data + '</p>');
+          $('#log').prepend('<p>Received: ' + msg.data + '</p>');
         }
     });
 
