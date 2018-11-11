@@ -55,6 +55,28 @@ def update_player_money(join_code,player_num,moneyChange):
 
     update_player(join_code,player_num, old_player)
 
+def update_player_team(join_code,player_num,team_name):
+    db = get_db()
+    old_player = get_players(join_code)["player" + str(player_num)]
+    if old_player == None:
+        return None
+
+    old_player["team"] = team_name
+
+    update_player(join_code,player_num, old_player)
+
+def num_players_on_team(join_code,team_name):
+    players = get_players(join_code)
+    count = 0;
+
+    for key,value in players:
+        if(value == "team"):
+            if(team_name == players[key][value]):
+                count++
+
+    return count
+
+
 def update_player(join_code, player_num, player_obj):
     db = get_db()
 

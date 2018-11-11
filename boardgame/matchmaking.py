@@ -4,6 +4,7 @@ from boardgame.db import get_db
 
 from boardgame.board import create_board
 from boardgame.player import add_player, get_players
+from boardgame.turn import get_turn
 
 bp = Blueprint("matchmaking", __name__)
 
@@ -28,7 +29,7 @@ def index():
 
 
         res = add_player(join_code, nickname)
-        if(res == None):
+        if(res == None or get_turn(join_code) != None):
             print("Game FULL")
             return render_template("index.html")
 

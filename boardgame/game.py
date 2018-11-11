@@ -84,3 +84,17 @@ def move(data):
             set_square(join_code, i, j, player)
             emit_message("Player %s took a square!" % nickname, join_code)
             emit_board(join_code)
+
+@socketio.on('change_team')
+def change_team(data):
+    join_code = session["join_code"]
+    nickname = session["nickname"]
+    player_num = session["player_num"]
+    team = data["team"]
+
+    if player_num == get_turn(join_code) :
+        if player["money"] >= 50 :
+            update_player_money(join_code, player_num, -50)
+            set_square(join_code, i, j, player)
+            emit_message("Player %s changed to %s!" % nickname % team, join_code)
+            emit_board(join_code)
