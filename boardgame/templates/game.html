@@ -59,7 +59,9 @@ socket.on('update_money', function(msg) {
         console.log("worked");
         $("#"+options[i]).html("<b>"+msg.data[options[i]].nickname + " </b>: $" + msg.data[options[i]].money);
       }
-    });
+    }
+  }
+  });
 
     socket.on('message', function(msg) {
       if(msg.room == "{{join_code}}") {
@@ -95,7 +97,7 @@ socket.on('update_money', function(msg) {
         var players = Object.keys(msg.players);
         var colors = msg.colors;
         // console.log("INNER");
-        // console.log("PLAYers" + msg.players); 
+        // console.log("PLAYers" + msg.players);
         for(var i = 0; i < players.length; i++) {
           console.log("LOOP")
             player = players[i];
@@ -122,7 +124,7 @@ socket.on('update_money', function(msg) {
             }
             else {
               $("#turnmsg").text("It is "+msg.data+"'s turn");
-              $("#turnmsg").css("color", "red");              
+              $("#turnmsg").css("color", "red");
             }
         }
     });
@@ -132,9 +134,9 @@ socket.on('update_money', function(msg) {
       if(msg.room == "{{join_code}}") {
         var text = msg.data + " has won!";
         $("#turnmsg").text(text);
-        $("#turnmsg").css("color", "blue"); 
-      } 
-    
+        $("#turnmsg").css("color", "blue");
+      }
+
     });
 
 
