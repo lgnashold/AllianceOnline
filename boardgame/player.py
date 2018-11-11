@@ -93,6 +93,16 @@ def num_players_on_team(join_code,team_name):
 
     return count
 
+def get_num_players(join_code):
+    players = get_players(join_code)
+    count = 0;
+
+    for key,value in players.items():
+        if(value != None):
+            count+=1
+
+    return count
+
 def get_num_player(join_code, nickname):
     players = get_players(join_code)
 
