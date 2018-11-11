@@ -67,16 +67,17 @@ def end_turn():
 def move(data):
     join_code = session["join_code"]
     nickname = session["nickname"]
+    player_num = session["player_num"]
+    player = get_player(player_num)
+    i = data['i']
+    j = data['j']
 
-    print(str(data["i"]) + " " + str(data["j"]))
-    if session["player_num"] == get_turn() :
-        curr_player = get_player(join_code,nickname)
-        if curr_player["money"] >= 100 :
-            update_player_money(join_code, nickname, -100)
-            set_square(join_code,data["i"], data["j"], curr_player)
+    if player_num == get_turn() :
+        if player["money"] >= 100 :
+            update_player_money(join_code, player_num, -100)
+            set_square(join_code, i, j, player)
+            game_message("Player %s took a square!" % nickname, join_code) 
 
-
-    db = get_db()
 
 def game_message(msg, join_code):
     emit('message', {"data":msg, "room":join_code}, broadcast = True)
