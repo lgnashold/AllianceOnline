@@ -36,6 +36,9 @@ def create_app():
     from . import db
     db.init_app(app)
 
+    from . import lobby
+    app.register_blueprint(lobby.bp)
+    
     from . import game
     app.register_blueprint(game.bp)
 
