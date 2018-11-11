@@ -18,25 +18,28 @@ var GRID_SIZE = 50;
 draw_board();
 
 var isDragging = false;
+var shouldPlace = true;
 var initMosPos;
-$(document).mousedown(function(e) {
+$("#gameCanvas").mousedown(function(e) {
   isDragging = true;
+  shouldPlace = true;
   initMosPos = getMousePos(c,e);
   //console.log(initMosPos)
 });
 
-$(document).mouseup(function(e) {
+$("#gameCanvas").mouseup(function(e) {
   isDragging = false;
   gridSquare = get_col(getMousePos(c,e));
-  if(gridSquare.i != -1) {
+  if(gridSquare.i != -1 && shouldPlace) {
     makeMove(gridSquare.i,gridSquare.j);
     //console.log(gridSquare.i + " " + gridSquare.j)
   }
 });
 
-$(document).mousemove(function(e) {
+$("#gameCanvas").mousemove(function(e) {
   //console.log(isDragging);
   if(isDragging) {
+    shouldPlace = false;
     finalMosPos = getMousePos(c,e);
     //console.log(finalMosPos.x - initMosPos.x);
     centerX += (finalMosPos.x - initMosPos.x);
