@@ -77,7 +77,9 @@ def disconnect():
     emit_message("%s left the game..." % session["nickname"], join_code)
     make_squares_empty(join_code,session["player_num"])
     remove_player(join_code,session["player_num"])
+    split_teams(join_code)
 
+def split_teams(join_code):
     #checks if two final players are on same team, if so fixes that
     team = "none"
     count = 0
@@ -97,8 +99,6 @@ def disconnect():
 
         emit_board(join_code)
         check_empty(join_code)
-
-
 
 
 def make_squares_empty(join_code, player_num):
@@ -155,7 +155,7 @@ def change_team(data):
 
     if player_num == get_turn(join_code):
         if num_players_on_team(join_code, team) >=  math.ceil(get_num_players(join_code)/2 ):
-            emit_error("There are already do many people on that team", join_code)  
+            emit_error("There are already do many people on that team", join_code)
         elif player["money"] < COST_TEAM_SWITCH:
             emit_error("You do not have enough money to switch teams!", join_code)
         else:
@@ -194,6 +194,8 @@ def remove_no_territory(join_code):
         remove_player(join_code,3)
     if(not player4):
         remove_player(join_code,4)
+
+    split_teams(join_code)
 
 
 def test_end_game():
