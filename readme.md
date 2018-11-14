@@ -4,8 +4,8 @@
 - [ ] Switch to postgresql/deploy to heroku
 - [ ] Make money by adjacency (team members)
 - [ ] Disconnect During Turn
-- [ ] Split teams up when players loose (not just disconnect)
 - [ ] Show how much a square costs to buy
 - [ ] Improve UI?
 - [ ] Mobile Optimize
 - [ ] Fix global error messages
+- [X] Split teams up when players lose (not just disconnect)
