@@ -78,14 +78,19 @@ def disconnect():
     emit_message("%s left the game..." % session["nickname"], join_code)
     make_squares_empty(join_code,session["player_num"])
     remove_player(join_code,session["player_num"])
-    split_teams(join_code)
-    if(not check_empty(join_code)): #removes game if empty, otherwise deal with turn
-        print(str(get_turn(join_code)) + " " + str(session["player_num"]))
-        if(str(get_turn(join_code)) == str(session["player_num"])): #if player who quit is on their turn, increment turn
+
+    #removes game if empty, otherwise deal with repairing the game
+    if(not check_empty(join_code)):
+        #if player who quit is on their turn, increment turn
+        if(str(get_turn(join_code)) == str(session["player_num"])):
             print("Incrementing turn because player quit on their turn")
             increment_turn(join_code)
             emit_turn(join_code, get_player(join_code, get_turn(join_code))["nickname"])
-    emit_board(join_code)
+
+        #clean up the game by updating the board and splitting teams
+        split_teams(join_code)
+        emit_board(join_code)
+
     #TODO: bug, player could have won here.
 
 
