@@ -33,6 +33,7 @@ def add_player(join_code, nickname, money=300, team=None):
     return None
 
 def remove_player(join_code, player_num):
+    print("REMOVING PLAYER " + str(player_num))
     """Removes player from a game"""
     update_player(join_code,player_num,None)
 
