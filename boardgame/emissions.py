@@ -1,5 +1,7 @@
 from . import socketio
 from boardgame.board import get_json_board
+from flask import Flask, request
+
 
 from flask_socketio import emit
 
@@ -15,8 +17,8 @@ def emit_money(join_code, players, channel="/game"):
 
 def emit_error(msg, join_code):
     """Emits an error to just one player"""
-    socketio.emit('error', {"data":msg}, namespace='/game')
-    
+    socketio.emit('error', {"data":msg}, room = request.sid, namespace='/game')
+
 def emit_turn(join_code, nickname):
     print("Emit turn")
     socketio.emit('update_turn', {"data":nickname, "room":join_code}, broadcast = True, namespace="/game")
