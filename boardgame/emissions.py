@@ -29,6 +29,9 @@ def emit_end_game(join_code, nickname):
 def emit_teams(join_code, teamcolors, players) :
         socketio.emit('update_teams', {"players": players, "colors":teamcolors, 'room':join_code}, broadcast=True, namespace = "/game")
 
+def emit_cost(join_code,cost,i,j) :
+        socketio.emit('update_cost',{"cost":cost,"i":i,"j":j,"room":join_code},room=request.sid, namespace = "/game")
+
 def emit_lobby(join_code, list_of_players):
     print("EMMITED LOBBY")
     socketio.emit('emit_lobby', {"data":list_of_players, "room":join_code}, broadcast = True, namespace="/lobby")

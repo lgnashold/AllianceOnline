@@ -154,12 +154,7 @@ def move(data):
     j = data['j']
 
     if player_num == get_turn(join_code) :
-        cost = check_connected(join_code, i, j, None)
-        if cost == -1:
-            cost = COST_EMPTY_SQUARE
-        else:
-            # Otherwise does 30 times num of connected squares
-            cost = COST_FILLED_SQUARE(cost)
+        cost = get_cost_of_square(i,j)
         def make_move():
             errormsg = set_square(join_code, i, j, player, player_initiated=True)
             gameover = test_end_game()
@@ -167,7 +162,22 @@ def move(data):
                 emit_end_game(join_code, nickname)
             return errormsg
         check_money(make_move, cost)
-    
+
+@socketio.on('get_cost', namespace = "/game")
+def get_cost(data):
+    print("GOT COST REQUEST")
+    join_code = session["join_code"]
+    emit_cost(join_code, get_cost_of_square(data["i"], data["j"]),data["i"],data["j"])
+
+
+def get_cost_of_square(i,j):
+    cost = check_connected(session["join_code"], i, j, None)
+    if cost == -1:
+        cost = COST_EMPTY_SQUARE
+    else:
+        # Otherwise does 30 times num of connected squares
+        cost = COST_FILLED_SQUARE(cost)
+    return cost
 
 @socketio.on('change_team', namespace = "/game")
 def change_team(data):
@@ -187,7 +197,7 @@ def change_team(data):
                 emit_teams(join_code, colors, get_players(join_code))
             return errormsg
         check_money(change_team_inner, COST_TEAM_SWITCH)
-    
+
 
 def remove_no_territory(join_code):
     print("REMOVING PLAYERS WITH NO TERRITORY")

@@ -109,6 +109,14 @@ socket.on('update_money', function(msg) {
 
     });
 
+    socket.on('update_cost', function(msg) {
+      if(msg.room == "{{join_code}}") {
+        clickedGridSquare.cost = msg.cost;
+        draw_board();
+      }
+
+    });
+
 
 
 
@@ -122,6 +130,10 @@ function endTurn() {
 
 function makeMove(iPos,jPos) {
   socket.emit('make_move', {i:iPos,j:jPos});
+}
+
+function getCost(iPos,jPos) {
+  socket.emit('get_cost', {i:iPos,j:jPos});
 }
 
 

@@ -2,6 +2,12 @@ var centerX = 0;
 var centerY = 0;
 var boardPos =[];
 
+var isDragging = false;
+var shouldPlace = true;
+var initMosPos;
+
+var clickedGridSquare = {i:-1,j:-1,cost:-1};
+
 var board_color = "lightgray";
 var ctx;
 
@@ -25,9 +31,8 @@ var GRID_SIZE = 50;
 
 draw_board();
 
-var isDragging = false;
-var shouldPlace = true;
-var initMosPos;
+
+
 $("#gameCanvas").mousedown(function(e) {
   isDragging = true;
   shouldPlace = true;
@@ -39,7 +44,17 @@ $("#gameCanvas").mouseup(function(e) {
   isDragging = false;
   gridSquare = get_col(getMousePos(c,e));
   if(gridSquare.i != -1 && shouldPlace) {
-    makeMove(gridSquare.i,gridSquare.j);
+    console.log(clickedGridSquare.i + " " + gridSquare.i);
+    console.log(clickedGridSquare.j + " " + gridSquare.j);
+
+    if(gridSquare.i === clickedGridSquare.i && gridSquare.j === clickedGridSquare.j) {
+      console.log("should move");
+      makeMove(gridSquare.i,gridSquare.j);
+      clickedGridSquare = {i:-1,j:-1,cost:-1};
+    } else {
+      clickedGridSquare = gridSquare;
+      getCost(gridSquare.i,gridSquare.j);
+    }
     //console.log(gridSquare.i + " " + gridSquare.j)
   }
 });
@@ -94,8 +109,18 @@ function draw_board() {
         ctx.fillStyle = "black";
         ctx.fillText(boardPos[i][j].name,j*GRID_SIZE+centerX + GRID_SIZE/5,i*GRID_SIZE+centerY + GRID_SIZE/4);
       }
-
     }
+  }
+  draw_clicked_square()
+}
+
+function draw_clicked_square() {
+  if(clickedGridSquare.i != -1) {
+    ctx.strokeStyle = "white";
+    ctx.lineWidth = 5;
+    ctx.strokeRect(clickedGridSquare.j*GRID_SIZE + centerX,clickedGridSquare.i*GRID_SIZE+centerY,GRID_SIZE,GRID_SIZE);
+    ctx.fillStyle = "white";
+    ctx.fillText(clickedGridSquare.cost,clickedGridSquare.j*GRID_SIZE+centerX + GRID_SIZE/2,clickedGridSquare.i*GRID_SIZE+centerY + GRID_SIZE/2);
   }
 }
 
