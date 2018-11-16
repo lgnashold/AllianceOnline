@@ -2,6 +2,7 @@ from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
 
+import time
 from . import socketio
 from boardgame.db import get_db
 
@@ -57,20 +58,20 @@ def start_game():
        set_square(join_code, 4, 1, players["player4"])
 
     set_turn(join_code, 1)
-
+    emit("reset_session_var", broadcast = True, namespace = "/lobby")
     emit_message("Game started! %s's turn" % players["player1"]["nickname"], join_code)
-    # emit_money(join_code,get_players(join_code))
     emit_board(join_code)
-    emit('redirect', {'url': url_for('game.run_game')}, broadcast = True)
 
 
 @socketio.on("set_player_num", namespace = "/lobby")
 def set_player_num():
-    print("SET PLAYER NUM")
     num = get_num_player(session["join_code"], session["nickname"])
-    print(num)
     session["player_num"] = num
-    print(session["player_num"])
+    session.modified = True
+    print("SET PLAYER NUM to " + str(session["player_num"]))
+    time.sleep(1)
+    emit('redirect', {'url': url_for('game.run_game')}, broadcast = True)
+
 @socketio.on('disconnect', namespace="/lobby")
 def disconnect():
     join_code = session["join_code"]

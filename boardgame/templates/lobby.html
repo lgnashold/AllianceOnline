@@ -51,10 +51,15 @@
     });
 
     socket.on('redirect', function (data) {
-      socket.emit("set_player_num");
+      console.log("REDIRECT");
       window.location = data.url;
     });
 
+    socket.on('reset_session_var', function(msg) {
+      console.log("RESET SESSION VAR");
+      socket.emit("set_player_num");
+    } );
+    
     function startGame() {
       console.log("emit");
       socket.emit('start_game');
