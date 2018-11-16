@@ -58,19 +58,24 @@ def start_game():
        set_square(join_code, 4, 1, players["player4"])
 
     set_turn(join_code, 1)
-    emit("reset_session_var", broadcast = True, namespace = "/lobby")
+    #emit("redirect", broadcast = True, namespace = "/lobby")
+    emit('redirect', {'url': url_for('lobby.intermediate')}, broadcast = True)
     emit_message("Game started! %s's turn" % players["player1"]["nickname"], join_code)
     emit_board(join_code)
 
 
-@socketio.on("set_player_num", namespace = "/lobby")
+@bp.route("/intermediate", methods = ["GET"])
+def intermediate():
+    set_player_num()
+    emit('redirect', {'url': url_for('game.run_game')}, broadcast = True, namespace = "/lobby")
+    return redirect(url_for('game.run_game')) 
+#@socketio.on("set_player_num", namespace = "/lobby")
 def set_player_num():
     num = get_num_player(session["join_code"], session["nickname"])
     session["player_num"] = num
     session.modified = True
     print("SET PLAYER NUM to " + str(session["player_num"]))
-    time.sleep(1)
-    emit('redirect', {'url': url_for('game.run_game')}, broadcast = True)
+    print(session)
 
 @socketio.on('disconnect', namespace="/lobby")
 def disconnect():

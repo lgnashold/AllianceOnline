@@ -36,6 +36,7 @@ def run_game():
 def connect():
     join_code = session["join_code"]
     print("CONNECTED TO GAME")
+    print(session)
     emit_board(join_code)
     emit_money(join_code, get_players(join_code))
     emit_teams(join_code, colors, get_players(join_code))
@@ -178,6 +179,7 @@ def change_team(data):
 
     if player_num == get_turn(join_code):
         def change_team_inner():
+            errormsg = None
             if num_players_on_team(join_code, team) >=  math.ceil(get_num_players(join_code)/2 ):
                 errormsg = "There are already do many people on that team"
             else:
