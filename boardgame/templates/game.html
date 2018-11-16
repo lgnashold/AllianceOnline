@@ -33,9 +33,7 @@ var socket = io.connect("/game");
 
 socket.on("update_board",function(msg) {
   if(msg.room == "{{join_code}}") {
-    console.log("recieved: " + msg);
     boardPos = JSON.parse(msg.board);
-    console.log(boardPos);
     draw_board();
   }
 });
@@ -51,46 +49,37 @@ socket.on('error', function(msg) {
 });
 
 socket.on('update_money', function(msg) {
+  console.log("SOCKET EVENT RECEIVED: update_money");
   if(msg.room == "{{join_code}}") {
-    console.log("players: " + msg.data);
     options = Object.keys(msg.data);
     for(var i = 0; i < options.length; i++) {
       if(msg.data[options[i]] != null) {
-        console.log("worked");
         $("#"+options[i]).html("<b>"+msg.data[options[i]].nickname + " </b>: $" + msg.data[options[i]].money);
       }
     }
   }
   });
 
-    socket.on('message', function(msg) {
+  /*  socket.on('message', function(msg) {
+      console.log("SOCKET EVENT RECEIVED: message");
       if(msg.room == "{{join_code}}") {
         $('#log').prepend('<p>' + msg.data + '</p>');
       }
     });
 
     socket.on('error', function(msg) {
+      console.log("SOCKET EVENT RECEIVED: error");
       $('#log').prepend('<b><p class = "error">'+msg.data + '</b></p>');
-    });
+    }); */
 
     socket.on('update_teams', function(msg) {
-      console.log("UPDATE TEAMS");
       if(msg.room == "{{join_code}}") {
 
         var players = Object.keys(msg.players);
         var colors = msg.colors;
-        // console.log("INNER");
-        // console.log("PLAYers" + msg.players);
         for(var i = 0; i < players.length; i++) {
-          console.log("LOOP")
             player = msg.players[players[i]];
             if(player.nickname == "{{nickname}}")   {
-
-              //console.log("FOUND");
-              console.log("colors:");
-              console.log(colors);
-              console.log("players: ");
-              console.log(player);
               set_board_color(colors[player["team"]]);
               return;
             }
@@ -100,9 +89,7 @@ socket.on('update_money', function(msg) {
 
     socket.on('update_turn', function(msg) {
         if(msg.room == "{{join_code}}") {
-          console.log("turn: " + msg.data);
             if("{{nickname}}" == msg.data) {
-              console.log("My nickname");
               $("#turnmsg").text("IT IS YOUR TURN");
               $("#turnmsg").css("color", "green");
             }
@@ -114,7 +101,6 @@ socket.on('update_money', function(msg) {
     });
 
     socket.on('end_game', function(msg) {
-      console.log("print");
       if(msg.room == "{{join_code}}") {
         var text = msg.data + " has won!";
         $("#turnmsg").text(text);
@@ -135,7 +121,6 @@ function endTurn() {
 }
 
 function makeMove(iPos,jPos) {
-  console.log("emit move " + iPos + " "+ jPos);
   socket.emit('make_move', {i:iPos,j:jPos});
 }
 

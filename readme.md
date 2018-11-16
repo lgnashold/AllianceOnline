@@ -1,12 +1,13 @@
 ## Todo
-- [X] Fix Broke Server
-- [ ] Fix Lobby Disconnects
-- [ ] Switch to postgresql/deploy to heroku
+(Hardest to easiest)
 - [ ] Make money by adjacency (team members)
-- [X] Disconnect During Turn
-- [ ] If player wins because opponent disconnects, immediate response.
 - [ ] Show how much a square costs to buy
+- [ ] Fix Lobby Disconnects
 - [ ] Improve UI?
+- [ ] Switch to postgresql/deploy to heroku
 - [ ] Mobile Optimize
-- [ ] Fix global error messages
+- [X] Fix global error messages
 - [X] Split teams up when players lose (not just disconnect)
+- [X] Disconnect During Turn
+- [X] Fix Broke Server
+- [X] If player wins because opponent disconnects, immediate response.
