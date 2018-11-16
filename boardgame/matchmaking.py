@@ -19,6 +19,11 @@ def index():
         players = get_list(join_code) 
        
         #TODO HERE: Check if game is not already started
+        game = db.execute("SELECT * FROM game WHERE join_code = (?)", (join_code,)).fetchone()
+        if game != None:
+            print("ERROR: Game has already started")
+            return render_template("index.html")
+
         if players is None:
             #create new game
             db.execute(

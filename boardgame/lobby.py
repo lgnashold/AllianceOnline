@@ -57,6 +57,8 @@ def start_game():
     if(players["player4"] != None):
        set_square(join_code, 4, 1, players["player4"])
 
+    remove_list(join_code)
+
     set_turn(join_code, 1)
     #emit("redirect", broadcast = True, namespace = "/lobby")
     emit('redirect', {'url': url_for('lobby.intermediate')}, broadcast = True)
@@ -84,10 +86,13 @@ def disconnect():
     print("LOBBY DISCONNECT")
     # If player is last one, removes lobby from DB
     players = get_list(join_code)
+    if players == None:
+        # list has already been removed or doesn't exist
+        return
+    players.remove(session["nickname"])
     if len(players) == 0:
         # Remove row
         remove_list(join_code)
     else:
-        players.remove(session["nickname"])
         set_list(join_code, players)
         emit_lobby(join_code, get_list(join_code))
