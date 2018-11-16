@@ -51,6 +51,7 @@
     });
 
     socket.on('redirect', function (data) {
+      socket.emit("set_player_num");
       window.location = data.url;
     });
 

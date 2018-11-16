@@ -35,6 +35,7 @@ def run_game():
 @socketio.on('connect', namespace="/game")
 def connect():
     join_code = session["join_code"]
+    print("PLAYER NUM: "+ session["player_num"])
     emit_board(join_code)
     emit_money(join_code, get_players(join_code))
     emit_teams(join_code, colors, get_players(join_code))

@@ -16,3 +16,8 @@ def set_list(join_code, newlist):
     jsonres = json.dumps(newlist)
     db.execute("UPDATE lobby SET players = (?) WHERE join_code = (?)", (jsonres, join_code))
     db.commit()
+
+def remove_list(join_code):
+    db = get_db()
+    db.execute("DELETE FROM lobby WHERE join_code = (?)", (join_code,))
+    db.commit()
