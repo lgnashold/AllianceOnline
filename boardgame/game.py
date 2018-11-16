@@ -36,7 +36,6 @@ def run_game():
 def connect():
     join_code = session["join_code"]
     print("CONNECTED TO GAME")
-    print(session)
     emit_board(join_code)
     emit_money(join_code, get_players(join_code))
     emit_teams(join_code, colors, get_players(join_code))

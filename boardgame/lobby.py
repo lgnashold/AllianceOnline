@@ -21,7 +21,6 @@ from boardgame.lobbydb import get_list, set_list, remove_list
 @socketio.on('connect', namespace="/lobby")
 def connect():
     join_code = session["join_code"]
-    print("EVENT: " + session["nickname"] + " joined the lobby with join code: " + join_code)
     emit_message("%s joined the game!" % session["nickname"], join_code, channel="/lobby")
     emit_lobby(join_code, get_list(join_code))
 
@@ -38,6 +37,7 @@ def start_game():
                 'INSERT INTO game (join_code) VALUES (?)', (join_code,)
             )
     db.commit()
+
     # Gets players from the lobby database
     players = get_list(join_code)    
     # Creates board in the player database
@@ -56,42 +56,34 @@ def start_game():
        set_square(join_code, 1, 4, players["player3"])
     if(players["player4"] != None):
        set_square(join_code, 4, 1, players["player4"])
-
+    
+    # Removes row from lobby database
     remove_list(join_code)
-
+    # set's turn to first player
     set_turn(join_code, 1)
-    #emit("redirect", broadcast = True, namespace = "/lobby")
+    # Forces all connected sockets to call intermediate method, which 
+    # sets session variable and redirects them to game
     emit('redirect', {'url': url_for('lobby.intermediate')}, broadcast = True)
-    emit_message("Game started! %s's turn" % players["player1"]["nickname"], join_code)
-    emit_board(join_code)
 
 
 @bp.route("/intermediate", methods = ["GET"])
 def intermediate():
-    set_player_num()
-    emit('redirect', {'url': url_for('game.run_game')}, broadcast = True, namespace = "/lobby")
-    return redirect(url_for('game.run_game')) 
-#@socketio.on("set_player_num", namespace = "/lobby")
-def set_player_num():
     num = get_num_player(session["join_code"], session["nickname"])
     session["player_num"] = num
-    session.modified = True
-    print("SET PLAYER NUM to " + str(session["player_num"]))
-    print(session)
+    return redirect(url_for('game.run_game')) 
 
 @socketio.on('disconnect', namespace="/lobby")
 def disconnect():
     join_code = session["join_code"]
     emit_message("%s left the game..." % session["nickname"], session["join_code"])
-    print("LOBBY DISCONNECT")
     # If player is last one, removes lobby from DB
     players = get_list(join_code)
     if players == None:
         # list has already been removed or doesn't exist
         return
     players.remove(session["nickname"])
+
     if len(players) == 0:
-        # Remove row
         remove_list(join_code)
     else:
         set_list(join_code, players)
