@@ -3,6 +3,7 @@
 - [ ] Make money by adjacency (team members)
 - [ ] Flash error messages one at a time and in a visible way
 - [ ] Switch to postgresql/deploy to heroku
+- [ ] Refactor code to properly use rooms
 - [ ] Add more feedback to move previewing, red when unpurchasable square.
 - [ ] Mobile Optimize
 - [ ] Clean up any UI missteps
