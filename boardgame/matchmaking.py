@@ -5,7 +5,7 @@ from boardgame.db import get_db
 from boardgame.board import create_board
 from boardgame.player import add_player, get_players
 from boardgame.turn import get_turn
-
+from boardgame.lobbydb import get_list, set_list
 bp = Blueprint("matchmaking", __name__)
 
 @bp.route("/", methods = ('GET','POST'))
@@ -16,24 +16,27 @@ def index():
 
         db = get_db()
 
-        game_result = db.execute('SELECT player1, player2,join_code FROM game WHERE join_code = ?', (join_code,)).fetchone()
-
-        if game_result is None:
+        players = get_list(join_code) 
+       
+        #TODO HERE: Check if game is not already started
+        if players is None:
             #create new game
             db.execute(
-                'INSERT INTO game (join_code) VALUES (?)', (join_code,)
+                'INSERT INTO lobby (join_code) VALUES (?)', (join_code,)
             )
             db.commit()
-            # Creates a board, updates it in sql
-            create_board(join_code)
-
-
-        res = add_player(join_code, nickname)
-        if(res == None or get_turn(join_code) != None):
-            print("Game FULL")
+            players = get_list(join_code)
+    
+        if len(players) >= 4:
+            print("ERROR: Game " + join_code + " IS FULL")
             return render_template("index.html")
+        if players.count(nickname) != 0:
+            print("ERROR: Game " + join_code + "  already has name "+nickname)
+            return render_template("index.html")
+        
+        players.append(nickname)
+        set_list(join_code, players)
 
-        session["player_num"] = res
         # Updates session variables
         session["join_code"] = join_code
         session["nickname"] = nickname

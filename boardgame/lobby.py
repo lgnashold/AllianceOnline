@@ -16,15 +16,13 @@ from boardgame.player import *
 
 from boardgame.turn import get_turn, set_turn, increment_turn
 
-
+from boardgame.lobbydb import get_list, set_list
 @socketio.on('connect', namespace="/lobby")
 def connect():
-    print("connected")
     join_code = session["join_code"]
-    emit_board(join_code)
-    emit_message("%s joined the game!" % session["nickname"], join_code)
-    print(join_code)
-    emit_money(join_code,get_players(join_code), "/lobby")
+    print("EVENT: " + session["nickname"] + " joined the lobby with join code: " + join_code)
+    emit_message("%s joined the game!" % session["nickname"], join_code, channel="/lobby")
+    emit_lobby(join_code, get_list(join_code))
 
 @bp.route("/lobby", methods = ("GET","POST"))
 def enter_lobby():
@@ -32,12 +30,12 @@ def enter_lobby():
 
 @socketio.on('start_game', namespace="/lobby")
 def start_game():
-    print("got it")
     join_code = session["join_code"]
     db = get_db()
     players = get_players(join_code)
     board = get_board(join_code)
 
+    
     if get_turn(join_code) != None:
         return
     # Inserts starting position
@@ -53,10 +51,16 @@ def start_game():
     set_turn(join_code, 1)
 
     emit_message("Game started! %s's turn" % players["player1"]["nickname"], join_code)
-    emit_money(join_code,get_players(join_code))
+    # emit_money(join_code,get_players(join_code))
     emit_board(join_code)
     emit('redirect', {'url': url_for('game.run_game')}, broadcast = True)
 
-@socketio.on('disconnect', namespace="lobby")
+@socketio.on('disconnect', namespace="/lobby")
 def disconnect():
+    join_code = session["join_code"]
     emit_message("%s left the game..." % session["nickname"], session["join_code"])
+    print("LOBBY DISCONNECT")
+    players = get_list(join_code)
+    players.remove(session["nickname"])
+    set_list(join_code, players)
+    emit_lobby(join_code, get_list(join_code))

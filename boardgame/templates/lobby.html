@@ -14,10 +14,10 @@
 {% block content %}
   <div id = "namecontainer" >
     <h1 style = "text-align: center">Players</h1>
-    <div  class = 'playerdiv' style="float:left"><p id = "player1"></p></div>
-    <div class = 'playerdiv' style="float:right"><p id = "player2"></p></div>
-    <div class = 'playerdiv' style = "float:left"><p id = "player3"></p></div>
-    <div class = 'playerdiv' style = "float:right"><p id = "player4"></p></div>
+    <div  class = 'playerdiv' style="float:left"><p id = "1"></p></div>
+    <div class = 'playerdiv' style="float:right"><p id = "2"></p></div>
+    <div class = 'playerdiv' style = "float:left"><p id = "3"></p></div>
+    <div class = 'playerdiv' style = "float:right"><p id = "4"></p></div>
     <button  onclick = "startGame()" class = "game_button"> Start Game </button>
     <h1 style = "text-align: center; font-size: 54px">CODE: {{ join_code }}
   </div>
@@ -27,17 +27,18 @@
     var socket = io.connect("/lobby");
 
     //when you recieve a message append it to the log
-    socket.on('update_money', function(msg) {
-              console.log("players: " + msg.data);
+    socket.on('emit_lobby', function(msg) {
+      console.log("RECEIVED emit_lobby");
+      console.log("players: " + msg.data);
       if(msg.room == "{{join_code}}") {
-        console.log("players: " + msg.data);
-        options = Object.keys(msg.data);
-        for(var i = 0; i < options.length; i++) {
-          if(msg.data[options[i]] != null) {
-            console.log("worked");
-            $("#"+options[i]).text(""+msg.data[options[i]].nickname);
-            $("#"+options[i]).parent().css("opacity", "1");
-          }
+        players = msg.data;
+        for(var i = 1; i <= players.length; i++) {
+            $("#"+i).text(""+players[i-1]);
+            $("#"+i).parent().css("opacity", "1"); 
+        }
+        for(var i = players.length + 1; i <= 4; i++) {
+            $("#"+i).text("");
+            $("#"+i).parent().css("opacity", ".2"); 
         }
       }
     });
