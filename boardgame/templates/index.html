@@ -1,20 +1,31 @@
-{%extends 'base.html' %}
-{% block title %}Join{% endblock %}
-{% block info %}
-  <h1>Welcome to Alliances</h1>
-  <p>The rules are simple. You and several of your friends all get together to join a game. You each take turns making moves. On your move, you can click on a square bordering your territory to capture (for a price) or you can even change teams. </p>
-  <p>To create a game, simply choose a code, then share the code with your friends</p>
-{% endblock %}
-{% block content %}
- <form id = "form" method="post">
-    <div class = "formline">
-        <label class = "inputlabel" for="join_code">Join Code</label>
-        <input class = "input" name="join_code" id="join_code" required>
-    </div>
-    <div class = "formline">
-      <label class = "inputlabel" for="nickname">Nickname</label>
-      <input class = "input" name="nickname" id="nickname" required>
-    </div>
-    <input class = "formline game_button" type="submit" value="Enter Game!">
- </form>
-{% endblock %}
+<!doctype html>
+<html>
+<head>
+  <title> Alliance -- Join </title>
+  <link rel = "stylesheet" href = "{{ url_for('static', filename='style.css') }}">
+  <link href="https://fonts.googleapis.com/css?family=Almendra:400,400i,700,700i" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <div class = "box_content">
+    <img src = "{{ url_for('static', filename='logo.png') }}" class = "logo"> </img>
+    <p> Welcome to Alliace Online, an multiplayer strategy game. Carefully craft
+      alliances, joining teams so that you reap the benefits from their territory while
+      conquering other player's lands.
+      However, peace can not last for long, because if one player falls, alliances will break.
+      It is your goal to be the last empire standing. </p>
+      <p> To make a game, type in a join code. If your friends type in the same code, you will all be put into the same game! </p>
+    <form class = "join_form" method="post">
+       <div class = "form_line">
+           <label class = "input_label" for="join_code">Join Code</label>
+           <input class = "input" name="join_code" id="join_code" required>
+       </div>
+       <div class = "form_line">
+         <label class = "input_label" for="nickname">Nickname</label>
+         <input class = "input" name="nickname" id="nickname" required>
+       </div>
+       <input class = "game_button" type="submit" value="Enter Game">
+    </form>
+  </div>
+</body>
+</html>

@@ -3,11 +3,19 @@
 <head>
   <title> Alliance -- {% block title %}{% endblock %} </title>
   <link href="https://fonts.googleapis.com/css?family=Special+Elite" rel="stylesheet">
-  <link rel = "stylesheet" href = "{{ url_for('static', filename='{% block style %}{endblock}') }}">
+  <link rel = "stylesheet" href = "{{ url_for('static', filename='style.css') }}">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src = "https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.dev.js"> </script>
 </head>
 <body>
-      {% block content %} {% endblock %}
+  <div id = "info">
+
+    <h1> Play Alliance </h1>
+    {% block info %}{% endblock %}
+
+  </div>
+  <div id = "board">
+    {% block content %}{% endblock %}
+  </div>
 </body>
 </html>

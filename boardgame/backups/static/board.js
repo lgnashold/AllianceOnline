@@ -1,4 +1,5 @@
-
+var centerX = 0;
+var centerY = 0;
 var boardPos =[];
 
 var isDragging = false;
@@ -13,25 +14,20 @@ var ctx;
 var c = document.getElementById("gameCanvas");
 var ctx = c.getContext("2d");
 
-ctx.canvas.width  = window.innerWidth;
-ctx.canvas.height = window.innerHeight - 230;
-
-var WIDTH = ctx.canvas.width;
-var HEIGHT = ctx.canvas.height;
-var GRID_SIZE = 50;
+ctx.canvas.width  = window.innerWidth - $("#info").outerWidth( true ) - 39;
+ctx.canvas.height = window.innerHeight - 20;
 
 $(document).ready(function(){
   $(window).resize(function(){
-    ctx.canvas.width  = window.innerWidth;
-    ctx.canvas.height = window.innerHeight - 230;
-    WIDTH = ctx.canvas.width;
-    HEIGHT = ctx.canvas.height;
+    ctx.canvas.width  = window.innerWidth - $("#info").outerWidth( true ) - 39;
+    ctx.canvas.height = window.innerHeight - 20;
     draw_board();
   });
 });
 
-var centerX = 0;
-var centerY = 0;
+var WIDTH = ctx.canvas.width;
+var HEIGHT = ctx.canvas.height;
+var GRID_SIZE = 50;
 
 draw_board();
 

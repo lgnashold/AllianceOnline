@@ -1,0 +1,101 @@
+.bottom_tools {
+  width: 100vw;
+  padding: 10px 10px 10px 10px;
+  height: 180px;
+  position: fixed;
+  bottom: 0;
+  background-color: #663c23;
+}
+
+.bottom_banner {
+  width: 100vw;
+  height: 50px;
+  position: fixed;
+  bottom: 180;
+  background-color: #3d2415;
+  text-shadow: 3px 3px #361C09;
+  text-align: center;
+  font-size: 30px;
+  line-height: 50px;
+  color: white;
+}
+
+.log {
+  width: calc(45vw - 15px);
+  height: 100%;
+  float: left;
+  background-color: darkgray;
+  border-style: inset;
+  border-color: darkgray;
+  overflow-y: scroll;
+  position: relative;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.game_info {
+  width: calc(55vw - 15px);
+  height: 100%;
+  padding-left: 10px;
+  padding-right: 10px;
+
+  background-color: darkgray;
+  border-style: inset;
+  border-color: darkgray;
+  float:right;
+  overflow-y: scroll;
+}
+
+.game_button {
+  background-color: #F0BB0E;
+  border-style: outset;
+  border-color: #F0BB0E;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  height: 50px;
+  font-size: 20px;
+  width: 100%;
+  font-family: 'Almendra', serif;
+}
+
+.button_area {
+  text-align: center;
+  float: right;
+}
+
+.chat_box {
+  width: calc(100% - 20px);
+  position: absolute;
+  bottom: 0;
+}
+
+.join_button {
+  background-color: #F0BB0E;
+  border-style: outset;
+  border-color: #F0BB0E;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  height: 20px;
+  font-size: 13px;
+  font-family: 'Almendra', serif;
+}
+
+
+html,body {
+  background-color: #3d2415;
+  font-family: 'Almendra', serif;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+@media only screen and (max-device-width: 700px) or (max-width: 700px) {
+  .button_area {
+    float:none;
+  }
+}

@@ -1,0 +1,141 @@
+{%extends 'base.html' %}
+{%block title %}Play{% endblock %}
+{% block info %}
+
+<p class = "big_text" > <b> Nickname: </b> {{nickname}} </p>
+<button  onclick = "endTurn()" class = "game_button"> End Turn </button>
+<p>
+  <button class = "team-button" style = " background-color: {{team_colors.team1}}" onclick = "change_team('team1')">Join</button>
+  <button class = "team-button" style = " background-color: {{team_colors.team2}}" onclick = "change_team('team2')">Join</button>
+  <button class = "team-button" style = " background-color: {{team_colors.team3}}" onclick = "change_team('team3')">Join</button>
+  <button class = "team-button" style = " background-color: {{team_colors.team4}}" onclick = "change_team('team4')">Join</button>
+</p>
+<p class = "big_text" id = "player1"></p>
+<p class = "big_text" id = "player2"></p>
+<p class = "big_text" id = "player3"></p>
+<p class = "big_text"  id = "player4"></p>
+
+<div id = "log" class = "log-area">
+  <!--Log Messages will be added here -->
+</div>
+
+{% endblock %}
+{% block content %}
+<h1 style = "text-align: center; font-size: 128, postion: fixed" id = "turnmsg"></h1>
+<canvas id = "gameCanvas" style = "background-color:lightgray">Your browser does not support HTML5 Canvas</canvas>
+<script src = "{{ url_for('static', filename='board.js') }}"> </script>
+<script>
+console.log("connected");
+
+var socket = io.connect("/game");
+
+//when you recieve a message append it to the log
+
+socket.on("update_board",function(msg) {
+  if(msg.room == "{{join_code}}") {
+    boardPos = JSON.parse(msg.board);
+    draw_board();
+  }
+});
+
+socket.on('message', function(msg) {
+  if(msg.room == "{{join_code}}") {
+    $('#log').prepend('<p>' + msg.data + '</p>');
+  }
+});
+
+socket.on('error', function(msg) {
+  $('#log').prepend('<b><p class = "error">'+msg.data + '</b></p>');
+});
+
+socket.on('update_money', function(msg) {
+  console.log("SOCKET EVENT RECEIVED: update_money");
+  if(msg.room == "{{join_code}}") {
+    options = Object.keys(msg.data);
+    for(var i = 0; i < options.length; i++) {
+      if(msg.data[options[i]] != null) {
+        $("#"+options[i]).html("<b>"+msg.data[options[i]].nickname + " </b>: $" + msg.data[options[i]].money);
+      }
+    }
+  }
+  });
+
+  /*  socket.on('message', function(msg) {
+      console.log("SOCKET EVENT RECEIVED: message");
+      if(msg.room == "{{join_code}}") {
+        $('#log').prepend('<p>' + msg.data + '</p>');
+      }
+    });
+
+    socket.on('error', function(msg) {
+      console.log("SOCKET EVENT RECEIVED: error");
+      $('#log').prepend('<b><p class = "error">'+msg.data + '</b></p>');
+    }); */
+
+    socket.on('update_teams', function(msg) {
+      if(msg.room == "{{join_code}}") {
+
+        var players = Object.keys(msg.players);
+        var colors = msg.colors;
+        for(var i = 0; i < players.length; i++) {
+            player = msg.players[players[i]];
+            if(player.nickname == "{{nickname}}")   {
+              set_board_color(colors[player["team"]]);
+              return;
+            }
+        }
+      }
+    } );
+
+    socket.on('update_turn', function(msg) {
+        if(msg.room == "{{join_code}}") {
+            if("{{nickname}}" == msg.data) {
+              $("#turnmsg").text("IT IS YOUR TURN");
+              $("#turnmsg").css("color", "green");
+            }
+            else {
+              $("#turnmsg").text("It is "+msg.data+"'s turn");
+              $("#turnmsg").css("color", "red");
+            }
+        }
+    });
+
+    socket.on('end_game', function(msg) {
+      if(msg.room == "{{join_code}}") {
+        var text = msg.data + " has won!";
+        $("#turnmsg").text(text);
+        $("#turnmsg").css("color", "blue");
+      }
+
+    });
+
+    socket.on('update_cost', function(msg) {
+      if(msg.room == "{{join_code}}") {
+        clickedGridSquare.cost = msg.cost;
+        draw_board();
+      }
+
+    });
+
+
+
+
+function change_team(teamToChange) {
+  socket.emit('change_team', {team: teamToChange});
+}
+
+function endTurn() {
+  socket.emit('end_turn');
+}
+
+function makeMove(iPos,jPos) {
+  socket.emit('make_move', {i:iPos,j:jPos});
+}
+
+function getCost(iPos,jPos) {
+  socket.emit('get_cost', {i:iPos,j:jPos});
+}
+
+
+</script>
+{% endblock %}

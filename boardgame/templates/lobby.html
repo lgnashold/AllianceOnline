@@ -1,25 +1,26 @@
-{%extends 'base.html' %}
-{%block title %}Lobby{% endblock %}
-{% block info %}
-   <div class = explanation>
-    <h4>Welcome to the Lobby. Wait here while the rest of your team joins using the code below. When you're ready, press start</h4>
-  </div>
-  <div id = code>
-    <h1><b>CODE: </b>{{ join_code }}</h1>
-  </div>
-  <div id = "log" class = "log-area">
-      <!--Log Messages will be added here -->
-  </div>
-{%endblock %}
-{% block content %}
-  <div id = "namecontainer" >
-    <h1 style = "text-align: center">Players</h1>
-    <div  class = 'playerdiv' style="float:left"><p id = "1"></p></div>
-    <div class = 'playerdiv' style="float:right"><p id = "2"></p></div>
-    <div class = 'playerdiv' style = "float:left"><p id = "3"></p></div>
-    <div class = 'playerdiv' style = "float:right"><p id = "4"></p></div>
-    <button  onclick = "startGame()" class = "game_button"> Start Game </button>
-    <h1 style = "text-align: center; font-size: 54px">CODE: {{ join_code }}
+<!doctype html>
+<html>
+<head>
+  <title> Alliance -- Lobby </title>
+  <link rel = "stylesheet" href = "{{ url_for('static', filename='style.css') }}">
+  <link href="https://fonts.googleapis.com/css?family=Almendra:400,400i,700,700i" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src = "https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.dev.js"> </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <div class = "box_content">
+    <img src = "{{ url_for('static', filename='logo.png') }}" class = "logo"> </img>
+    <p> Welcome to the Lobby. Wait here while the rest of your team joins using the code below. When you're ready, press start. </p>
+    <div id = "namecontainer" class = "lobby_content">
+      <h1 style = "font-size: 54px">CODE: {{ join_code }}
+      <h1>Players</h1>
+      <div  class = 'playerdiv' style="float:left"><span id = "1"></span></div>
+      <div class = 'playerdiv' style="float:right"><span id = "2"></span></div>
+      <div class = 'playerdiv' style = "float:left"><span id = "3"></span></div>
+      <div class = 'playerdiv' style = "float:right"><span id = "4"></span></div>
+      <button  onclick = "startGame()" class = "game_button"> Start Game </button>
+    </div>
   </div>
   <script>
     console.log("connected");
@@ -33,12 +34,12 @@
       if(msg.room == "{{join_code}}") {
         players = msg.data;
         for(var i = 1; i <= players.length; i++) {
-            $("#"+i).text(""+players[i-1]);
-            $("#"+i).parent().css("opacity", "1"); 
+            $("#"+i).html(""+players[i-1]);
+            $("#"+i).parent().addClass("playerdiv_on");
         }
         for(var i = players.length + 1; i <= 4; i++) {
-            $("#"+i).text("");
-            $("#"+i).parent().css("opacity", ".2"); 
+            $("#"+i).html("");
+            $("#"+i).parent().removeClass("playerdiv_on");
         }
       }
     });
@@ -59,10 +60,11 @@
       console.log("RESET SESSION VAR");
       socket.emit("set_player_num");
     } );
-    
+
     function startGame() {
       console.log("emit");
       socket.emit('start_game');
     }
   </script>
-{% endblock %}
+</body>
+</html>

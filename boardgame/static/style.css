@@ -1,125 +1,122 @@
 body {
-  font-family: 'Special Elite', cursive;
-  margin 0;
+  background-color: #3d2415;
+  font-family: 'Almendra', serif;
 }
 
-.log-area {
-  height: 200px;
-  overflow-y: scroll;
-  background-color: lightblue;
-  border-radius: 15px;
-  margin-bottom:5px;
-  padding: 5px;
-  font-size: 18px;
-}
-
-#info {
-  width: 28%;
-  float: right;
+.box_content {
+  width:80%;
+  max-width: 500px;
+  background-color: #663c23;
+  padding:1%;
   margin: auto;
-}
-
-#board {
-  width: 70%;
-  float: left;
-  background-color: lightgray;
-  height: 100vh;
-  position: relative;
-  padding: auto;
-}
-
-#form {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  border-style: outset;
+  border-color: #663c23;
 }
 
-.error {
-	color:#FF0000;
-	font-size: 22px;
+.logo {
+  margin:auto;
+  width: 100%;
 }
 
-#namecontainer {
-	vertical-align: middle;
-	margin-left:auto;
-	margin-right: auto;
-	width: 80%;
-	float:none;
-	padding: 20px;
-	text-align:center;
+.lobby_content {
+  text-align: center;
 }
 
 .playerdiv {
-	width: 40%;
-	border-radius: 50px;
-	height: 80px;
-	border: 5px solid black;
-	font-size: 30px;
-	text-align: center;
-	background-color:#9999ff;
-	margin: 1%;
-	text-align: center;
-	opacity: .2;
+  background-color: #525252;
+  width: 40%;
+  height: 50px;
+  line-height: 50px;
+  border-style: outset;
+  border-color: #525252;
+  outline: none;
+  margin: 1%;
 }
 
+.playerdiv_on {
+  background-color: #696969;
+  border-style: inset;
+  border-color: #696969;
+  font-size: 30px;
+}
 
 .game_button {
-	width: 100%;
-	border-radius: 50px;
-	height: 80px;
-	border: 5px solid black;
-	font-size: 30px;
-	text-align: center;
-	background-color:#1a1aff;
-	margin: auto;
-	float: none;
-  font-family: 'Special Elite', cursive;
-  padding-top: 0.55em !important;
+  background-color: #F0BB0E;
+  border-style: outset;
+  border-color: #F0BB0E;
+  width: 50%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  height: 50px;
+  font-size: 30px;
+  font-family: 'Almendra', serif;
+  -webkit-appearance: none;
+  border-radius: 0;
+  text-align: center;
 }
 
-.team-button {
-  width: 23%;
-	border-radius: 50px;
-	height: 35px;
-	border: 3px solid black;
-	font-size: 20px;
-	text-align: center;
+.game_button:active {
+    background-color: #A1830B;
+    border-style: inset;
+    border-color: #A1830B;
+    outline: none;
+}
+
+
+.join_form {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.form_line {
+  margin: 5px;
+  height: 60px;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.input_label {
+	height: 60px;
+	font-size: 30px;
   overflow-x: hidden;
-  font-family: 'Special Elite', cursive;
+  float: left;
 }
 
 .input {
-	width: 60%;
-	height: 60px;
-	float: right;
+  width: 65%;
+  margin:auto;
+  height: 30px;
   font-size: 30px;
-  font-family: 'Special Elite', cursive;
+  float: right;
+  font-family: 'Almendra', serif;
 }
 
-.big_text {
-  font-size: 30px
-}
 
-.inputlabel {
-	width: 35%;
-	height: 60px;
-	font-size: 30px;
-	float: left;
-	margin-top: 1%;
+@media only screen and (max-width: 700px){
+  .box_content {
+    box-sizing: border-box;
+    padding: 10px;
+    width: 100%;
+    max-width: none;
+    top: 0;
+    left: 0;
+    transform: none;
+  }
 
-}
+  .game_button {
+    width: 80%;
+  }
 
-#form {
-	width: 400px;
-	margin: auto;
-}
+  .form_line {
+    width: 100%;
+  }
 
-.formline {
-	display: inline-block;
-	padding: 5px;
-	margin: auto;
-	width: 100%;
-	vertical-align: middle;
-	line-height: normal;
+  .input {
+    width: 50%;
+  }
 }
