@@ -1,89 +1,84 @@
-<!doctype html>
-<html>
-<head>
-  <title> Alliance -- Play </title>
-  <link rel = "stylesheet" href = "{{ url_for('static', filename='game.css') }}">
-  <link href="https://fonts.googleapis.com/css?family=Almendra:400,400i,700,700i" rel="stylesheet">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src = "https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.dev.js"> </script>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body>
-  <div class = "canvas_holder">
-    <canvas id = "gameCanvas"> </canvas>
-    <script src = "{{ url_for('static', filename='board.js') }}"> </script>
+{%extends 'base.html' %}
+{% block title %}Play{% endblock %}
+{% block style %}  <link rel = "stylesheet" href = "{{ url_for('static', filename='game.css') }}"> {% endblock %}
+{% block content %}
+
+
+<div class = "canvas_holder">
+  <canvas id = "gameCanvas"> </canvas>
+  <script src = "{{ url_for('static', filename='board.js') }}"> </script>
+</div>
+<div class = "bottom_banner">
+  <span id = "turnmsg"></span>
+</div>
+<div class = "bottom_tools" id = "bottom">
+  <div class = "log" id ="log">
   </div>
-  <div class = "bottom_banner">
-    <span id = "turnmsg"></span>
-  </div>
-  <div class = "bottom_tools" id = "bottom">
-    <div class = "log" id ="log">
+  <div class = "game_info">
+    <div style = "float:left">
+      <p class = "big_text" > <b> Nickname: </b> {{nickname}} </p>
+      <p class = "big_text" id = "player1"></p>
+      <p class = "big_text" id = "player2"></p>
+      <p class = "big_text" id = "player3"></p>
+      <p class = "big_text"  id = "player4"></p>
     </div>
-    <div class = "game_info">
-      <div style = "float:left">
-        <p class = "big_text" > <b> Nickname: </b> {{nickname}} </p>
-        <p class = "big_text" id = "player1"></p>
-        <p class = "big_text" id = "player2"></p>
-        <p class = "big_text" id = "player3"></p>
-        <p class = "big_text"  id = "player4"></p>
-      </div>
-      <div class = "button_area">
-        <button  onclick = "endTurn()" class = "game_button"> End Turn </button>
-        <p>
-          <button class = "join_button" style = " background-color: {{team_colors.team1}}; border-color: {{team_colors.team1}} " onclick = "change_team('team1')">Join</button>
-          <button class = "join_button" style = " background-color: {{team_colors.team2}}; border-color: {{team_colors.team2}}" onclick = "change_team('team2')">Join</button>
-          <button class = "join_button" style = " background-color: {{team_colors.team3}}; border-color: {{team_colors.team3}}" onclick = "change_team('team3')">Join</button>
-          <button class = "join_button" style = " background-color: {{team_colors.team4}}; border-color: {{team_colors.team4}}" onclick = "change_team('team4')">Join</button>
-        </p>
-      </div>
+    <div class = "button_area">
+      <button  onclick = "endTurn()" class = "game_button"> End Turn </button>
+      <p>
+        <button class = "join_button" style = " background-color: {{team_colors.team1}}; border-color: {{team_colors.team1}} " onclick = "change_team('team1')">Join</button>
+        <button class = "join_button" style = " background-color: {{team_colors.team2}}; border-color: {{team_colors.team2}}" onclick = "change_team('team2')">Join</button>
+        <button class = "join_button" style = " background-color: {{team_colors.team3}}; border-color: {{team_colors.team3}}" onclick = "change_team('team3')">Join</button>
+        <button class = "join_button" style = " background-color: {{team_colors.team4}}; border-color: {{team_colors.team4}}" onclick = "change_team('team4')">Join</button>
+      </p>
     </div>
   </div>
-  <script>
-  console.log("connected");
-  firstBoard = false;
-  var socket = io.connect("/game");
+</div>
+<script>
+console.log("connected");
+firstBoard = false;
+var socket = io.connect("/game");
 
-  //when you recieve a message append it to the log
+//when you recieve a message append it to the log
 
-  socket.on("update_board",function(msg) {
-    if(msg.room == "{{join_code}}") {
-      boardPos = JSON.parse(msg.board);
-      //if we have not yet recieved a board, set initial board position before dragging to center of screen
-      if(!firstBoard) {
-        centerX = WIDTH/2 - (GRID_SIZE * boardPos[0].length)/2;
-        centerY = HEIGHT/2 - (GRID_SIZE * boardPos.length)/2;
-        firstBoard = true;
-      }
-      draw_board();
-    }
-  });
-
-  socket.on('message', function(msg) {
-    if(msg.room == "{{join_code}}") {
-      $('#log').prepend('<p>' + msg.data + '</p>');
-    }
-  });
-
-  socket.on('error', function(msg) {
-    $('#log').prepend('<b><p class = "error">'+msg.data + '</b></p>');
-  });
-
-  socket.on('update_money', function(msg) {
-    console.log("SOCKET EVENT RECEIVED: update_money");
-    if(msg.room == "{{join_code}}") {
-      options = Object.keys(msg.data);
-      for(var i = 0; i < options.length; i++) {
-        if(msg.data[options[i]] != null) {
-          $("#"+options[i]).html("<b>"+msg.data[options[i]].nickname + " </b>: $" + msg.data[options[i]].money);
-        }
-      }
-    }
-  });
-
-  /*  socket.on('message', function(msg) {
-  console.log("SOCKET EVENT RECEIVED: message");
+socket.on("update_board",function(msg) {
   if(msg.room == "{{join_code}}") {
-  $('#log').prepend('<p>' + msg.data + '</p>');
+    boardPos = JSON.parse(msg.board);
+    //if we have not yet recieved a board, set initial board position before dragging to center of screen
+    if(!firstBoard) {
+      centerX = WIDTH/2 - (GRID_SIZE * boardPos[0].length)/2;
+      centerY = HEIGHT/2 - (GRID_SIZE * boardPos.length)/2;
+      firstBoard = true;
+    }
+    draw_board();
+  }
+});
+
+socket.on('message', function(msg) {
+  if(msg.room == "{{join_code}}") {
+    $('#log').prepend('<p>' + msg.data + '</p>');
+  }
+});
+
+socket.on('error', function(msg) {
+  $('#log').prepend('<b><p class = "error">'+msg.data + '</b></p>');
+});
+
+socket.on('update_money', function(msg) {
+  console.log("SOCKET EVENT RECEIVED: update_money");
+  if(msg.room == "{{join_code}}") {
+    options = Object.keys(msg.data);
+    for(var i = 0; i < options.length; i++) {
+      if(msg.data[options[i]] != null) {
+        $("#"+options[i]).html("<b>"+msg.data[options[i]].nickname + " </b>: $" + msg.data[options[i]].money);
+      }
+    }
+  }
+});
+
+/*  socket.on('message', function(msg) {
+console.log("SOCKET EVENT RECEIVED: message");
+if(msg.room == "{{join_code}}") {
+$('#log').prepend('<p>' + msg.data + '</p>');
 }
 });
 
@@ -156,8 +151,6 @@ function getCost(iPos,jPos) {
   socket.emit('get_cost', {i:iPos,j:jPos});
 }
 
+</script>
 
-</script>
-</script>
-</body>
-</html>
+{% endblock %}

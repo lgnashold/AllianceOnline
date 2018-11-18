@@ -1,12 +1,8 @@
-<!doctype html>
-<html>
-<head>
-  <title> Alliance -- Join </title>
-  <link rel = "stylesheet" href = "{{ url_for('static', filename='style.css') }}">
-  <link href="https://fonts.googleapis.com/css?family=Almendra:400,400i,700,700i" rel="stylesheet">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body>
+{%extends 'base.html' %}
+{% block title %}Join{% endblock %}
+{% block style %}  <link rel = "stylesheet" href = "{{ url_for('static', filename='style.css') }}"> {% endblock %}
+{% block content %}
+
   <div class = "box_content">
     <img src = "{{ url_for('static', filename='logo.png') }}" class = "logo"> </img>
     <p> Welcome to Alliace Online, an multiplayer strategy game. Carefully craft
@@ -27,5 +23,5 @@
        <input class = "game_button" type="submit" value="Enter Game">
     </form>
   </div>
-</body>
-</html>
+
+{% endblock %}
