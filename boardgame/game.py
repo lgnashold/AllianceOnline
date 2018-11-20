@@ -167,7 +167,14 @@ def move(data):
 def get_cost(data):
     print("GOT COST REQUEST")
     join_code = session["join_code"]
-    emit_cost(join_code, get_cost_of_square(data["i"], data["j"]),data["i"],data["j"])
+    i = data["i"]
+    j = data["j"]
+    player = get_player(join_code, session["player_num"])
+    if(check_legal_move(join_code,i,j,player)):
+        emit_cost(join_code, "#ffffff", get_cost_of_square(i,j),i,j)
+    else:
+        emit_cost(join_code,"#ff0000", get_cost_of_square(i,j),i,j)
+
 
 
 def get_cost_of_square(i,j):
@@ -263,3 +270,17 @@ def check_empty(join_code):
         db.commit()
         return True
     return False
+
+#check if a move is legal
+#TODO: very repetitive, since split up and used in move function, but not actually used there
+def check_legal_move(join_code, i, j, player):
+    board = get_board(join_code)
+    new_color = colors[player["team"]]
+    old_color = board[i][j]["color"]
+    if (new_color == old_color):
+        return False
+    if(check_connected(join_code, i, j, new_color) < 1):
+        return False
+    if(player["money"] < get_cost_of_square(i,j)):
+        return False
+    return True

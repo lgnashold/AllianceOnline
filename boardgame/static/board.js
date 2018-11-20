@@ -5,7 +5,7 @@ var isDragging = false;
 var shouldPlace = true;
 var initMosPos;
 
-var clickedGridSquare = {i:-1,j:-1,cost:-1};
+var clickedGridSquare = {i:-1,j:-1,cost:-1,color:"white"};
 
 var board_color = "lightgray";
 var ctx;
@@ -120,10 +120,10 @@ function draw_board() {
 
 function draw_clicked_square() {
   if(clickedGridSquare.i != -1) {
-    ctx.strokeStyle = "white";
+    ctx.strokeStyle = clickedGridSquare.color;
     ctx.lineWidth = 5;
     ctx.strokeRect(clickedGridSquare.j*GRID_SIZE + centerX,clickedGridSquare.i*GRID_SIZE+centerY,GRID_SIZE,GRID_SIZE);
-    ctx.fillStyle = "white";
+    ctx.fillStyle = clickedGridSquare.color;
     ctx.fillText(clickedGridSquare.cost,clickedGridSquare.j*GRID_SIZE+centerX + GRID_SIZE/2,clickedGridSquare.i*GRID_SIZE+centerY + GRID_SIZE/2);
   }
 }

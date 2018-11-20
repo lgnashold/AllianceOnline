@@ -126,7 +126,9 @@ socket.on('end_game', function(msg) {
 
 socket.on('update_cost', function(msg) {
   if(msg.room == "{{join_code}}") {
+    console.log(msg);
     clickedGridSquare.cost = msg.cost;
+    clickedGridSquare.color = msg.color;
     draw_board();
   }
 
