@@ -25,7 +25,6 @@
     socket.on('emit_lobby', function(msg) {
       console.log("RECEIVED emit_lobby");
       console.log("players: " + msg.data);
-      if(msg.room == "{{join_code}}") {
         players = msg.data;
         for(var i = 1; i <= players.length; i++) {
             $("#"+i).html(""+players[i-1]);
@@ -35,14 +34,11 @@
             $("#"+i).html("");
             $("#"+i).parent().removeClass("playerdiv_on");
         }
-      }
     });
 
 
     socket.on('message', function(msg) {
-        if(msg.room == "{{join_code}}") {
           $('#log').prepend('<p>Received: ' + msg.data + '</p>');
-        }
     });
 
     socket.on('redirect', function (data) {

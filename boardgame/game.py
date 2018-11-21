@@ -12,7 +12,7 @@ from boardgame.db import get_db
 
 from boardgame.emissions import *
 
-from flask_socketio import emit
+from flask_socketio import emit, join_room, leave_room
 
 from boardgame.colors import colors
 
@@ -36,6 +36,7 @@ def run_game():
 def connect():
     join_code = session["join_code"]
     print("CONNECTED TO GAME")
+    join_room(join_code)
     emit_board(join_code)
     emit_money(join_code, get_players(join_code))
     emit_teams(join_code, colors, get_players(join_code))
@@ -78,6 +79,7 @@ def disconnect():
     emit_message("%s left the game..." % session["nickname"], join_code)
     make_squares_empty(join_code,session["player_num"])
     remove_player(join_code,session["player_num"])
+    leave_room(join_code)
 
     #removes game if empty, otherwise deal with repairing the game
     if(not check_empty(join_code)):

@@ -4,6 +4,7 @@ from flask import (
 
 import time
 from . import socketio
+from flask_socketio import join_room, leave_room
 from boardgame.db import get_db
 
 from boardgame.emissions import *
@@ -21,6 +22,7 @@ from boardgame.lobbydb import get_list, set_list, remove_list
 @socketio.on('connect', namespace="/lobby")
 def connect():
     join_code = session["join_code"]
+    join_room(join_code)
     emit_message("%s joined the game!" % session["nickname"], join_code, channel="/lobby")
     emit_lobby(join_code, get_list(join_code))
 
@@ -39,14 +41,14 @@ def start_game():
     db.commit()
 
     # Gets players from the lobby database
-    players = get_list(join_code)    
+    players = get_list(join_code)
     # Creates board in the player database
     create_board(join_code)
     for i in range(len(players)):
         add_player(join_code, players[i])
     # Switches players list to full player objects
     players = get_players(join_code)
-    
+
     # Inserts starting position
     if(players["player1"] != None):
        set_square(join_code, 1, 1, players["player1"])
@@ -56,24 +58,25 @@ def start_game():
        set_square(join_code, 1, 4, players["player3"])
     if(players["player4"] != None):
        set_square(join_code, 4, 1, players["player4"])
-    
+
     # Removes row from lobby database
     remove_list(join_code)
     # set's turn to first player
     set_turn(join_code, 1)
-    # Forces all connected sockets to call intermediate method, which 
+    # Forces all connected sockets to call intermediate method, which
     # sets session variable and redirects them to game
-    emit('redirect', {'url': url_for('lobby.intermediate')}, broadcast = True)
+    emit('redirect', {'url': url_for('lobby.intermediate')}, room = join_code, broadcast = True)
 
 
 @bp.route("/intermediate", methods = ["GET"])
 def intermediate():
     num = get_num_player(session["join_code"], session["nickname"])
     session["player_num"] = num
-    return redirect(url_for('game.run_game')) 
+    return redirect(url_for('game.run_game'))
 
 @socketio.on('disconnect', namespace="/lobby")
 def disconnect():
+    leave_room(join_code)
     join_code = session["join_code"]
     emit_message("%s left the game..." % session["nickname"], session["join_code"])
     # If player is last one, removes lobby from DB
