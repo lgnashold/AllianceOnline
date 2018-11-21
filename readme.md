@@ -3,7 +3,7 @@
 - [ ] Make money by adjacency (team members)
 - [ ] Switch to postgresql/deploy to heroku
 - [ ] Refactor code to properly use rooms
-- [ ] Add more feedback to move previewing, red when unpurchasable square.
+- [X] Add more feedback to move previewing, red when unpurchasable square.
     - [ ] Flash error messages one at a time and in a visible way
 - [X] Clean up any UI missteps
 - [X] Show how much a square costs to buy
