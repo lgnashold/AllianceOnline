@@ -41,18 +41,18 @@ var socket = io.connect("/game");
 //when you recieve a message append it to the log
 
 socket.on("update_board",function(msg) {
-    boardPos = JSON.parse(msg.board);
-    //if we have not yet recieved a board, set initial board position before dragging to center of screen
-    if(!firstBoard) {
-      centerX = WIDTH/2 - (GRID_SIZE * boardPos[0].length)/2;
-      centerY = HEIGHT/2 - (GRID_SIZE * boardPos.length)/2;
-      firstBoard = true;
-    }
-    draw_board();
+  boardPos = JSON.parse(msg.board);
+  //if we have not yet recieved a board, set initial board position before dragging to center of screen
+  if(!firstBoard) {
+    centerX = WIDTH/2 - (GRID_SIZE * boardPos[0].length)/2;
+    centerY = HEIGHT/2 - (GRID_SIZE * boardPos.length)/2;
+    firstBoard = true;
+  }
+  draw_board();
 });
 
 socket.on('message', function(msg) {
-    $('#log').prepend('<p>' + msg.data + '</p>');
+  $('#log').prepend('<p>' + msg.data + '</p>');
 
 });
 
@@ -62,12 +62,12 @@ socket.on('error', function(msg) {
 
 socket.on('update_money', function(msg) {
   console.log("SOCKET EVENT RECEIVED: update_money");
-    options = Object.keys(msg.data);
-    for(var i = 0; i < options.length; i++) {
-      if(msg.data[options[i]] != null) {
-        $("#"+options[i]).html("<b>"+msg.data[options[i]].nickname + " </b>: $" + msg.data[options[i]].money);
-      }
+  options = Object.keys(msg.data);
+  for(var i = 0; i < options.length; i++) {
+    if(msg.data[options[i]] != null) {
+      $("#"+options[i]).html("<b>"+msg.data[options[i]].nickname + " </b>: $" + msg.data[options[i]].money);
     }
+  }
 });
 
 /*  socket.on('message', function(msg) {
@@ -83,45 +83,42 @@ $('#log').prepend('<b><p class = "error">'+msg.data + '</b></p>');
 }); */
 
 socket.on('update_teams', function(msg) {
-  if(msg.room == "{{join_code}}") {
-
-    var players = Object.keys(msg.players);
-    var colors = msg.colors;
-    for(var i = 0; i < players.length; i++) {
-      player = msg.players[players[i]];
-      if(player.nickname == "{{nickname}}")   {
-        set_board_color(colors[player["team"]]);
-        return;
-      }
+  var players = Object.keys(msg.players);
+  var colors = msg.colors;
+  for(var i = 0; i < players.length; i++) {
+    player = msg.players[players[i]];
+    if(player.nickname == "{{nickname}}")   {
+      set_board_color(colors[player["team"]]);
+      return;
     }
   }
 } );
 
 socket.on('update_turn', function(msg) {
-    if("{{nickname}}" == msg.data) {
-      $("#turnmsg").text("IT IS YOUR TURN");
-      $("#turnmsg").css("color", "green");
-    }
-    else {
-      $("#turnmsg").text("It is "+msg.data+"'s turn");
-      $("#turnmsg").css("color", "red");
-    }
+  if("{{nickname}}" == msg.data) {
+    $("#turnmsg").text("IT IS YOUR TURN");
+    $("#turnmsg").css("color", "green");
+  }
+  else {
+    $("#turnmsg").text("It is "+msg.data+"'s turn");
+    $("#turnmsg").css("color", "red");
+  }
 
 });
 
 socket.on('end_game', function(msg) {
-    var text = msg.data + " has won!";
-    $("#turnmsg").text(text);
-    $("#turnmsg").css("color", "blue");
+  var text = msg.data + " has won!";
+  $("#turnmsg").text(text);
+  $("#turnmsg").css("color", "blue");
 
 
 });
 
 socket.on('update_cost', function(msg) {
-    console.log(msg);
-    clickedGridSquare.cost = msg.cost;
-    clickedGridSquare.color = msg.color;
-    draw_board();
+  console.log(msg);
+  clickedGridSquare.cost = msg.cost;
+  clickedGridSquare.color = msg.color;
+  draw_board();
 
 
 });
