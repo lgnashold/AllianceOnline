@@ -1,8 +1,4 @@
-COST_EMPTY_SQUARE = 100
-def COST_FILLED_SQUARE(numconnected):
-    return 75+numconnected * 25
 COST_TEAM_SWITCH=100
-PROFIT_PER_SQUARE=50
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
@@ -63,14 +59,15 @@ def end_turn():
         # sums total spaces on board controlled by a player
         spaces = 0
         board = get_board(join_code)
-        for row in board:
+        '''for row in board:
             for space in row:
                 if space["name"] == player["nickname"]:
                     spaces += 1
-        money = spaces * PROFIT_PER_SQUARE
+        money = spaces * PROFIT_PER_SQUARE'''
+        money = get_revenue(join_code, player["nickname"]) 
         update_player_money(join_code, turn, money)
         emit_turn(join_code, player["nickname"])
-
+       
 
 @socketio.on('disconnect', namespace="/game")
 def disconnect():
@@ -140,7 +137,7 @@ def check_money(function, cost):
             update_player_money(join_code, player_num, -1 * cost)
             remove_no_territory(join_code)
             emit_board(join_code)
-            if player["money"] - cost < 100:
+            if player["money"] - cost < get_min_cost():
                 end_turn()
     if errormsg != None:
         emit_error(errormsg, join_code)
@@ -177,16 +174,6 @@ def get_cost(data):
     else:
         emit_cost(join_code,"#ff0000", get_cost_of_square(i,j),i,j)
 
-
-
-def get_cost_of_square(i,j):
-    cost = check_connected(session["join_code"], i, j, None)
-    if cost == -1:
-        cost = COST_EMPTY_SQUARE
-    else:
-        # Otherwise does 30 times num of connected squares
-        cost = COST_FILLED_SQUARE(cost)
-    return cost
 
 @socketio.on('change_team', namespace = "/game")
 def change_team(data):

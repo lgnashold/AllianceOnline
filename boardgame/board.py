@@ -1,10 +1,18 @@
 BOARD_WIDTH = 6
 BOARD_HEIGHT = 6
+# Revenue per square based on each square it's connected to
+# For example, if you have one square, and it's connected to three
+# squares of the same color, then that square generates $9
+REVENUE_CONST = 5
+BASE_REVENUE = 50
+COST_EMPTY_SQUARE = 100
+def COST_FILLED_SQUARE(numconnected):
+    return 75+numconnected * 25
 
 DEFAULT_SQUARE = {"color":"#B9B7A7","name":None}
 
 import json
-
+from flask import session
 from boardgame.db import get_db
 
 from boardgame.colors import colors
@@ -92,3 +100,31 @@ def check_connected_helper(board, i, j, color, visited):
     res += check_connected_helper(board, i, j+1, color, visited)
     res += check_connected_helper(board, i, j-1, color, visited)
     return res
+
+def get_revenue(join_code, nickname):
+    #Naive implementation but working set is small
+    board = get_board(join_code)
+    tot = 0
+    for row in range(len(board)):
+        for col in range(len(board[row])):
+            if board[row][col]["name"] == nickname:
+                tot += check_connected(join_code, row, col) * REVENUE_CONST + BASE_REVENUE 
+    return tot
+
+
+def get_cost_of_square(i,j):
+    cost = check_connected(session["join_code"], i, j, None)
+    if cost == -1:
+        cost = COST_EMPTY_SQUARE
+    else:
+        # Otherwise does 30 times num of connected squares
+        cost = COST_FILLED_SQUARE(cost)
+    return cost
+
+def get_min_cost():
+    board = get_board(session["join_code"])
+    cost_list = []
+    for row in range(len(board)):
+        for col in range(len(board[row])):
+                cost_list.append(get_cost_of_square(row, col))
+    return min(cost_list)
