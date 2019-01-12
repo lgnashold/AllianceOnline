@@ -1,0 +1,7 @@
+MANIFEST.in
+boardgame.egg-info/PKG-INFO
+boardgame.egg-info/SOURCES.txt
+boardgame.egg-info/dependency_links.txt
+boardgame.egg-info/not-zip-safe
+boardgame.egg-info/requires.txt
+boardgame.egg-info/top_level.txt

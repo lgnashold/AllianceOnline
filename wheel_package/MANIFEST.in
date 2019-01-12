@@ -1,0 +1,4 @@
+include boardgame/schema.sql
+graft boardgame/static
+graft boardgame/templates
+global-exclude *.pyc

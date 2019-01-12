@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "748dd5231860bbe593754b87eac6811e716933b185a8f1b5d62b0c258c7e886b"
+            "sha256": "ca238cff2ba9ea1740fa896a7a3ca2071fdc1b536a663900dcb232f1c35de6d1"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -16,6 +16,10 @@
         ]
     },
     "default": {
+        "boardgame": {
+            "editable": true,
+            "path": "./wheel_package"
+        },
         "click": {
             "hashes": [
                 "sha256:2335065e6395b9e67ca716de5f7526736bfa6ceead690adf616d925bdc622b13",
