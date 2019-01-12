@@ -9,8 +9,9 @@ python-dotenv = "*"
 flask-socketio = "*"
 gevent-websocket = "*"
 "psycopg2" = "*"
-boardgame = {editable = true, path = "./wheel_package"}
 gunicorn = "*"
+boardgame = {editable = true, path = "."}
+wheel = "*"
 
 [dev-packages]
 

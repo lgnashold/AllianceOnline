@@ -1,0 +1,122 @@
+body {
+  background-color: #3d2415;
+  font-family: 'Almendra', serif;
+}
+
+.box_content {
+  width:80%;
+  max-width: 500px;
+  background-color: #663c23;
+  padding:1%;
+  margin: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-style: outset;
+  border-color: #663c23;
+}
+
+.logo {
+  margin:auto;
+  width: 100%;
+}
+
+.lobby_content {
+  text-align: center;
+}
+
+.playerdiv {
+  background-color: #525252;
+  width: 40%;
+  height: 50px;
+  line-height: 50px;
+  border-style: outset;
+  border-color: #525252;
+  outline: none;
+  margin: 1%;
+}
+
+.playerdiv_on {
+  background-color: #696969;
+  border-style: inset;
+  border-color: #696969;
+  font-size: 30px;
+}
+
+.game_button {
+  background-color: #F0BB0E;
+  border-style: outset;
+  border-color: #F0BB0E;
+  width: 50%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  height: 50px;
+  font-size: 30px;
+  font-family: 'Almendra', serif;
+  -webkit-appearance: none;
+  border-radius: 0;
+  text-align: center;
+}
+
+.game_button:active {
+    background-color: #A1830B;
+    border-style: inset;
+    border-color: #A1830B;
+    outline: none;
+}
+
+
+.join_form {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.form_line {
+  margin: 5px;
+  height: 60px;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.input_label {
+	height: 60px;
+	font-size: 30px;
+  overflow-x: hidden;
+  float: left;
+}
+
+.input {
+  width: 65%;
+  margin:auto;
+  height: 30px;
+  font-size: 30px;
+  float: right;
+  font-family: 'Almendra', serif;
+}
+
+
+@media only screen and (max-width: 700px){
+  .box_content {
+    box-sizing: border-box;
+    padding: 10px;
+    width: 100%;
+    max-width: none;
+    top: 0;
+    left: 0;
+    transform: none;
+  }
+
+  .game_button {
+    width: 80%;
+  }
+
+  .form_line {
+    width: 100%;
+  }
+
+  .input {
+    width: 50%;
+  }
+}

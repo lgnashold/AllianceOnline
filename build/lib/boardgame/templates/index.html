@@ -1,0 +1,27 @@
+{%extends 'base.html' %}
+{% block title %}Join{% endblock %}
+{% block style %}  <link rel = "stylesheet" href = "{{ url_for('static', filename='style.css') }}"> {% endblock %}
+{% block content %}
+
+  <div class = "box_content">
+    <img src = "{{ url_for('static', filename='logo.png') }}" class = "logo"> </img>
+    <p> Welcome to Alliace Online, an multiplayer strategy game. Carefully craft
+      alliances, joining teams so that you reap the benefits from their territory while
+      conquering other player's lands.
+      However, peace can not last for long, because if one player falls, alliances will break.
+      It is your goal to be the last empire standing. </p>
+      <p> To make a game, type in a join code. If your friends type in the same code, you will all be put into the same game! </p>
+    <form class = "join_form" method="post">
+       <div class = "form_line">
+           <label class = "input_label" for="join_code">Join Code</label>
+           <input class = "input" name="join_code" id="join_code" required>
+       </div>
+       <div class = "form_line">
+         <label class = "input_label" for="nickname">Nickname</label>
+         <input class = "input" name="nickname" id="nickname" required>
+       </div>
+       <input class = "game_button" type="submit" value="Enter Game">
+    </form>
+  </div>
+
+{% endblock %}
