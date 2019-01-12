@@ -1,1 +1,1 @@
-web gunicorn "boardgame:create_app()"
+web: gunicorn "boardgame:create_app()"
