@@ -1,3 +1,21 @@
+## Running Project
+# Localhost
+```pipenv shell
+flask run```
+
+or: 
+
+```pipenv run flask run```
+
+# Over Local WiFi
+```pipenv shell```
+```flask run --host=0.0.0.0```
+Find your local with ```hostname -I``` on Linux
+then go to <ip>:5000
+Example:
+10.0.1.29:5000
+
+
 ## To Do Before Publishing:
 (Hardest to easiest)
 - [ ] Make money by adjacency (team members)
