@@ -1,4 +1,5 @@
 MANIFEST.in
+setup.py
 boardgame.egg-info/PKG-INFO
 boardgame.egg-info/SOURCES.txt
 boardgame.egg-info/dependency_links.txt
