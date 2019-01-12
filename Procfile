@@ -1,1 +1,1 @@
-web: pipenv run flask run --host:0.0.0.0:5000
+web: gunicorn "boardgame:create_app()"
