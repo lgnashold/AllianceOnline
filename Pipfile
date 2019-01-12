@@ -1,0 +1,19 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+flask = "*"
+python-dotenv = "*"
+flask-socketio = "*"
+gevent-websocket = "*"
+"psycopg2" = "*"
+gunicorn = "*"
+boardgame = {editable = true, path = "."}
+wheel = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.7"
