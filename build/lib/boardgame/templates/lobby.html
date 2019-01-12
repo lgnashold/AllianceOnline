@@ -1,0 +1,59 @@
+{%extends 'base.html' %}
+{% block title %}Lobby{% endblock %}
+{% block style %}  <link rel = "stylesheet" href = "{{ url_for('static', filename='style.css') }}"> {% endblock %}
+{% block content %}
+
+  <div class = "box_content">
+    <img src = "{{ url_for('static', filename='logo.png') }}" class = "logo"> </img>
+    <p> Welcome to the Lobby. Wait here while the rest of your team joins using the code below. When you're ready, press start. </p>
+    <div id = "namecontainer" class = "lobby_content">
+      <h1 style = "font-size: 54px">CODE: {{ join_code }}
+      <h1>Players</h1>
+      <div  class = 'playerdiv' style="float:left"><span id = "1"></span></div>
+      <div class = 'playerdiv' style="float:right"><span id = "2"></span></div>
+      <div class = 'playerdiv' style = "float:left"><span id = "3"></span></div>
+      <div class = 'playerdiv' style = "float:right"><span id = "4"></span></div>
+      <button  onclick = "startGame()" class = "game_button"> Start Game </button>
+    </div>
+  </div>
+  <script>
+    console.log("connected");
+
+    var socket = io.connect("/lobby");
+
+    //when you recieve a message append it to the log
+    socket.on('emit_lobby', function(msg) {
+      console.log("RECEIVED emit_lobby");
+      console.log("players: " + msg.data);
+        players = msg.data;
+        for(var i = 1; i <= players.length; i++) {
+            $("#"+i).html(""+players[i-1]);
+            $("#"+i).parent().addClass("playerdiv_on");
+        }
+        for(var i = players.length + 1; i <= 4; i++) {
+            $("#"+i).html("");
+            $("#"+i).parent().removeClass("playerdiv_on");
+        }
+    });
+
+
+    socket.on('message', function(msg) {
+          $('#log').prepend('<p>Received: ' + msg.data + '</p>');
+    });
+
+    socket.on('redirect', function (data) {
+      console.log("REDIRECT");
+      window.location = data.url;
+    });
+
+    socket.on('reset_session_var', function(msg) {
+      console.log("RESET SESSION VAR");
+      socket.emit("set_player_num");
+    } );
+
+    function startGame() {
+      console.log("emit");
+      socket.emit('start_game');
+    }
+  </script>
+{% endblock %}
