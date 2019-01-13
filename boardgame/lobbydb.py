@@ -3,7 +3,8 @@ import json
 
 def get_list(join_code):
     db = get_db()
-    result = db.execute("SELECT players FROM lobby WHERE join_code = (?)", (join_code, )).fetchone()
+    db.execute("SELECT players FROM lobby WHERE join_code = (%s)", (join_code, ))
+    result = db.fetchone()
     if result == None:
         return None
     if(result["players"] == None):
@@ -14,10 +15,8 @@ def get_list(join_code):
 def set_list(join_code, newlist):
     db = get_db()
     jsonres = json.dumps(newlist)
-    db.execute("UPDATE lobby SET players = (?) WHERE join_code = (?)", (jsonres, join_code))
-    db.commit()
+    db.execute("UPDATE lobby SET players = (%s) WHERE join_code = (%s)", (jsonres, join_code))
 
 def remove_list(join_code):
     db = get_db()
-    db.execute("DELETE FROM lobby WHERE join_code = (?)", (join_code,))
-    db.commit()
+    db.execute("DELETE FROM lobby WHERE join_code = (%s)", (join_code,))
