@@ -1,4 +1,4 @@
-import psycog2
+import psycopg2
 import os
 import urllib.parse as urlparse
 
@@ -29,20 +29,22 @@ def get_db():
             port=port
         )
     return g.db
-
+"""
 def close_db(e=None):
     db = g.pop('db', None)
     if db is not None:
         db.close()
-
+"""
 
 def init_db():
     """The function that starts the database from schema file"""
     db = get_db()
     # Opens file from schema.sql with error checking
     with current_app.open_resource('schema.sql') as f:
-        # Executes the file f as a sql script
-        db.executescript(f.read().decode('utf8'))
+        with self.connection as cursor:
+            # Executes the file f as a sql script
+            cursor.execute(f.read().decode('utf8'))
+        
 
 @click.command('init-db')
 @with_appcontext
@@ -53,6 +55,6 @@ def init_db_command():
 
 def init_app(app):
     # Adds close_db to functions called when app is closed
-    app.teardown_appcontext(close_db)
+    # app.teardown_appcontext(close_db)
     # Addds click command to flask
     app.cli.add_command(init_db_command)
