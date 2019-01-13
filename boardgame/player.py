@@ -26,9 +26,8 @@ def add_player(join_code, nickname, money=300, team=None):
         if value == None:
             player_obj["team"] = "team" + str(count)
             db.execute(
-                    "UPDATE game SET %s = (?) WHERE join_code = (?)" % key, (json.dumps(player_obj), join_code)
+                    SQL("UPDATE game SET {} = (%s) WHERE join_code = (%s)").format(Identifier(key)), (json.dumps(player_obj), join_code)
                     )
-            db.commit()
             return count
     return None
 
@@ -40,8 +39,8 @@ def remove_player(join_code, player_num):
 def get_players(join_code):
     """returns a dictonary of all players in a game"""
     db = get_db()
-    player_jsons = dict(db.execute(
-            "SELECT player1, player2, player3, player4 FROM game WHERE join_code = (?)", (join_code,)).fetchone())
+    db.execute("SELECT player1, player2, player3, player4 FROM game WHERE join_code = (%s)", (join_code,))
+    player_jsons = dict(db.fetchone())
     players = {}
     for key, value in player_jsons.items():
         if value != None:
@@ -119,6 +118,5 @@ def update_player(join_code, player_num, player_obj):
     db = get_db()
 
     db.execute(
-            "UPDATE game SET %s = (?) WHERE join_code = (?)" % ("player" + str(player_num)), (json.dumps(player_obj), join_code)
+            SQL("UPDATE game SET {} = (%s) WHERE join_code = (%s)").format(Identifier("player" + str(player_num))), (json.dumps(player_obj), join_code)
             )
-    db.commit()

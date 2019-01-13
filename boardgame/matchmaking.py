@@ -16,10 +16,11 @@ def index():
 
         db = get_db()
 
-        players = get_list(join_code) 
-       
+        players = get_list(join_code)
+
         #TODO HERE: Check if game is not already started
-        game = db.execute("SELECT * FROM game WHERE join_code = (?)", (join_code,)).fetchone()
+        db.execute("SELECT * FROM game WHERE join_code = (%s)", (join_code,))
+        game = db.fetchone()
         if game != None:
             print("ERROR: Game has already started")
             return render_template("index.html")
@@ -27,18 +28,17 @@ def index():
         if players is None:
             #create new game
             db.execute(
-                'INSERT INTO lobby (join_code) VALUES (?)', (join_code,)
+                'INSERT INTO lobby (join_code) VALUES (%s)', (join_code,)
             )
-            db.commit()
             players = get_list(join_code)
-    
+
         if len(players) >= 4:
             print("ERROR: Game " + join_code + " IS FULL")
             return render_template("index.html")
         if players.count(nickname) != 0:
             print("ERROR: Game " + join_code + "  already has name "+nickname)
             return render_template("index.html")
-        
+
         players.append(nickname)
         set_list(join_code, players)
 

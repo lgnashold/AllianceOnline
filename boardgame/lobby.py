@@ -36,9 +36,8 @@ def start_game():
     db = get_db()
     # Creates a row in player table
     db.execute(
-                'INSERT INTO game (join_code) VALUES (?)', (join_code,)
+                'INSERT INTO game (join_code) VALUES (%s)', (join_code,)
             )
-    db.commit()
 
     # Gets players from the lobby database
     players = get_list(join_code)
