@@ -18,12 +18,7 @@ def get_db():
         g.db = psycopg2.connect(url, sslmode='require') 
         g.db.set_session(autocommit=True)
     return g.db
-"""
-def close_db(e=None):
-    db = g.pop('db', None)
-    if db is not None:
-        db.close()
-"""
+
 def init_db():
     """The function that starts the database from schema file"""
     db = get_db()
@@ -32,9 +27,7 @@ def init_db():
         
         cursor = db.cursor() 
         # Executes the file f as a sql script
-        cursor.execute("SET AUTOCOMMIT TO ON")
         cursor.execute(f.read().decode('utf8'))
-        db.commit() 
 
 @click.command('init-db')
 @with_appcontext
