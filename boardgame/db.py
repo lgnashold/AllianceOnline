@@ -8,43 +8,26 @@ from flask import current_app, g
 from flask.cli import with_appcontext
 
 def get_db():
-    """Returns the db being used"""
+    """Returns a cursor for databased"""
     # Database is stored in g
     # Makes sure it doesn't create duplicate connections
     if 'db' not in g:
         # Gets the database URL
-        url = urlparse.urlparse(os.environ['DATABASE_URL'])
+        url = os.environ['DATABASE_URL']
         # Location of database is stored in app's config file
-        dbname = url.path[1:]
-        user = url.username
-        password = url.password
-        host = url.hostname
-        port = url.port
-
-        g["db"] = psycopg2.connect(
-            dbname=dbname,
-            user=user,
-            password=password,
-            host=host,
-            port=port
-        )
+        conn = psycopg2.connect(url, sslmode='require') 
+        conn = set_session(autocommit=True)
+        cursor = conn.cursor() 
+        g.db = cursor 
     return g.db
-"""
-def close_db(e=None):
-    db = g.pop('db', None)
-    if db is not None:
-        db.close()
-"""
 
 def init_db():
     """The function that starts the database from schema file"""
     db = get_db()
     # Opens file from schema.sql with error checking
+    # Executes the file f as a sql script
     with current_app.open_resource('schema.sql') as f:
-        with self.connection as cursor:
-            # Executes the file f as a sql script
-            cursor.execute(f.read().decode('utf8'))
-        
+        cursor.execute(f.read().decode('utf8'))
 
 @click.command('init-db')
 @with_appcontext
