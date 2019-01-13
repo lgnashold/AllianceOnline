@@ -13,7 +13,7 @@ def get_db():
     # Makes sure it doesn't create duplicate connections
     if 'db' not in g:
         # Gets the database URL
-        url = urlparse.urlparse(os.environ['DATABASE_URL'])
+        url = os.environ['DATABASE_URL']
         # Location of database is stored in app's config file
         g.db = psycopg2.connect(url, sslmode='require') 
     return g.db
