@@ -18,22 +18,23 @@ def create_app():
     @app.route('/hello')
     def hello():
         return "Hello World"
- 
+
     # Initialises database, including registering init-db command
     from . import db
     db.init_app(app)
 
-    """
     from . import lobby
     app.register_blueprint(lobby.bp)
 
+    '''
     from . import game
     app.register_blueprint(game.bp)
-
+    '''
+    
     from . import matchmaking
     app.register_blueprint(matchmaking.bp)
 
     socketio.init_app(app)
-    """ 
+
     # returns created app
     return app
