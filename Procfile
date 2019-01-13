@@ -1,1 +1,1 @@
-web: gunicorn --worker-class socketio.sgunicorn.GeventSocketIOWorker "boardgame:create_app()"
+web: gunicorn --worker-class gevent-websocket "boardgame:create_app()"
