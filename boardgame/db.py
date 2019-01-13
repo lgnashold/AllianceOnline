@@ -16,6 +16,7 @@ def get_db():
         url = os.environ['DATABASE_URL']
         # Location of database is stored in app's config file
         g.db = psycopg2.connect(url, sslmode='require') 
+        g.db.autocommit = True
     return g.db
 """
 def close_db(e=None):
@@ -23,16 +24,17 @@ def close_db(e=None):
     if db is not None:
         db.close()
 """
-
 def init_db():
     """The function that starts the database from schema file"""
     db = get_db()
     # Opens file from schema.sql with error checking
     with current_app.open_resource('schema.sql') as f:
+        
         cursor = db.cursor() 
         # Executes the file f as a sql script
+        cursor.execute("SET AUTOCOMMIT TO ON")
         cursor.execute(f.read().decode('utf8'))
-        
+        db.commit() 
 
 @click.command('init-db')
 @with_appcontext
