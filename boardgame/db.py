@@ -16,7 +16,7 @@ def get_db():
         url = os.environ['DATABASE_URL']
         # Location of database is stored in app's config file
         g.db = psycopg2.connect(url, sslmode='require') 
-        g.db.autocommit = True
+        g.db.set_session(autocommit=True)
     return g.db
 """
 def close_db(e=None):
