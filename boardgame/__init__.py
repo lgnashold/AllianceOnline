@@ -17,7 +17,7 @@ def create_app():
     app.config["DATABASE"] = os.path.join(app.instance_path, "boardgame.sqlite")
 
     @app.route('/')
-    def:
+    def hello():
         return "Hello World"
     """
     # Insure instance folder exists
@@ -43,7 +43,7 @@ def create_app():
 
     from . import lobby
     app.register_blueprint(lobby.bp)
-    
+
     from . import game
     app.register_blueprint(game.bp)
 
