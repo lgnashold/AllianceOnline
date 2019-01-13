@@ -14,6 +14,8 @@ def index():
         nickname = request.form['nickname']
         join_code = request.form['join_code']
 
+        print("hello?")
+
         db = get_db()
 
         players = get_list(join_code)
