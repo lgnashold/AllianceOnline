@@ -10,8 +10,8 @@ flask-socketio = "*"
 gevent-websocket = "*"
 "psycopg2" = "*"
 gunicorn = "*"
-boardgame = {editable = true, path = "."}
 wheel = "*"
+boardgame = {editable = true, path = "./build_package"}
 
 [dev-packages]
 

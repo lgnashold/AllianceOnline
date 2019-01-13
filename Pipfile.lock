@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "9571946c752d959668801f7e3e3f5ffa9f4562b134daae5b7b3444035fcb6a53"
+            "sha256": "a70d4c12d181d07e82b210f5b3ef54a5b6e5bbabd892b6b895fcab6c4c4d5e95"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -18,7 +18,7 @@
     "default": {
         "boardgame": {
             "editable": true,
-            "path": "."
+            "path": "./build_package"
         },
         "click": {
             "hashes": [
