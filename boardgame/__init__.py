@@ -13,18 +13,6 @@ def create_app():
 
     # Edits configurations
     app.config["SECRET_KEY"] = "123kxjq0kx2rehxj"
-    # instance_path is the instance folder
-    app.config["DATABASE"] = os.path.join(app.instance_path, "boardgame.sqlite")
-
-    @app.route('/')
-    def hello():
-        return "Hello World"
-    """
-    # Insure instance folder exists
-    try:
-        os.makedirs(app.instance_path)
-    except OSError:
-        pass
 
     # Test
     @app.route('/hello')
@@ -51,6 +39,6 @@ def create_app():
     app.register_blueprint(matchmaking.bp)
 
     socketio.init_app(app)
-    """
+    
     # returns created app
     return app
