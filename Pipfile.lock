@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "c968d2a95b69e2730fc51cca6b787035c765c8067e2ea8971dbc16cff4663f8f"
+            "sha256": "bffd57da6a1a361dc7ced7737ab3190da9a2065862e453dde54c7c84949836c2"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -69,6 +69,7 @@
                 "sha256:d752bcf1b98174780e2317ada12013d612f05116456133a6acf3e17d43b71f05",
                 "sha256:e5bcc4270671936349249d26140c267397b7b4b1381f5ec8b13c53c5b53ab6e1"
             ],
+            "markers": "extra == 'gevent'",
             "version": "==1.4.0"
         },
         "gevent-websocket": {
@@ -105,6 +106,9 @@
             "version": "==0.4.15"
         },
         "gunicorn": {
+            "extras": [
+                "gevent"
+            ],
             "hashes": [
                 "sha256:aa8e0b40b4157b36a5df5e599f45c9c76d6af43845ba3b3b0efe2c70473c2471",
                 "sha256:fa2662097c66f920f53f70621c6c58ca4a3c4d3434205e608e121b5b3b71f4f3"

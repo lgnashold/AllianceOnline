@@ -1,1 +1,1 @@
-web: gunicorn --worker-class gevent-websocket "boardgame:create_app()"
+web: gunicorn -k flask_sockets.worker "boardgame:create_app()"
