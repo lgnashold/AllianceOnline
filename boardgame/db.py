@@ -27,7 +27,7 @@ def init_db():
     # Opens file from schema.sql with error checking
     # Executes the file f as a sql script
     with current_app.open_resource('schema.sql') as f:
-        cursor.execute(f.read().decode('utf8'))
+        db.execute(f.read().decode('utf8'))
 
 @click.command('init-db')
 @with_appcontext
