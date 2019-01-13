@@ -15,19 +15,7 @@ def get_db():
         # Gets the database URL
         url = urlparse.urlparse(os.environ['DATABASE_URL'])
         # Location of database is stored in app's config file
-        dbname = url.path[1:]
-        user = url.username
-        password = url.password
-        host = url.hostname
-        port = url.port
-
-        g["db"] = psycopg2.connect(
-            dbname=dbname,
-            user=user,
-            password=password,
-            host=host,
-            port=port
-        )
+        g.db = psycopg2.connect(url, sslmode='require') 
     return g.db
 """
 def close_db(e=None):
