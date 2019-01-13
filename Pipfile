@@ -12,6 +12,7 @@ gevent-websocket = "*"
 gunicorn = "*"
 wheel = "*"
 boardgame = {editable = true, path = "./build_package"}
+"psycopg2-binary" = "*"
 
 [dev-packages]
 
