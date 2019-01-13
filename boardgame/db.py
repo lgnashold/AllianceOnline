@@ -27,6 +27,7 @@ def get_db():
             password=password,
             host=host,
             port=port
+        )
     return g.db
 
 def close_db(e=None):
