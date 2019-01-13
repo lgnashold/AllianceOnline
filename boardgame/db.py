@@ -15,10 +15,10 @@ def get_db():
         # Gets the database URL
         url = os.environ['DATABASE_URL']
         # Location of database is stored in app's config file
-        conn = psycopg2.connect(url, sslmode='require') 
+        conn = psycopg2.connect(url, sslmode='require')
         conn.set_session(autocommit=True)
-        cursor = conn.cursor() 
-        g.db = cursor 
+        cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor) 
+        g.db = cursor
     return g.db
 
 def init_db():
