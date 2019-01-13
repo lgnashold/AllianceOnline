@@ -1,15 +1,18 @@
 -i https://pypi.org/simple
 -e ./build_package
 click==7.0
+dnspython==1.16.0
+eventlet==0.24.1
 flask-socketio==3.1.2
 flask==1.0.2
 gevent-websocket==0.10.1
-gevent==1.4.0
+gevent==1.4.0 ; extra == 'gevent'
 greenlet==0.4.15 ; platform_python_implementation == 'CPython'
-gunicorn==19.9.0
+gunicorn[gevent]==19.9.0
 itsdangerous==1.1.0
 jinja2==2.10
 markupsafe==1.1.0
+monotonic==1.5
 psycopg2-binary==2.7.6.1
 psycopg2==2.7.6.1
 python-dotenv==0.10.1

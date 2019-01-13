@@ -1,1 +1,1 @@
-web: gunicorn -k "geventwebsocket.gunicorn.workers.GeventWebSocketWorker" "boardgame:create_app()"
+web: gunicorn -k eventlet "boardgame:create_app()"
