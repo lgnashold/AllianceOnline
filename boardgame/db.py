@@ -1,4 +1,6 @@
-import sqlite3
+import psycog2
+import os
+import urllib.parse as urlparse
 
 import click
 
@@ -10,13 +12,21 @@ def get_db():
     # Database is stored in g
     # Makes sure it doesn't create duplicate connections
     if 'db' not in g:
-        g.db = sqlite3.connect(
-                # Location of database is stored in app's config file
-                current_app.config['DATABASE'],
-                detect_types=sqlite3.PARSE_DECLTYPES
-        )
-        g.db.row_factory = sqlite3.Row
+        # Gets the database URL
+        url = urlparse.urlparse(os.environ['DATABASE_URL'])
+        # Location of database is stored in app's config file
+        dbname = url.path[1:]
+        user = url.username
+        password = url.password
+        host = url.hostname
+        port = url.port
 
+        g["db"] = psycopg2.connect(
+            dbname=dbname,
+            user=user,
+            password=password,
+            host=host,
+            port=port
     return g.db
 
 def close_db(e=None):

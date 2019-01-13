@@ -18,17 +18,12 @@ def create_app():
     @app.route('/hello')
     def hello():
         return "Hello World"
-
-    from . import board
-    @app.route('/board')
-    def boardinit():
-         board.create_board("0")
-         return "made board"
-
+ 
     # Initialises database, including registering init-db command
     from . import db
     db.init_app(app)
 
+    """
     from . import lobby
     app.register_blueprint(lobby.bp)
 
@@ -39,6 +34,6 @@ def create_app():
     app.register_blueprint(matchmaking.bp)
 
     socketio.init_app(app)
-    
+    """ 
     # returns created app
     return app
