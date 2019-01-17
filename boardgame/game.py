@@ -30,9 +30,11 @@ def run_game():
 
 @socketio.on('connect', namespace="/game")
 def connect():
+    if 'join_code' not in session:
+        emit('redirect', {'url': url_for('matchmaking.index')}, broadcast = False)
+        return
     join_code = session["join_code"]
-    if join_code is None:
-        emit('redirect', {'url': url_for('matchmaking.index')}, room = join_code, broadcast = True)
+
     join_room(join_code)
     emit_board(join_code)
     emit_money(join_code, get_players(join_code))
