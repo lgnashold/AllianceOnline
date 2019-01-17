@@ -1,3 +1,5 @@
+from boardgame import matchmaking
+
 COST_TEAM_SWITCH=100
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
@@ -27,7 +29,7 @@ import json
 def run_game():
     """"Serves game page"""
     if 'join_code' not in session:
-        emit('redirect', {'url': url_for('matchmaking.index')}, broadcast=False)
+        redirect(url_for(matchmaking.index))
     return render_template("game.html", join_code = session["join_code"], nickname = session["nickname"], team_colors = colors);
 
 @socketio.on('connect', namespace="/game")
