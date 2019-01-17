@@ -31,7 +31,8 @@ def run_game():
 @socketio.on('connect', namespace="/game")
 def connect():
     join_code = session["join_code"]
-    print("CONNECTED TO GAME")
+    if join_code == None:
+        
     join_room(join_code)
     emit_board(join_code)
     emit_money(join_code, get_players(join_code))
@@ -41,6 +42,28 @@ def connect():
     emit_turn(join_code, player["nickname"])
     if test_end_game():
         emit_end_game(join_code, session["nickname"])
+
+@socketio.on('disconnect', namespace="/game")
+def disconnect():
+      join_code = session["join_code"]
+    #  emit_message("%s left the game..." % session["nickname"], join_code)
+    #   make_squares_empty(join_code,session["player_num"])
+    # remove_player(join_code,session["player_num"])
+    # leave_room(join_code)
+    # if(str(get_turn(join_code)) == str(session["player_num"])):
+    #   increment_turn(join_code)
+    #    emit_turn(join_code, get_player(join_code, get_turn(join_code))["nickname"])
+
+
+    #removes game if empty, otherwise deal with repairing the game
+    #if(not check_empty(join_code)):
+        #if player who quit is on their turn, increment turn
+                #clean up the game by updating the board and splitting teams
+        ## split_teams(join_code)
+        ## emit_board(join_code)
+
+    #TODO: bug, player could have won here.
+
 
 @socketio.on('end_turn', namespace ="/game")
 def end_turn():
@@ -59,38 +82,10 @@ def end_turn():
         # sums total spaces on board controlled by a player
         spaces = 0
         board = get_board(join_code)
-        '''for row in board:
-            for space in row:
-                if space["name"] == player["nickname"]:
-                    spaces += 1
-        money = spaces * PROFIT_PER_SQUARE'''
         money = get_revenue(join_code, player["nickname"]) 
         update_player_money(join_code, turn, money)
         emit_turn(join_code, player["nickname"])
        
-
-@socketio.on('disconnect', namespace="/game")
-def disconnect():
-    join_code = session["join_code"]
-    print("DISCONNECT")
-    emit_message("%s left the game..." % session["nickname"], join_code)
-    make_squares_empty(join_code,session["player_num"])
-    remove_player(join_code,session["player_num"])
-    leave_room(join_code)
-
-    #removes game if empty, otherwise deal with repairing the game
-    if(not check_empty(join_code)):
-        #if player who quit is on their turn, increment turn
-        if(str(get_turn(join_code)) == str(session["player_num"])):
-            increment_turn(join_code)
-            emit_turn(join_code, get_player(join_code, get_turn(join_code))["nickname"])
-
-        #clean up the game by updating the board and splitting teams
-        split_teams(join_code)
-        emit_board(join_code)
-
-    #TODO: bug, player could have won here.
-
 
 def split_teams(join_code):
     #checks if two final players are on same team, if so fixes that
