@@ -120,5 +120,5 @@ def update_player(join_code, player_num, player_obj):
     db = get_db()
 
     db.execute(
-            SQL("UPDATE game SET {} = (%s) WHERE join_code = (%s)").format(Identifier("player" + str(player_num))), (json.dumps(player_obj), join_code)
+            sql.SQL("UPDATE game SET {} = (%s) WHERE join_code = (%s)").format(sql.Identifier("player" + str(player_num))), (json.dumps(player_obj), join_code)
             )
