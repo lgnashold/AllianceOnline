@@ -64,10 +64,10 @@ def end_turn():
                 if space["name"] == player["nickname"]:
                     spaces += 1
         money = spaces * PROFIT_PER_SQUARE'''
-        money = get_revenue(join_code, player["nickname"]) 
+        money = get_revenue(join_code, player["nickname"])
         update_player_money(join_code, turn, money)
         emit_turn(join_code, player["nickname"])
-       
+
 
 @socketio.on('disconnect', namespace="/game")
 def disconnect():
@@ -255,8 +255,7 @@ def check_empty(join_code):
 
     if (count < 1):
         print("GAME EMPTY - DELETING: " + join_code)
-        db.execute("DELETE FROM game WHERE join_code = (?)",(join_code,))
-        db.commit()
+        db.execute("DELETE FROM game WHERE join_code = (%s)",(join_code,))
         return True
     return False
 

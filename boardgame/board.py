@@ -30,10 +30,7 @@ def set_board(join_code, board):
     """Given a board array, saves it to sql database"""
     json_board = json.dumps(board)
     db = get_db()
-    db.execute(
-            'UPDATE game SET game_data = (?) WHERE join_code = (?)', (json_board, join_code)
-    );
-    db.commit();
+    db.execute('UPDATE game SET game_data = (%s) WHERE join_code = (%s)', (json_board, join_code))
     return json_board
 
 def get_board(join_code):
@@ -41,9 +38,8 @@ def get_board(join_code):
 
 def get_json_board(join_code):
     db = get_db()
-    json_board = (db.execute(
-            "SELECT game_data FROM game WHERE join_code = (?)", (join_code,)
-    ).fetchone())["game_data"]
+    db.execute("SELECT game_data FROM game WHERE join_code = (%s)", (join_code,))
+    json_board = (db.fetchone())["game_data"]
     return json_board
 
 def set_square(join_code, i, j, player, player_initiated = False):
@@ -108,7 +104,7 @@ def get_revenue(join_code, nickname):
     for row in range(len(board)):
         for col in range(len(board[row])):
             if board[row][col]["name"] == nickname:
-                tot += check_connected(join_code, row, col) * REVENUE_CONST + BASE_REVENUE 
+                tot += check_connected(join_code, row, col) * REVENUE_CONST + BASE_REVENUE
     return tot
 
 
