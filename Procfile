@@ -1,1 +1,1 @@
-web: gunicorn -k eventlet "boardgame:create_app()"
+web: gunicorn -k eventlet -w 1 "boardgame:create_app()"
