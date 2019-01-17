@@ -26,11 +26,9 @@ def create_app():
     from . import lobby
     app.register_blueprint(lobby.bp)
 
-    '''
     from . import game
     app.register_blueprint(game.bp)
-    '''
-    
+
     from . import matchmaking
     app.register_blueprint(matchmaking.bp)
 
