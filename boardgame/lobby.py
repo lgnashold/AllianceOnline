@@ -75,8 +75,8 @@ def intermediate():
 
 @socketio.on('disconnect', namespace="/lobby")
 def disconnect():
-    leave_room(join_code)
     join_code = session["join_code"]
+    leave_room(join_code)
     emit_message("%s left the game..." % session["nickname"], session["join_code"])
     # If player is last one, removes lobby from DB
     players = get_list(join_code)

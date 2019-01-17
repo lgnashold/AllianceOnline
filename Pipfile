@@ -13,6 +13,7 @@ gunicorn = {extras = ["gevent"], version = "*"}
 wheel = "*"
 boardgame = {editable = true, path = "./build_package"}
 "psycopg2-binary" = "*"
+eventlet = "*"
 
 [dev-packages]
 

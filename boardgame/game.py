@@ -31,8 +31,8 @@ def run_game():
 @socketio.on('connect', namespace="/game")
 def connect():
     join_code = session["join_code"]
-    if join_code == None:
-        
+    if join_code is None:
+        emit('redirect', {'url': url_for('matchmaking.index')}, room = join_code, broadcast = True)
     join_room(join_code)
     emit_board(join_code)
     emit_money(join_code, get_players(join_code))
@@ -82,10 +82,10 @@ def end_turn():
         # sums total spaces on board controlled by a player
         spaces = 0
         board = get_board(join_code)
-        money = get_revenue(join_code, player["nickname"]) 
+        money = get_revenue(join_code, player["nickname"])
         update_player_money(join_code, turn, money)
         emit_turn(join_code, player["nickname"])
-       
+
 
 def split_teams(join_code):
     #checks if two final players are on same team, if so fixes that
@@ -149,6 +149,7 @@ def move(data):
 
     if player_num == get_turn(join_code) :
         cost = get_cost_of_square(i,j)
+
         def make_move():
             errormsg = set_square(join_code, i, j, player, player_initiated=True)
             gameover = test_end_game()
@@ -250,13 +251,12 @@ def check_empty(join_code):
 
     if (count < 1):
         print("GAME EMPTY - DELETING: " + join_code)
-        db.execute("DELETE FROM game WHERE join_code = (?)",(join_code,))
-        db.commit()
+        db.execute("DELETE FROM game WHERE join_code = (%s)",(join_code,))
         return True
     return False
 
-#check if a move is legal
-#TODO: very repetitive, since split up and used in move function, but not actually used there
+# check if a move is legal
+# TODO: very repetitive, since split up and used in move function, but not actually used there
 def check_legal_move(join_code, i, j, player):
     board = get_board(join_code)
     new_color = colors[player["team"]]
