@@ -3,7 +3,7 @@ from boardgame.board import *
 from boardgame.colors import *
 from boardgame.emissions import emit_money
 import json
-import psycopg2.sql
+from psycopg2 import sql
 
 
 def add_player(join_code, nickname, money=300, team=None):
