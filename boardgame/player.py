@@ -28,7 +28,7 @@ def add_player(join_code, nickname, money=300, team=None):
         if value == None:
             player_obj["team"] = "team" + str(count)
             db.execute(
-                    sql.SQL("UPDATE game SET {} = (%s) WHERE join_code = (%s)").format(Identifier(key)), (json.dumps(player_obj), join_code)
+                    sql.SQL("UPDATE game SET {} = (%s) WHERE join_code = (%s)").format(sql.Identifier(key)), (json.dumps(player_obj), join_code)
                     )
             return count
     return None
