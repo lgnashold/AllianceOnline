@@ -8,7 +8,7 @@ flask==1.0.2
 gevent-websocket==0.10.1
 gevent==1.4.0 ; extra == 'gevent'
 greenlet==0.4.15 ; platform_python_implementation == 'CPython'
-gunicorn[gevent]==18.0.0
+gunicorn[gevent]==19.9.0
 itsdangerous==1.1.0
 jinja2==2.10
 markupsafe==1.1.0
