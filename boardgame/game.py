@@ -21,6 +21,8 @@ from boardgame.player import *
 
 from boardgame.turn import get_turn, set_turn, increment_turn
 
+from boardgame import connection_manager
+
 import math
 
 import json
@@ -42,13 +44,17 @@ def connect():
     emit_message("%s joined the game!" % session["nickname"], join_code)
     player = get_player(join_code, get_turn(join_code))
     emit_turn(join_code, player["nickname"])
+    player_num = get_num_player(join_code, session["nickname"])
+    connection_manager.addPlayer(join_code, player_num)
     if test_end_game():
         emit_end_game(join_code, session["nickname"])
 
 @socketio.on('disconnect', namespace="/game")
 def disconnect():
       join_code = session["join_code"]
-    #  emit_message("%s left the game..." % session["nickname"], join_code)
+      player_num = get_num_player(join_code, session["nickname"])
+      connection_manager.addPlayer(join_code, player_num)
+      emit_message(f"{session['nickname']} left the game. {connection_manager.numberOfPlayers()} players left!", join_code)
     #   make_squares_empty(join_code,session["player_num"])
     # remove_player(join_code,session["player_num"])
     # leave_room(join_code)
