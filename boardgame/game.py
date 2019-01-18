@@ -29,7 +29,7 @@ import json
 def run_game():
     """"Serves game page"""
     if 'join_code' not in session:
-        redirect(url_for('matchmaking.index'))
+        return redirect(url_for('matchmaking.index'))
     return render_template("game.html", join_code = session["join_code"], nickname = session["nickname"], team_colors = colors);
 
 @socketio.on('connect', namespace="/game")
