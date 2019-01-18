@@ -3,6 +3,7 @@ import json
 
 
 def addPlayer(join_code, playernum):
+    print(f"ADDED PLAYER {playernum} TO {join_code}")
     # Adds a player to the list of connected players
     l = get_list(join_code)
     if playernum not in l:
