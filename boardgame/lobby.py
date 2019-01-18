@@ -28,6 +28,8 @@ def connect():
 
 @bp.route("/lobby", methods = ("GET","POST"))
 def enter_lobby():
+    if 'join_code' not in session:
+        return redirect(url_for('matchmaking.index'))
     return render_template("lobby.html", join_code = session["join_code"], nickname = session["nickname"])
 
 @socketio.on('start_game', namespace="/lobby")
