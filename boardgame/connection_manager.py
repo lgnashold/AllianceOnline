@@ -8,7 +8,7 @@ def addPlayer(join_code, playernum):
     l = get_list(join_code)
     if playernum not in l:
         l.append(playernum)
-        set_list(playernum, l)
+        set_list(join_code, l)
 
 
 def removePlayer(join_code, playernum):
