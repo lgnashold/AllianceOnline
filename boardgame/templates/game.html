@@ -70,18 +70,6 @@ socket.on('update_money', function(msg) {
   }
 });
 
-/*  socket.on('message', function(msg) {
-console.log("SOCKET EVENT RECEIVED: message");
-if(msg.room == "{{join_code}}") {
-$('#log').prepend('<p>' + msg.data + '</p>');
-}
-});
-
-socket.on('error', function(msg) {
-console.log("SOCKET EVENT RECEIVED: error");
-$('#log').prepend('<b><p class = "error">'+msg.data + '</b></p>');
-}); */
-
 socket.on('update_teams', function(msg) {
   var players = Object.keys(msg.players);
   var colors = msg.colors;
@@ -141,6 +129,11 @@ function makeMove(iPos,jPos) {
 function getCost(iPos,jPos) {
   socket.emit('get_cost', {i:iPos,j:jPos});
 }
+
+socket.on('redirect', function (data) {
+  console.log("REDIRECT");
+  window.location = data.url;
+});
 
 </script>
 

@@ -1,3 +1,5 @@
+from boardgame import matchmaking
+
 COST_TEAM_SWITCH=100
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
@@ -26,12 +28,13 @@ import json
 @bp.route("/game")
 def run_game():
     """"Serves game page"""
+    if 'join_code' not in session:
+        redirect(url_for(matchmaking.index))
     return render_template("game.html", join_code = session["join_code"], nickname = session["nickname"], team_colors = colors);
 
 @socketio.on('connect', namespace="/game")
 def connect():
     join_code = session["join_code"]
-    print("CONNECTED TO GAME")
     join_room(join_code)
     emit_board(join_code)
     emit_money(join_code, get_players(join_code))
@@ -41,6 +44,28 @@ def connect():
     emit_turn(join_code, player["nickname"])
     if test_end_game():
         emit_end_game(join_code, session["nickname"])
+
+@socketio.on('disconnect', namespace="/game")
+def disconnect():
+      join_code = session["join_code"]
+    #  emit_message("%s left the game..." % session["nickname"], join_code)
+    #   make_squares_empty(join_code,session["player_num"])
+    # remove_player(join_code,session["player_num"])
+    # leave_room(join_code)
+    # if(str(get_turn(join_code)) == str(session["player_num"])):
+    #   increment_turn(join_code)
+    #    emit_turn(join_code, get_player(join_code, get_turn(join_code))["nickname"])
+
+
+    #removes game if empty, otherwise deal with repairing the game
+    #if(not check_empty(join_code)):
+        #if player who quit is on their turn, increment turn
+                #clean up the game by updating the board and splitting teams
+        ## split_teams(join_code)
+        ## emit_board(join_code)
+
+    #TODO: bug, player could have won here.
+
 
 @socketio.on('end_turn', namespace ="/game")
 def end_turn():
@@ -59,37 +84,9 @@ def end_turn():
         # sums total spaces on board controlled by a player
         spaces = 0
         board = get_board(join_code)
-        '''for row in board:
-            for space in row:
-                if space["name"] == player["nickname"]:
-                    spaces += 1
-        money = spaces * PROFIT_PER_SQUARE'''
         money = get_revenue(join_code, player["nickname"])
         update_player_money(join_code, turn, money)
         emit_turn(join_code, player["nickname"])
-
-
-@socketio.on('disconnect', namespace="/game")
-def disconnect():
-    join_code = session["join_code"]
-    print("DISCONNECT")
-    emit_message("%s left the game..." % session["nickname"], join_code)
-    make_squares_empty(join_code,session["player_num"])
-    remove_player(join_code,session["player_num"])
-    leave_room(join_code)
-
-    #removes game if empty, otherwise deal with repairing the game
-    if(not check_empty(join_code)):
-        #if player who quit is on their turn, increment turn
-        if(str(get_turn(join_code)) == str(session["player_num"])):
-            increment_turn(join_code)
-            emit_turn(join_code, get_player(join_code, get_turn(join_code))["nickname"])
-
-        #clean up the game by updating the board and splitting teams
-        split_teams(join_code)
-        emit_board(join_code)
-
-    #TODO: bug, player could have won here.
 
 
 def split_teams(join_code):
@@ -154,6 +151,7 @@ def move(data):
 
     if player_num == get_turn(join_code) :
         cost = get_cost_of_square(i,j)
+
         def make_move():
             errormsg = set_square(join_code, i, j, player, player_initiated=True)
             gameover = test_end_game()
@@ -259,8 +257,8 @@ def check_empty(join_code):
         return True
     return False
 
-#check if a move is legal
-#TODO: very repetitive, since split up and used in move function, but not actually used there
+# check if a move is legal
+# TODO: very repetitive, since split up and used in move function, but not actually used there
 def check_legal_move(join_code, i, j, player):
     board = get_board(join_code)
     new_color = colors[player["team"]]
