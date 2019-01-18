@@ -4,30 +4,31 @@ import json
 
 def addPlayer(join_code, playernum):
     # Adds a player to the list of connected players
-    list = get_list(join_code)
-    if playernum not in list:
-        list.append(playernum)
-        set_list(playernum)
+    l = get_list(join_code)
+    if playernum not in l:
+        l.append(playernum)
+        set_list(playernum, l)
 
 
 def removePlayer(join_code, playernum):
     # Removes a player from the list of connected players
-    list = get_list(join_code)
-    if playernum in list:
-        list.remove(playernum)
-        set_list(playernum)
+    l = get_list(join_code)
+    if playernum in l:
+        l.remove(playernum)
+        set_list(join_code, l)
+
 
 def numberOfPlayers(join_code):
-    return len(get_list)
+    return len(get_list(join_code))
 
 
 def get_list(join_code):
     db = get_db()
     db.execute("SELECT connections FROM game WHERE join_code = (%s)", (join_code,))
     result = db.fetchone()
-    if result == None:
+    if result is None:
         return None
-    if (result["connections"] == None):
+    if result["connections"] is None:
         return []
     return json.loads(result["connections"])
 

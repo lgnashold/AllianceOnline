@@ -36,7 +36,7 @@ def run_game():
 
 @socketio.on('connect', namespace="/game")
 def connect():
-    print(f"{session['nickname']}CONNECTED TO {session['join_code']}")
+    print(f"{session['nickname']} CONNECTED TO {session['join_code']}")
     join_code = session["join_code"]
     join_room(join_code)
     emit_board(join_code)
