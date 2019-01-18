@@ -18,8 +18,8 @@ Example:
 
 ## To Do Before Publishing:
 (Hardest to easiest)
-- [ ] Make money by adjacency (team members)
-- [ ] Switch to postgresql/deploy to heroku
+- [X] Make money by adjacency (team members)
+- [X] Switch to postgresql/deploy to heroku
 - [X] Refactor code to properly use rooms
 - [X] Add more feedback to move previewing, red when unpurchasable square.
 - [X] Clean up any UI missteps
@@ -32,6 +32,8 @@ Example:
 - [X] If player wins because opponent disconnects, immediate response.
 
 ## Fun Features:
+- [ ] Create tutorial
+- [ ] Create matchmaking System
 - [ ] Customizable Board Sizes/Game Rules
 - [ ] Redo color palatte
 - [ ] Add interesting terrain squares: black unbuyable squares, double money squares, etc.
