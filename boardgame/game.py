@@ -240,3 +240,36 @@ def check_legal_move(join_code, i, j, player):
     if (player["money"] < get_cost_of_square(i, j)):
         return False
     return True
+
+def remove_no_territory(join_code):
+    print("REMOVING PLAYERS WITH NO TERRITORY")
+    board = get_board(join_code)
+
+    player1 = False
+    player2 = False
+    player3 = False
+    player4 = False
+
+    players = get_players(join_code)
+
+    for row in board:
+        for spot in row:
+            if (get_num_player(join_code,spot["name"]) == 1):
+                player1 = True
+            elif (get_num_player(join_code,spot["name"]) == 2):
+                player2 = True
+            elif (get_num_player(join_code,spot["name"]) == 3):
+                player3 = True
+            elif (get_num_player(join_code,spot["name"]) == 4):
+                player4 = True
+
+    if(not player1):
+        remove_player(join_code,1)
+    if(not player2):
+        remove_player(join_code,2)
+    if(not player3):
+        remove_player(join_code,3)
+    if(not player4):
+        remove_player(join_code,4)
+
+    split_teams(join_code)
