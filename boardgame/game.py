@@ -220,7 +220,8 @@ def test_end_game():
 
 
 def check_empty(join_code):
-    if (connection_manager.numberOfPlayers(join_code) < 1):
+    db = get_db()
+    if connection_manager.numberOfPlayers(join_code) < 1:
         print("GAME EMPTY - DELETING: " + join_code)
         db.execute("DELETE FROM game WHERE join_code = (%s)", (join_code,))
         return True
@@ -241,6 +242,7 @@ def check_legal_move(join_code, i, j, player):
         return False
     return True
 
+
 def remove_no_territory(join_code):
     print("REMOVING PLAYERS WITH NO TERRITORY")
     board = get_board(join_code)
@@ -254,22 +256,22 @@ def remove_no_territory(join_code):
 
     for row in board:
         for spot in row:
-            if (get_num_player(join_code,spot["name"]) == 1):
+            if (get_num_player(join_code, spot["name"]) == 1):
                 player1 = True
-            elif (get_num_player(join_code,spot["name"]) == 2):
+            elif (get_num_player(join_code, spot["name"]) == 2):
                 player2 = True
-            elif (get_num_player(join_code,spot["name"]) == 3):
+            elif (get_num_player(join_code, spot["name"]) == 3):
                 player3 = True
-            elif (get_num_player(join_code,spot["name"]) == 4):
+            elif (get_num_player(join_code, spot["name"]) == 4):
                 player4 = True
 
-    if(not player1):
-        remove_player(join_code,1)
-    if(not player2):
-        remove_player(join_code,2)
-    if(not player3):
-        remove_player(join_code,3)
-    if(not player4):
-        remove_player(join_code,4)
+    if (not player1):
+        remove_player(join_code, 1)
+    if (not player2):
+        remove_player(join_code, 2)
+    if (not player3):
+        remove_player(join_code, 3)
+    if (not player4):
+        remove_player(join_code, 4)
 
     split_teams(join_code)
