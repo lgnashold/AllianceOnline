@@ -54,8 +54,8 @@ def connect():
 def disconnect():
       join_code = session["join_code"]
       player_num = get_num_player(join_code, session["nickname"])
-      # connection_manager.addPlayer(join_code, player_num)
-      emit_message(f"{session['nickname']} left the game. {connection_manager.numberOfPlayers()} players left!", join_code)
+      connection_manager.removePlayer(join_code, player_num)
+      emit_message(f"{session['nickname']} left the game. {connection_manager.numberOfPlayers(join_code)} players left!", join_code)
     #   make_squares_empty(join_code,session["player_num"])
     # remove_player(join_code,session["player_num"])
     # leave_room(join_code)
