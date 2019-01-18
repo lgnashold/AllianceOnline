@@ -1,6 +1,6 @@
 from boardgame import matchmaking
 
-COST_TEAM_SWITCH=100
+COST_TEAM_SWITCH = 100
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
@@ -15,6 +15,7 @@ from flask_socketio import emit, join_room, leave_room
 from boardgame.colors import colors
 
 from boardgame.db import get_db
+
 bp = Blueprint('game', __name__)
 
 from boardgame.player import *
@@ -27,12 +28,15 @@ import math
 
 import json
 
+
 @bp.route("/game")
 def run_game():
     """"Serves game page"""
     if 'join_code' not in session:
         return redirect(url_for('matchmaking.index'))
-    return render_template("game.html", join_code = session["join_code"], nickname = session["nickname"], team_colors = colors);
+    return render_template("game.html", join_code=session["join_code"], nickname=session["nickname"],
+                           team_colors=colors);
+
 
 @socketio.on('connect', namespace="/game")
 def connect():
@@ -50,31 +54,28 @@ def connect():
     if test_end_game():
         emit_end_game(join_code, session["nickname"])
 
+
 @socketio.on('disconnect', namespace="/game")
 def disconnect():
-      join_code = session["join_code"]
-      player_num = get_num_player(join_code, session["nickname"])
-      connection_manager.removePlayer(join_code, player_num)
-      emit_message(f"{session['nickname']} left the game. {connection_manager.numberOfPlayers(join_code)} players left!", join_code)
-    #   make_squares_empty(join_code,session["player_num"])
-    # remove_player(join_code,session["player_num"])
-    # leave_room(join_code)
-    # if(str(get_turn(join_code)) == str(session["player_num"])):
-    #   increment_turn(join_code)
-    #    emit_turn(join_code, get_player(join_code, get_turn(join_code))["nickname"])
+    join_code = session["join_code"]
+    player_num = get_num_player(join_code, session["nickname"])
+    connection_manager.removePlayer(join_code, player_num)
+    emit_message(f"{session['nickname']} left the game. {connection_manager.numberOfPlayers(join_code)} players left!",
+                 join_code)
+
+    # if player who quit is on their turn, increment turn
+    if (str(get_turn(join_code)) == str(session["player_num"])):
+        increment_turn(join_code)
+        emit_turn(join_code, get_player(join_code, get_turn(join_code))["nickname"])
+
+    # removes game if empty, otherwise deal with repairing the game
+    check_empty(join_code)
 
 
-    #removes game if empty, otherwise deal with repairing the game
-    #if(not check_empty(join_code)):
-        #if player who quit is on their turn, increment turn
-                #clean up the game by updating the board and splitting teams
-        ## split_teams(join_code)
-        ## emit_board(join_code)
-
-    #TODO: bug, player could have won here.
+# TODO: bug, player could have won here.
 
 
-@socketio.on('end_turn', namespace ="/game")
+@socketio.on('end_turn', namespace="/game")
 def end_turn():
     """Called when a player ends their turn"""
     join_code = session["join_code"]
@@ -97,13 +98,13 @@ def end_turn():
 
 
 def split_teams(join_code):
-    #checks if two final players are on same team, if so fixes that
+    # checks if two final players are on same team, if so fixes that
     team = "none"
     count = 0
     if (get_num_players(join_code) == 2):
-        count+=1
+        count += 1
         players = get_players(join_code)
-        for key,value in players.items():
+        for key, value in players.items():
             if value != None:
                 if team == "none":
                     team = value["team"]
@@ -121,9 +122,9 @@ def split_teams(join_code):
 def make_squares_empty(join_code, player_num):
     board = get_board(join_code)
     for row in range(BOARD_WIDTH):
-            for col in range(BOARD_HEIGHT):
-                if(board[row][col]["name"] == get_player(join_code,player_num)["nickname"]):
-                    board[row][col] = get_default_square()
+        for col in range(BOARD_HEIGHT):
+            if (board[row][col]["name"] == get_player(join_code, player_num)["nickname"]):
+                board[row][col] = get_default_square()
     set_board(join_code, board)
 
 
@@ -147,7 +148,7 @@ def check_money(function, cost):
         emit_error(errormsg, join_code)
 
 
-@socketio.on('make_move', namespace ="/game")
+@socketio.on('make_move', namespace="/game")
 def move(data):
     join_code = session["join_code"]
     nickname = session["nickname"]
@@ -156,8 +157,8 @@ def move(data):
     i = data['i']
     j = data['j']
 
-    if player_num == get_turn(join_code) :
-        cost = get_cost_of_square(i,j)
+    if player_num == get_turn(join_code):
+        cost = get_cost_of_square(i, j)
 
         def make_move():
             errormsg = set_square(join_code, i, j, player, player_initiated=True)
@@ -165,22 +166,24 @@ def move(data):
             if gameover:
                 emit_end_game(join_code, nickname)
             return errormsg
+
         check_money(make_move, cost)
 
-@socketio.on('get_cost', namespace = "/game")
+
+@socketio.on('get_cost', namespace="/game")
 def get_cost(data):
     print("GOT COST REQUEST")
     join_code = session["join_code"]
     i = data["i"]
     j = data["j"]
     player = get_player(join_code, session["player_num"])
-    if(check_legal_move(join_code,i,j,player)):
-        emit_cost(join_code, "#ffffff", get_cost_of_square(i,j),i,j)
+    if (check_legal_move(join_code, i, j, player)):
+        emit_cost(join_code, "#ffffff", get_cost_of_square(i, j), i, j)
     else:
-        emit_cost(join_code,"#ff0000", get_cost_of_square(i,j),i,j)
+        emit_cost(join_code, "#ff0000", get_cost_of_square(i, j), i, j)
 
 
-@socketio.on('change_team', namespace = "/game")
+@socketio.on('change_team', namespace="/game")
 def change_team(data):
     join_code = session["join_code"]
     nickname = session["nickname"]
@@ -190,49 +193,15 @@ def change_team(data):
     if player_num == get_turn(join_code):
         def change_team_inner():
             errormsg = None
-            if num_players_on_team(join_code, team) >=  math.ceil(get_num_players(join_code)/2 ):
+            if num_players_on_team(join_code, team) >= math.ceil(get_num_players(join_code) / 2):
                 errormsg = "There are already do many people on that team"
             else:
                 update_player_team(join_code, player_num, team)
                 emit_message("Player {0} changed to {1}!".format(nickname, team), join_code)
                 emit_teams(join_code, colors, get_players(join_code))
             return errormsg
+
         check_money(change_team_inner, COST_TEAM_SWITCH)
-
-
-def remove_no_territory(join_code):
-    print("REMOVING PLAYERS WITH NO TERRITORY")
-    board = get_board(join_code)
-
-    player1 = False
-    player2 = False
-    player3 = False
-    player4 = False
-
-    players = get_players(join_code)
-
-    for row in board:
-        for spot in row:
-            if (get_num_player(join_code,spot["name"]) == 1):
-                player1 = True
-            elif (get_num_player(join_code,spot["name"]) == 2):
-                player2 = True
-            elif (get_num_player(join_code,spot["name"]) == 3):
-                player3 = True
-            elif (get_num_player(join_code,spot["name"]) == 4):
-                player4 = True
-
-    if(not player1):
-        remove_player(join_code,1)
-    if(not player2):
-        remove_player(join_code,2)
-    if(not player3):
-        remove_player(join_code,3)
-    if(not player4):
-        remove_player(join_code,4)
-
-    split_teams(join_code)
-
 
 
 def test_end_game():
@@ -245,24 +214,18 @@ def test_end_game():
             space = col["name"]
             if space != None and space not in names:
                 names.append(space)
-    if(len(names) <= 1):
+    if (len(names) <= 1):
         return True
     return False
 
 
 def check_empty(join_code):
-    db = get_db()
-    players = get_players(join_code)
-    count = 0
-    for key,value in players.items():
-        if players[key] != None:
-            count+=1
-
-    if (count < 1):
+    if (connection_manager.numberOfPlayers(join_code) < 1):
         print("GAME EMPTY - DELETING: " + join_code)
-        db.execute("DELETE FROM game WHERE join_code = (%s)",(join_code,))
+        db.execute("DELETE FROM game WHERE join_code = (%s)", (join_code,))
         return True
     return False
+
 
 # check if a move is legal
 # TODO: very repetitive, since split up and used in move function, but not actually used there
@@ -272,8 +235,8 @@ def check_legal_move(join_code, i, j, player):
     old_color = board[i][j]["color"]
     if (new_color == old_color):
         return False
-    if(check_connected(join_code, i, j, new_color) < 1):
+    if (check_connected(join_code, i, j, new_color) < 1):
         return False
-    if(player["money"] < get_cost_of_square(i,j)):
+    if (player["money"] < get_cost_of_square(i, j)):
         return False
     return True
